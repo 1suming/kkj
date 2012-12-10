@@ -1,0 +1,100 @@
+project address: https://kkj.googlecode.com/svn/trunk/
+pronounce:
+this is a UGC time. today is a UGC day. 
+key words: local information ,LBS, floor, Building
+
+why we exist, how to survival?
+
+the situation: 
+
+1. people can't go anywhere in short time. and other area news not easy be spread to more wide area
+even you can know some news by website. you don't know a shop's sales promotion outside 1 mile.
+if have such a platform. you can konw any info at home. you can arrangement you time based on know the infomation.
+.... 
+2. people always have not good memory. it's different to remember all info who hear or watch.
+   espacially for website name, first we have ip ,it's not easy to remeber.so domain name be inventioned.
+   today. how many domain name you can remeber.the answer is negative. so people rely on the search engine.
+   but search engine still not safe for fish website.
+
+3. people know a single activity,always the scatter info.it's not easy to get related info at one place or one website.
+
+our target: one website. one place ,provide all kinds of info which is relate to local information(pet 、 shopping etc. ).   
+how we solver this problem.
+
+map to user faimlar area. place will net be foggot.
+
+
+
+   map could help member.
+   
+
+
+1. service(which kind of service is faviroted by user.)
+2. value ( provide convenience for sales & user? )
+   focus the platform,not the content. just like the UGC pattern.
+   user fill content.
+
+
+3. solution (how to provide service to user. design some method.)
+4. target groups
+   it's not easy to include all infomation. analysing the UGC pattern. 
+
+   show the hot shop by shaking cell phone.
+   
+
+
+detail description
+content:
+        five categories will be coverd. each category contains very different shop,company. we just provide a platform
+to them. the content need to be filled by themself.but we will wirte the different kinds of shop and company.
+
+          1. cloth.
+          2. food.
+          3. hotel
+          4. transion
+          5. entertainment
+	  6. other(gas station、hospital、bank、park)
+      
+
+
+1. cloth. 
+    in this category, all sales place will be included.
+    we can add all find type here.
+    DBC、mall、roadside shop...(we'd better provide the percent at each type).
+
+
+design:
+    show all building on the map. each build is a real exsit build.
+    default radius set to 500 hunder meters. but user can zoom by themself.
+scenario:
+    1. after you intall the app. the home page is located arround you 500 meters ,and show the hot building to you 
+       the hod building (why hot? user message? news? cheap price? somebody give good suggestion)
+
+    2. if user know what's he want. then he can get the correspond type by the navigator which provide cloth,food,hotel,transport and other type(include gas station ,bank atm. and so on)
+     
+    3. after the user set the search type.then all result(building which even can be a news building) will be showed in the        map, and different building will be located
+       
+    5. after user touch one of the build. a construct page will be show for him. 
+       the description page include( the floor layout, what's news here��).
+       the building description : which product is good. and the same time ,user can entry any floor or any room
+       these room have different function. it could be a food shop or a cloth shop and so on.
+    6. after use entry the floor. all rooms will be showed by grid. each grid is a picture which is prepared by shop        owner.
+       
+    7. user touch the room. then the room's detail will be showed . list all kinds of product info ,user can tap any product for learn detail.(later provide talking or payment function).
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
