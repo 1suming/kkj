@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="gb2312"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="麻将游戏"
 	ProjectGUID="{F2D70F30-23FC-4973-A798-AED329359B33}"
 	RootNamespace="麻将游戏"
 	Keyword="MFCProj"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -73,6 +74,8 @@
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -92,9 +95,6 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -159,6 +159,8 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -178,9 +180,6 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -329,19 +328,19 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath=".\Res\麻将声音\女\A_chi.wav"
-				>
-			</File>
-			<File
 				RelativePath=".\Res\麻将声音\男\A_chi.wav"
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\A_chi_hu.wav"
+				RelativePath=".\Res\麻将声音\女\A_chi.wav"
 				>
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\男\A_chi_hu.wav"
+				>
+			</File>
+			<File
+				RelativePath=".\Res\麻将声音\女\A_chi_hu.wav"
 				>
 			</File>
 			<File
@@ -353,11 +352,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\A_peng.wav"
+				RelativePath=".\Res\麻将声音\女\A_peng.wav"
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\A_peng.wav"
+				RelativePath=".\Res\麻将声音\男\A_peng.wav"
 				>
 			</File>
 			<File
@@ -481,15 +480,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\F_2.wav"
-				>
-			</File>
-			<File
 				RelativePath=".\Res\麻将声音\女\F_2.wav"
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\F_3.wav"
+				RelativePath=".\Res\麻将声音\男\F_2.wav"
 				>
 			</File>
 			<File
@@ -497,7 +492,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\F_4.wav"
+				RelativePath=".\Res\麻将声音\女\F_3.wav"
 				>
 			</File>
 			<File
@@ -505,11 +500,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\F_5.wav"
+				RelativePath=".\Res\麻将声音\男\F_4.wav"
 				>
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\F_5.wav"
+				>
+			</File>
+			<File
+				RelativePath=".\Res\麻将声音\男\F_5.wav"
 				>
 			</File>
 			<File
@@ -521,11 +520,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\F_7.wav"
+				RelativePath=".\Res\麻将声音\男\F_7.wav"
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\F_7.wav"
+				RelativePath=".\Res\麻将声音\女\F_7.wav"
 				>
 			</File>
 			<File
@@ -601,19 +600,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\S_1.wav"
-				>
-			</File>
-			<File
 				RelativePath=".\Res\麻将声音\男\S_1.wav"
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\S_2.wav"
+				RelativePath=".\Res\麻将声音\女\S_1.wav"
 				>
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\S_2.wav"
+				>
+			</File>
+			<File
+				RelativePath=".\Res\麻将声音\男\S_2.wav"
 				>
 			</File>
 			<File
@@ -625,15 +624,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\S_4.wav"
-				>
-			</File>
-			<File
 				RelativePath=".\Res\麻将声音\女\S_4.wav"
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\S_5.wav"
+				RelativePath=".\Res\麻将声音\男\S_4.wav"
 				>
 			</File>
 			<File
@@ -641,7 +636,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\S_6.wav"
+				RelativePath=".\Res\麻将声音\男\S_5.wav"
 				>
 			</File>
 			<File
@@ -649,11 +644,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\S_7.wav"
+				RelativePath=".\Res\麻将声音\女\S_6.wav"
 				>
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\S_7.wav"
+				>
+			</File>
+			<File
+				RelativePath=".\Res\麻将声音\男\S_7.wav"
 				>
 			</File>
 			<File
@@ -665,11 +664,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\S_9.wav"
+				RelativePath=".\Res\麻将声音\女\S_9.wav"
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\S_9.wav"
+				RelativePath=".\Res\麻将声音\男\S_9.wav"
 				>
 			</File>
 			<File
@@ -737,15 +736,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\T_2.wav"
-				>
-			</File>
-			<File
 				RelativePath=".\Res\麻将声音\男\T_2.wav"
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\T_3.wav"
+				RelativePath=".\Res\麻将声音\女\T_2.wav"
 				>
 			</File>
 			<File
@@ -753,7 +748,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\T_4.wav"
+				RelativePath=".\Res\麻将声音\男\T_3.wav"
 				>
 			</File>
 			<File
@@ -761,11 +756,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\T_5.wav"
+				RelativePath=".\Res\麻将声音\女\T_4.wav"
 				>
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\T_5.wav"
+				>
+			</File>
+			<File
+				RelativePath=".\Res\麻将声音\男\T_5.wav"
 				>
 			</File>
 			<File
@@ -777,15 +776,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\T_7.wav"
-				>
-			</File>
-			<File
 				RelativePath=".\Res\麻将声音\女\T_7.wav"
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\T_8.wav"
+				RelativePath=".\Res\麻将声音\男\T_7.wav"
 				>
 			</File>
 			<File
@@ -793,7 +788,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\T_9.wav"
+				RelativePath=".\Res\麻将声音\女\T_8.wav"
 				>
 			</File>
 			<File
@@ -801,11 +796,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\Ting.wav"
+				RelativePath=".\Res\麻将声音\男\T_9.wav"
 				>
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\Ting.wav"
+				>
+			</File>
+			<File
+				RelativePath=".\Res\麻将声音\男\Ting.wav"
 				>
 			</File>
 			<File
@@ -829,19 +828,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\W_1.wav"
-				>
-			</File>
-			<File
 				RelativePath=".\Res\麻将声音\男\W_1.wav"
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\W_2.wav"
+				RelativePath=".\Res\麻将声音\女\W_1.wav"
 				>
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\男\W_2.wav"
+				>
+			</File>
+			<File
+				RelativePath=".\Res\麻将声音\女\W_2.wav"
 				>
 			</File>
 			<File
@@ -853,15 +852,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\W_4.wav"
-				>
-			</File>
-			<File
 				RelativePath=".\Res\麻将声音\女\W_4.wav"
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\W_5.wav"
+				RelativePath=".\Res\麻将声音\男\W_4.wav"
 				>
 			</File>
 			<File
@@ -869,7 +864,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\W_6.wav"
+				RelativePath=".\Res\麻将声音\男\W_5.wav"
 				>
 			</File>
 			<File
@@ -877,11 +872,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\W_7.wav"
+				RelativePath=".\Res\麻将声音\男\W_6.wav"
 				>
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\W_7.wav"
+				>
+			</File>
+			<File
+				RelativePath=".\Res\麻将声音\男\W_7.wav"
 				>
 			</File>
 			<File
@@ -893,11 +892,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\W_9.wav"
+				RelativePath=".\Res\麻将声音\男\W_9.wav"
 				>
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\W_9.wav"
+				RelativePath=".\Res\麻将声音\女\W_9.wav"
 				>
 			</File>
 			<File
@@ -1002,11 +1001,11 @@
 			>
 		</File>
 		<File
-			RelativePath=".\Res\麻将声音\女\Chi_hu.wav"
+			RelativePath=".\Res\麻将声音\男\Chi_hu.wav"
 			>
 		</File>
 		<File
-			RelativePath=".\Res\麻将声音\男\Chi_hu.wav"
+			RelativePath=".\Res\麻将声音\女\Chi_hu.wav"
 			>
 		</File>
 		<File
@@ -1026,11 +1025,11 @@
 			>
 		</File>
 		<File
-			RelativePath=".\Res\麻将声音\男\Gang.wav"
+			RelativePath=".\Res\麻将声音\女\Gang.wav"
 			>
 		</File>
 		<File
-			RelativePath=".\Res\麻将声音\女\Gang.wav"
+			RelativePath=".\Res\麻将声音\男\Gang.wav"
 			>
 		</File>
 		<File
@@ -1050,11 +1049,11 @@
 			>
 		</File>
 		<File
-			RelativePath=".\Res\麻将声音\女\Peng.wav"
+			RelativePath=".\Res\麻将声音\男\Peng.wav"
 			>
 		</File>
 		<File
-			RelativePath=".\Res\麻将声音\男\Peng.wav"
+			RelativePath=".\Res\麻将声音\女\Peng.wav"
 			>
 		</File>
 		<File

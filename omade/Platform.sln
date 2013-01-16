@@ -102,6 +102,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "内核引擎", "服务器组件\内核
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "网络服务", "客户端组件\网络服务\NetworkService.vcproj", "{40C0CCCB-BB89-4198-A607-2410FA125EDC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gtestApp", "gtestApp\gtestApp.vcproj", "{47B81906-435A-4270-9033-E3F3AC2267C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Admin_Release|Win32 = Admin_Release|Win32
@@ -229,6 +231,12 @@ Global
 		{40C0CCCB-BB89-4198-A607-2410FA125EDC}.Debug|Win32.Build.0 = Debug|Win32
 		{40C0CCCB-BB89-4198-A607-2410FA125EDC}.Release|Win32.ActiveCfg = Release|Win32
 		{40C0CCCB-BB89-4198-A607-2410FA125EDC}.Release|Win32.Build.0 = Release|Win32
+		{47B81906-435A-4270-9033-E3F3AC2267C7}.Admin_Release|Win32.ActiveCfg = Release|Win32
+		{47B81906-435A-4270-9033-E3F3AC2267C7}.Admin_Release|Win32.Build.0 = Release|Win32
+		{47B81906-435A-4270-9033-E3F3AC2267C7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{47B81906-435A-4270-9033-E3F3AC2267C7}.Debug|Win32.Build.0 = Debug|Win32
+		{47B81906-435A-4270-9033-E3F3AC2267C7}.Release|Win32.ActiveCfg = Release|Win32
+		{47B81906-435A-4270-9033-E3F3AC2267C7}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -307,7 +307,7 @@ interface IAsynchronismEngine : public IServiceModule
 //异步钩子
 interface IAsynchronismEngineSink : public IUnknownEx
 {
-	//启动 事件
+	//启动事件
 	virtual bool __cdecl OnAsynchronismEngineStart()=NULL;
 	//停止事件
 	virtual bool __cdecl OnAsynchronismEngineStop()=NULL;

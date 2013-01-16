@@ -1,5 +1,5 @@
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "麻将游戏", "游戏服务器\GameServer.vcproj", "{CA071FF5-97BF-42C3-99AF-FE8F8A0F0AF2}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "麻将游戏", "游戏客户端\GameClient.vcproj", "{F2D70F30-23FC-4973-A798-AED329359B33}"

@@ -45,7 +45,7 @@ protected:
 	BYTE							m_cbWinCount;							//赢家数目
 	WORD							m_wWinOrder[GAME_PLAYER];				//赢家排名
 	LONG							m_lGameTax[GAME_PLAYER];				//抽税分数
-	tagGangScore					m_GangScore[GAME_PLAYER];				//
+	tagGangScore					m_GangScore[GAME_PLAYER];				//杠 分数
 
 	WORD							m_wLostFanShu[GAME_PLAYER][GAME_PLAYER];//输分数目
 
@@ -105,7 +105,7 @@ protected:
 	WORD							m_wProvider[GAME_PLAYER];				//
  
 	bool							m_bOutMagicCard[GAME_PLAYER];           // 打出听用标志
-	bool							m_bKaiJu;                                // 开局标志 
+	bool							m_bKaiJu;                               // 开局标志 
 	bool							m_bPlayleft[GAME_PLAYER];				// 逃跑玩家
  
 //组件变量

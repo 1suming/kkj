@@ -35,7 +35,7 @@
 
 #define MAX_RIGHT_COUNT				1									//最大权位DWORD个数			
 #define START_GRANT_SCORE_BASE      2000                               // 低于2000分，开始送分
-#define GRANT_SCORE_VALUE           2500								// 每次送1000分
+#define GRANT_SCORE_VALUE           2500								// 每次送2500分
 #define GRANT_SCORE_COUNT           10								// 送10次
 
 //////////////////////////////////////////////////////////////////////////
@@ -60,11 +60,11 @@ struct CMD_WeaveItem
 #define SUB_S_OPERATE_RESULT		105									//操作命令
 #define SUB_S_GAME_END				106									//游戏结束
 #define SUB_S_TRUSTEE				107									//用户托管
-#define SUB_S_CHI_HU				108									//
-#define SUB_S_GANG_SCORE			110									//
-#define SUB_S_PAI_JING				111									//
-#define SUB_S_USER_ESCAPE           112                                 // 用户逃跑
-#define SUB_S_GRANT_SCORE           113                                 // 送分
+#define SUB_S_CHI_HU				108									//吃胡
+#define SUB_S_GANG_SCORE			110									//杠分
+#define SUB_S_PAI_JING				111									//牌精，发送随机选择的牌精到各个用户
+#define SUB_S_USER_ESCAPE           112                                 //用户逃跑
+#define SUB_S_GRANT_SCORE           113                                 //送分
 
 //游戏状态
 struct CMD_S_StatusFree
