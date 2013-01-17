@@ -39,7 +39,7 @@ public:
 
 //////////////////////////////////////////////////////////////////////////
 
-//追踪服 务
+//追踪服务
 class KERNEL_ENGINE_CLASS CRichEditTrace : public CRichEditCtrl, public ITraceService
 {
 	//辅助变 量

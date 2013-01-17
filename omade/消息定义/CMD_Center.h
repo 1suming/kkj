@@ -6,7 +6,6 @@
 //
 
 #define MDM_CS_SERVER_LIST				1								//列表信息
-
 #define SUB_CS_GET_SERVER_LIST			1								//请求列表
 
 #define SUB_CS_LIST_INFO				100								//列表信息

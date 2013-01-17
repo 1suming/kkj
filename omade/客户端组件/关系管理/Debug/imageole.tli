@@ -1,9 +1,9 @@
-﻿// Created by Microsoft (R) C/C++ Compiler Version 14.00.50727.42 (bfa2dd79).
+﻿// Created by Microsoft (R) C/C++ Compiler Version 15.00.30729.01 (e67a4a60).
 //
-// g:\f\h\2012-08-04\客户端组件\关系管理\debug\imageole.tli
+// f:\omade\kkj\omade\客户端组件\关系管理\debug\imageole.tli
 //
 // Wrapper implementations for Win32 type library ImageOle.dll
-// compiler-generated file created 08/04/12 at 16:57:06 - DO NOT EDIT!
+// compiler-generated file created 01/17/13 at 09:10:25 - DO NOT EDIT!
 
 #pragma once
 
