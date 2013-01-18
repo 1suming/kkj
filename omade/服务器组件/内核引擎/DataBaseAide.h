@@ -23,14 +23,14 @@ public:
 
 	//管理函数
 public:
-	//设置 对象
+	//设置对象
 	bool SetDataBase(IUnknownEx * pIUnknownEx);
 	//获取对象
 	VOID * GetDataBase(REFGUID Guid, DWORD dwQueryVer);
 
-	//获取 数据
+	//获取数据
 public:
-	//获取 数据
+	//获取数据
 	INT GetValue_INT(LPCTSTR pszItem);
 	//获取数据
 	UINT GetValue_UINT(LPCTSTR pszItem);

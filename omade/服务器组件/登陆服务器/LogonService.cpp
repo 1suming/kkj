@@ -95,7 +95,7 @@ bool CLogonService::StartService()
 		return false;
 	}
 
-	//ÍøÂçÒýÇæ
+	//ÍøÂçÒýÇæOMA ÍøÂç·þÎñ
 	if (m_TCPNetworkEngine->StartService()==false)
 	{
 		ASSERT(FALSE);

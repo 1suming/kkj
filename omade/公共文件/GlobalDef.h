@@ -112,7 +112,7 @@ struct IPC_Buffer
 #define GAME_GENRE_SCORE				0x0001								//点值类型
 #define GAME_GENRE_GOLD					0x0002								//金币类型
 #define GAME_GENRE_MATCH				0x0004								//比赛类型
-#define GAME_GENRE_LONGMATCH			0x0008								//定期比赛类型
+#define GAME_GENRE_LONGMATCH			0x0008								//自定义比赛类型OMA
 
 //游戏类型结构
 struct tagGameType
@@ -186,15 +186,14 @@ struct tagLevelItem
 struct tagUserScore
 {
 	LONG								lScore;								//用户分数
-	LONG								lGameGold;							//游戏金币//
+	LONG								lGameGold;							//游戏金币
 	LONG								lInsureScore;						//存储金币
 	LONG								lWinCount;							//胜利盘数
 	LONG								lLostCount;							//失败盘数
 	LONG								lDrawCount;							//和局盘数
 	LONG								lFleeCount;							//断线数目
 	LONG								lExperience;						//用户经验
-	// oma add
-	LONG								lGrantCount;                        //送分次数
+	LONG								lGrantCount;                        //送分次数OMA
 };
 
 //用户状态信息

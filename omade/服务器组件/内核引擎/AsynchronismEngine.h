@@ -26,9 +26,9 @@ public:
 	//析构函数
 	virtual ~CControlWnd();
 
-	//消息映射-雨杰网络
+	//消息映射- 
 protected:
-	//请求消息-雨杰网络
+	//请求消息- 
 	HRESULT OnAsynRequest(WPARAM wParam, LPARAM lParam);
 
 	DECLARE_MESSAGE_MAP()
@@ -36,18 +36,18 @@ protected:
 
 //////////////////////////////////////////////////////////////////////////
 
-//消息线程-雨杰网络
+//消息线程- 
 class CMessageThread : public CServiceThread
 {
-	//变量定义-雨杰网络
+	//变量定义- 
 public:
 	CAsynchronismEngine				* m_pAsynchronismEngine;			//异步引擎
 
-	//函数定义-雨杰网络
+	//函数定义- 
 public:
-	//构造函数-雨杰网络
+	//构造函数- 
 	CMessageThread();
-	//析构函数-雨杰网络
+	//析构函数- 
 	virtual ~CMessageThread();
 
 	//功能函数
@@ -66,7 +66,7 @@ private:
 
 	//重载函数
 private:
-	//运行函数-雨杰网络
+	//运行函数- 
 	virtual bool OnEventThreadRun();
 };
 
@@ -91,7 +91,7 @@ protected:
 	CDataQueue						m_DataStorage;						//数据存储
 	CMessageThread					m_MessageThread;					//线程组件
 
-	//函数定义-雨杰网络
+	//函数定义- 
 public:
 	//构造函数
 	CAsynchronismEngine(void);
@@ -100,7 +100,7 @@ public:
 
 	//基础接口
 public:
-	//释放对象-雨杰网络
+	//释放对象- 
 	virtual VOID __cdecl Release()
 	{
 		if (IsValid()) delete this;    //
@@ -124,7 +124,7 @@ public:
 
 	//功能接口
 public:
-	//注册钩子-雨杰网络
+	//注册钩子- 
 	virtual bool __cdecl SetAsynchronismSink(IUnknownEx * pIUnknownEx);
 	//投递数据
 	virtual bool __cdecl PostAsynchronismData(WORD wIdentifier, VOID * pData, WORD wDataSize);
@@ -133,7 +133,7 @@ public:
 
 	//线程函数
 protected:
-	//线程启动-雨杰网络
+	//线程启动- 
 	bool OnMessageThreadStart();
 	//线程停止
 	bool OnMessageThreadStop();

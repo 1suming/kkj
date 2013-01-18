@@ -36,7 +36,7 @@ HRESULT CControlWnd::OnAsynRequest(WPARAM wParam, LPARAM lParam)
 	WORD wRequestID = (WORD)wParam;
 	IAsynchronismEngineSink * pIAsynchronismEngineSink = (IAsynchronismEngineSink *)lParam;
 
-	//请求处理-雨杰网络
+	//请求处理- 
 	ASSERT(pIAsynchronismEngineSink != NULL);
 	m_pAsynchronismEngine->OnAsynchronismRequest(wRequestID, pIAsynchronismEngineSink);
 
@@ -56,7 +56,7 @@ CMessageThread::~CMessageThread()
 {
 }
 
-//运行函数-雨杰网络
+//运行函数- 
 bool CMessageThread::OnEventThreadRun()
 {
 	MSG Message;
@@ -69,28 +69,28 @@ bool CMessageThread::OnEventThreadRun()
 	return false;
 }
 
-//停止线程-雨杰网络
+//停止线程- 
 bool CMessageThread::StopThread(DWORD dwWaitSeconds)
 {
 	PostThreadMessage(WM_QUIT, 0, 0);
 	return __super::ConcludeThread(dwWaitSeconds);
 }
 
-//中止线程-雨杰网络
+//中止线程- 
 bool CMessageThread::TerminateThread(DWORD dwExitCode)
 {
 	PostThreadMessage(WM_QUIT, 0, 0);
 	return __super::ConcludeThread(INFINITE);
 }
 
-//开始事件-雨杰网络
+//开始事件- 
 bool CMessageThread::OnThreadStratEvent()
 {
 	ASSERT(m_pAsynchronismEngine != NULL);
 	return m_pAsynchronismEngine->OnMessageThreadStart();
 }
 
-//停止事件-雨杰网络
+//停止事件- 
 bool CMessageThread::OnThreadStopEvent()
 {
 	ASSERT(m_pAsynchronismEngine != NULL);
@@ -99,7 +99,7 @@ bool CMessageThread::OnThreadStopEvent()
 
 //////////////////////////////////////////////////////////////////////////
 
-//构造函数-雨杰网络
+//构造函数- 
 CAsynchronismEngine::CAsynchronismEngine(void)
 {
 	//设置变量
@@ -129,25 +129,25 @@ void * __cdecl CAsynchronismEngine::QueryInterface(const IID & Guid, DWORD dwQue
 //启动服务
 bool __cdecl CAsynchronismEngine::StartService()
 {
-	//启动线程-雨杰网络
+	//启动线程- 
 	if (m_MessageThread.StartThread() == false) return false;
 
-	//设置变量-雨杰网络
+	//设置变量- 
 	m_bService = true;
 
 	return true;
 }
 
-//停止服务-雨杰网络
+//停止服务- 
 bool __cdecl CAsynchronismEngine::ConcludeService()
 {
-	//设置变量-雨杰网络
+	//设置变量- 
 	m_bService = false;
 
-	//停止线程-雨杰网络
+	//停止线程- 
 	m_MessageThread.ConcludeThread(INFINITE);
 
-	//清理数据-雨杰网络
+	//清理数据- 
 	m_DataStorage.RemoveData(false);
 
 	return true;
@@ -170,16 +170,16 @@ bool __cdecl CAsynchronismEngine::InsertRequest(WORD wRequestID, void * const pB
 	CThreadLock lcok(m_CriticalSection); // CThreadLockHandle ThreadLockHandle(&m_ThreadLock);
 	if (m_DataStorage.InsertData(wRequestID, pBuffer, wDataSize) == false) return false;
 
-	//投递消息-雨杰网络
+	//投递消息- 
 	PostMessage(m_ControlWnd.m_hWnd, WM_ASYN_REQUEST, wRequestID, (LPARAM)pIAsynchronismEngineSink);
 
 	return true;
 }
 
-//注册钩子-雨杰网络
+//注册钩子- 
 bool __cdecl CAsynchronismEngine::SetAsynchronismSink(IUnknownEx * pIUnknownEx)
 {
-	//获取接口-雨杰网络
+	//获取接口- 
 	IAsynchronismEngineSink * pIAsynchronismEngineSink = QUERY_OBJECT_PTR_INTERFACE(pIUnknownEx, IAsynchronismEngineSink);
 	ASSERT(pIAsynchronismEngineSink != NULL);
 	if (pIAsynchronismEngineSink == NULL) return false;
@@ -193,7 +193,7 @@ bool __cdecl CAsynchronismEngine::SetAsynchronismSink(IUnknownEx * pIUnknownEx)
 		if (pIAsynchronismEngineSinkTemp == pIAsynchronismEngineSink) return false;
 	}
 
-	//注册钩子-雨杰网络
+	//注册钩子- 
 	m_AsynchronismEngineSinkArray.Add(pIAsynchronismEngineSink);
 
 	return true;
@@ -216,21 +216,21 @@ bool __cdecl CAsynchronismEngine::PostAsynchronismData(WORD wIdentifier, VOID * 
 	CThreadLock lcok(m_CriticalSection); // CThreadLockHandle ThreadLockHandle(&m_ThreadLock);
 	if (m_DataStorage.InsertData(wIdentifier, pData, wDataSize) == false) return false;
 
-	//投递消息-雨杰网络
+	//投递消息- 
 	PostMessage(m_ControlWnd.m_hWnd, WM_ASYN_REQUEST, (WPARAM)pData, /*(LPARAM)pIAsynchronismEngineSink*/0);
 
 	return true;
 }
 
-//取消注册-雨杰网络
+//取消注册- 
 bool __cdecl CAsynchronismEngine::UnRegisterAsynchronismEngineSink(IUnknownEx * pIUnknownEx)
 {
-	//获取接口-雨杰网络
+	//获取接口- 
 	IAsynchronismEngineSink * pIAsynchronismEngineSink = QUERY_OBJECT_PTR_INTERFACE(pIUnknownEx, IAsynchronismEngineSink);
 	ASSERT(pIAsynchronismEngineSink != NULL);
 	if (pIAsynchronismEngineSink == NULL) return false;
 
-	//删除钩子-雨杰网络
+	//删除钩子- 
 	IAsynchronismEngineSink * pIAsynchronismEngineSinkTemp = NULL;
 	for (INT_PTR i = 0; i < m_AsynchronismEngineSinkArray.GetCount(); i++)
 	{
@@ -273,7 +273,7 @@ bool CAsynchronismEngine::OnMessageThreadStart()
 	return bSuccsee;
 }
 
-//线程停止-雨杰网络
+//线程停止- 
 bool CAsynchronismEngine::OnMessageThreadStop()
 {
 	//关闭窗口
@@ -299,7 +299,7 @@ bool CAsynchronismEngine::OnMessageThreadStop()
 	return bSuccsee;
 }
 
-//异步请求-雨杰网络
+//异步请求- 
 void CAsynchronismEngine::OnAsynchronismRequest(WORD wRequestID, IAsynchronismEngineSink * pIAsynchronismEngineSink)
 {
 	//锁定资源
@@ -322,7 +322,7 @@ void CAsynchronismEngine::OnAsynchronismRequest(WORD wRequestID, IAsynchronismEn
 
 //////////////////////////////////////////////////////////////////////////
 
-//建立对象函数-雨杰网络
+//建立对象函数- 
 extern "C" __declspec(dllexport) void * __cdecl CreateAsynchronismEngine(const GUID & Guid, DWORD dwInterfaceVer)
 {
 	//建立对象

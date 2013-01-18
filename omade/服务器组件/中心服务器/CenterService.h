@@ -28,7 +28,7 @@ protected:
 
 	//组件变量
 protected:
-	CDataBaseSink					m_DataBaseEngineSink;				//数据钩子
+	CDataBaseSink					m_DataBaseEngineSink;				//数据库钩子
 	CAttemperEngineSink				m_AttemperEngineSink;				//调度钩子
 
 	//内核组件

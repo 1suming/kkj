@@ -126,7 +126,7 @@ bool __cdecl CQueueService::AddToQueue(WORD wIdentifier, void * const pBuffer, W
 	return true;
 }
 
-//开始 服务
+//开始服务
 bool __cdecl CQueueService::StartService()
 {
 	//效验参数

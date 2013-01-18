@@ -59,7 +59,7 @@ CDataBase::CDataBase() : m_dwResumeConnectCount(30L), m_dwResumeConnectTime(30L)
 	m_DBRecordset.CreateInstance(__uuidof(Recordset));
 	m_DBConnection.CreateInstance(__uuidof(Connection));
 
-	//效验数据-雨杰网络
+	//效验数据- 
 	ASSERT(m_DBCommand != NULL);
 	ASSERT(m_DBRecordset != NULL);
 	ASSERT(m_DBConnection != NULL);
@@ -95,7 +95,7 @@ void * __cdecl CDataBase::QueryInterface(const IID & Guid, DWORD dwQueryVer)
 	return NULL;
 }
 
-//打开连接-雨杰网络
+//打开连接
 VOID __cdecl CDataBase::OpenConnection()
 {
 	//连接数据库
@@ -119,7 +119,7 @@ VOID __cdecl CDataBase::OpenConnection()
 	}
 }
 
-//关闭记录-雨杰网络
+//关闭记录- 
 VOID __cdecl CDataBase::CloseRecordset()
 {
 	try
@@ -172,13 +172,13 @@ bool __cdecl CDataBase::TryConnectAgain(bool bFocusConnect, CComError * pComErro
 			return false;
 		}
 
-		//重新连接-雨杰网络
+		//重新连接- 
 		OpenConnection();
 		return true;
 	}
 	catch (IDataBaseException * pIDataBaseException)
 	{
-		//重新连接错误-雨杰网络
+		//重新连接错误- 
 		if (pComError != NULL) SetErrorInfo(SQLException_Connect, GetComErrorDescribe(*pComError));
 		else throw pIDataBaseException;
 	}
@@ -186,7 +186,7 @@ bool __cdecl CDataBase::TryConnectAgain(bool bFocusConnect, CComError * pComErro
 	return false;
 }
 
-//连接信息-雨杰网络
+//连接信息- 
 bool __cdecl CDataBase::SetConnectionInfo(DWORD dwDBAddr, WORD wPort, LPCTSTR szDBName, LPCTSTR szUser, LPCTSTR szPassword)
 {
 	//效验参数

@@ -34,7 +34,7 @@ bool CCenterService::StartService()
 	//加载参数
 	m_InitParamter.LoadInitParamter();
 
-	//创建组件
+	//创建组件//OMA 获取接口失败并且创建接口失败，返回false
 	if ((m_DataBaseEngine.GetInterface()==NULL)&&(m_DataBaseEngine.CreateInstance()==false)) return false;
 	if ((m_AttemperEngine.GetInterface()==NULL)&&(m_AttemperEngine.CreateInstance()==false)) return false;
 	if ((m_TCPNetworkEngine.GetInterface()==NULL)&&(m_TCPNetworkEngine.CreateInstance()==false)) return false;

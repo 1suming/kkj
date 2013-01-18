@@ -40,7 +40,7 @@ bool __cdecl CAttemperEngine::StartService()
 		return true;
 	}
 
-	//外挂接口-雨杰网络
+	//外挂接口- //OMA 启动服务前，需要外挂钩子
 	if (m_pIAttemperEngineSink == NULL)
 	{
 		CTraceService::TraceString(TEXT("调度引擎外挂服务不存在"), TraceLevel_Exception);
@@ -54,7 +54,7 @@ bool __cdecl CAttemperEngine::StartService()
 		return false;
 	}
 
-	//启动外挂-雨杰网络
+	//启动外挂- 
 	if (m_pIAttemperEngineSink->OnAttemperEngineStart(QUERY_ME_INTERFACE(IUnknownEx)) == false)
 	{
 		CTraceService::TraceString(TEXT("调度引擎外挂服务启动失败"), TraceLevel_Exception);
@@ -68,7 +68,7 @@ bool __cdecl CAttemperEngine::StartService()
 		return false;
 	}
 
-	//清空机器人-雨杰网络
+	//清空机器人- 
 	m_AndroidUserSocketIDArray.RemoveAll();
 
 	//设置变量
@@ -77,7 +77,7 @@ bool __cdecl CAttemperEngine::StartService()
 	return true;
 }
 
-//停止服务-雨杰网络
+//停止服务- 
 bool __cdecl CAttemperEngine::ConcludeService()
 {
 	//设置变量
@@ -99,7 +99,7 @@ bool __cdecl CAttemperEngine::ConcludeService()
 	return true;
 }
 
-//设置网络-雨杰网络
+//设置网络- 
 bool __cdecl CAttemperEngine::SetSocketEngine(IUnknownEx * pIUnknownEx)
 {
 	ASSERT(pIUnknownEx != NULL);
@@ -108,7 +108,7 @@ bool __cdecl CAttemperEngine::SetSocketEngine(IUnknownEx * pIUnknownEx)
 	return (m_pITCPSocketService != NULL);
 }
 
-//设置网络-雨杰网络
+//设置网络- 
 bool __cdecl CAttemperEngine::SetNetworkEngine(IUnknownEx * pIUnknownEx)
 {
 	ASSERT(pIUnknownEx != NULL);
@@ -117,7 +117,7 @@ bool __cdecl CAttemperEngine::SetNetworkEngine(IUnknownEx * pIUnknownEx)
 	return (m_pTCPNetworkEngine != NULL);
 }
 
-//注册钩子-雨杰网络
+//注册钩子- 
 bool __cdecl CAttemperEngine::SetAttemperEngineSink(IUnknownEx * pIUnknownEx)
 {
 	//效验参数
@@ -143,7 +143,7 @@ void * __cdecl CAttemperEngine::GetQueueService(const IID & Guid, DWORD dwQueryV
 	return m_QueueService.QueryInterface(Guid, dwQueryVer);
 }
 
-//控制事件-雨杰网络
+//控制事件- 
 //////////////////////////////////////////////////////////////////////////
 //自定事件
 bool __cdecl CAttemperEngine::OnEventCustom(WORD wRequestID, VOID * pData, WORD wDataSize)
@@ -154,7 +154,7 @@ bool __cdecl CAttemperEngine::OnEventCustom(WORD wRequestID, VOID * pData, WORD 
 	return m_pIAttemperEngineSink->OnEventAttemperData(wRequestID, pData, wDataSize);
 }
 
-//控制事件-雨杰网络
+//控制事件- 
 bool __cdecl CAttemperEngine::OnEventControl(WORD wControlID, VOID * pData, WORD wDataSize)
 {
 	ASSERT(m_pIAttemperEngineSink);
@@ -163,7 +163,7 @@ bool __cdecl CAttemperEngine::OnEventControl(WORD wControlID, VOID * pData, WORD
 	return m_pIAttemperEngineSink->OnEventControl(wControlID, pData, wDataSize);
 }
 
-//队列接口-雨杰网络
+//队列接口- 
 void __cdecl CAttemperEngine::OnQueueServiceSink(WORD wIdentifier, void * pBuffer, WORD wDataSize)
 {
 	//内核事件
@@ -398,7 +398,7 @@ bool __cdecl CAttemperEngine::OnEventTCPNetworkBind(DWORD dwSocketID, DWORD dwCl
 	return true;
 }
 
-//关闭事件-雨杰网络
+//关闭事件- 
 bool __cdecl CAttemperEngine::OnEventTCPNetworkShut(DWORD dwSocketID, DWORD dwClientIP, DWORD dwActiveTime)
 {
 	//缓冲锁定

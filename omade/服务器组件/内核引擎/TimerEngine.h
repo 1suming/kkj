@@ -44,7 +44,7 @@ private:
 //定时器子项
 struct tagTimerItem
 {
-	DWORD								wTimerID;						//定时器 ID
+	DWORD								wTimerID;						//定时器ID
 	DWORD								dwElapse;						//定时时间
 	DWORD								dwTimeLeave;					//倒计时间
 	DWORD								dwRepeatTimes;					//重复次数
@@ -115,7 +115,7 @@ public:
 
 	//内部函数
 private:
-	//定时 器通知
+	//定时器通知
 	void OnTimerThreadSink();
 };
 
