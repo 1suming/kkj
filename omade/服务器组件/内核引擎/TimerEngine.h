@@ -97,7 +97,7 @@ public:
 
 	//接口函 数
 public:
-	//设置定时 器
+	//设置定时器
 	virtual bool __cdecl SetTimer(DWORD dwTimerID, DWORD dwElapse, DWORD dwRepeat, WPARAM dwBindParameter);
 	//删除定时器
 	virtual bool __cdecl KillTimer(DWORD dwTimerID);

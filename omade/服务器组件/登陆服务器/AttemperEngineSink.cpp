@@ -58,7 +58,7 @@ bool __cdecl CAttemperEngineSink::OnAttemperEngineStart(IUnknownEx * pIUnknownEx
 	m_pBindParameter=new tagBindParameter[m_pInitParamter->m_wMaxConnect];
 	ZeroMemory(m_pBindParameter,sizeof(tagBindParameter)*m_pInitParamter->m_wMaxConnect);
 
-	//中心连接
+	//中心连接//OMA 连接中心服务器
 	DWORD dwServerIP=inet_addr(m_pInitParamter->m_szCenterServerAddr);
 	m_pITCPSocketCorrespond->Connect(dwServerIP,PORT_CENTER_SERVER);
 
@@ -347,7 +347,7 @@ bool CAttemperEngineSink::OnDBRModifyIndividual(DWORD dwContextID, VOID * pData,
 	return true;
 }
 
-//连接事件
+//连接事件//OMA 连接中心服务器成功后调用此方法，在该方法中启动定时器
 bool __cdecl CAttemperEngineSink::OnEventTCPSocketLink(WORD wServiceID, INT nErrorCode)
 {
 	//错误判断

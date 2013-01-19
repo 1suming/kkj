@@ -109,9 +109,9 @@ public:
 public:
 	//关闭连接
 	virtual bool __cdecl CloseSocket();
-	//连 接地址
+	//连接地址
 	virtual bool __cdecl Connect(DWORD dwServerIP, WORD wPort);
-	//连接地 址
+	//连接地址
 	virtual bool __cdecl Connect(LPCTSTR szServerIP, WORD wPort);
 	//发送函数
 	virtual bool __cdecl SendData(WORD wMainCmdID, WORD wSubCmdID);

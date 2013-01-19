@@ -1501,7 +1501,7 @@ bool CAttemperEngineSink::OnEventTCPNetworkShut(DWORD dwClientIP, DWORD dwActive
 	return true;
 }
 
-//中心连接事件
+//中心连接事件//OMADE 从调度钩子启动中发起的连接中心服务器，连接成功后调用此方法
 bool __cdecl CAttemperEngineSink::OnEventTCPSocketLink(WORD wServiceID, INT nErrorCode)
 {
 	//错误判断
