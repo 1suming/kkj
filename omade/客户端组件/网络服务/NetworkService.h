@@ -49,8 +49,8 @@
 #define CONNECT_SUCCESS				0									//连接成功
 #define CONNECT_FAILURE				1									//连接失败
 #define CONNECT_EXCEPTION			2									//参数异常
-#define CONNECT_PROXY_FAILURE		3									//连接成功
-#define CONNECT_PROXY_USER_INVALID	4									//用户无效
+#define CONNECT_PROXY_FAILURE		3									//代理连接成功
+#define CONNECT_PROXY_USER_INVALID	4									//代理用户无效
 
 //////////////////////////////////////////////////////////////////////////
 //枚举定义

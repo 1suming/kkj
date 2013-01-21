@@ -130,7 +130,7 @@ protected:
 
 //////////////////////////////////////////////////////////////////////////
 
-//系统消息
+//系统消息管理
 class CManagerMessage : public CSkinDialogEx
 {
 	//接口定义
@@ -186,18 +186,18 @@ protected:
 
 	//控件变量
 protected:
-	CSkinButton						m_btLimitGameChat;					//控制按钮
-	CSkinButton						m_btAllowGameChat;					//控制按钮
-	CSkinButton						m_btLimitRoomChat;					//控制按钮
-	CSkinButton						m_btAllowRoomChat;					//控制按钮
-	CSkinButton						m_btLimitEnterRoom;					//控制按钮
-	CSkinButton						m_btAllowEnterRoom;					//控制按钮
-	CSkinButton						m_btLimitEnterGame;					//控制按钮
-	CSkinButton						m_btAllowEnterGame;					//控制按钮
-	CSkinButton						m_btSetShallClose;					//控制按钮
-	CSkinButton						m_btReSetShallClose;				//控制按钮
-	CSkinButton						m_btLimitRoomWisper;				//控制按钮
-	CSkinButton						m_btAllowRoomWisper;				//控制按钮
+	CSkinButton						m_btLimitGameChat;					//控制按钮 OMA 禁止游戏中聊天
+	CSkinButton						m_btAllowGameChat;					//控制按钮 OMA 允许游戏中聊天
+	CSkinButton						m_btLimitRoomChat;					//控制按钮 OMA 禁止房间中聊天
+	CSkinButton						m_btAllowRoomChat;					//控制按钮 OMA 允许房间中聊天
+	CSkinButton						m_btLimitEnterRoom;					//控制按钮 OMA 禁止进入房间
+	CSkinButton						m_btAllowEnterRoom;					//控制按钮 OMA 允许进入房间
+	CSkinButton						m_btLimitEnterGame;					//控制按钮 OMA 禁止进入游戏
+	CSkinButton						m_btAllowEnterGame;					//控制按钮 OMA 允许进入游戏
+	CSkinButton						m_btSetShallClose;					//控制按钮 OMA ？
+	CSkinButton						m_btReSetShallClose;				//控制按钮 OMA ？
+	CSkinButton						m_btLimitRoomWisper;				//控制按钮 OMA 禁止房间私聊
+	CSkinButton						m_btAllowRoomWisper;				//控制按钮 OMA 允许房间私聊
 
 	//函数定义
 public:

@@ -450,7 +450,7 @@ void __cdecl CTableView::DrawTable(CDC * pDC, bool bHideInfo, CTableResource * p
 			//自定义头像
 			tagGlobalUserData &GlobalUserData = g_GlobalUnits.GetGolbalUserData();
 
-			//用户头像
+			//用户头像 //OMA 为什么要特殊处理？
 			if (pTableResource->m_bDZShowHand==true)
 			{
 				//变量定义

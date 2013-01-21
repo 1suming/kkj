@@ -54,7 +54,7 @@ public:
 	CUserInfoView						m_UserInfoView;					//游戏视图
 	CSkinSplitter						m_Splitter;						//拆分窗口
 	CServerItemView						m_ServerItemView;				//服务器视图
-	CUserCompanionList					m_UserCompanionList;			//好友列表
+	CUserCompanionList					m_UserCompanionList;			//好友关系列表
 
 	//界面状态
 protected:

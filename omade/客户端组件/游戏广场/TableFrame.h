@@ -35,7 +35,7 @@ struct tagTableState
 #define VER_ITableView INTERFACE_VERSION(1,1)
 static const GUID IID_ITableView={0xd10c8db6,0xb9d8,0x47c2,0x9c,0xb9,0x34,0x97,0x59,0xa1,0x87,0x77};
 
-//桌子接口
+//桌子视图接口
 interface ITableView : IUnknownEx
 {
 	//初始化函数
@@ -77,7 +77,7 @@ interface ITableView : IUnknownEx
 #define VER_ITableFrameView INTERFACE_VERSION(1,1)
 static const GUID IID_ITableFrameView={0x719fbd24,0x5b49,0x4714,0x95,0x16,0xca,0xd5,0xf1,0x52,0xe7,0x40};
 
-//框架接口
+//桌子框架视图接口
 interface ITableFrameView : public IUnknownEx
 {
 	//创建函数
@@ -94,7 +94,7 @@ interface ITableFrameView : public IUnknownEx
 	virtual bool __cdecl ShowUserInfo(bool bShowUser)=NULL;
 	//设置视图桌子
 	virtual bool __cdecl EnsureVisibleTable(WORD wTableID)=NULL;
-	//闪动椅子
+	//闪动桌子
 	virtual bool __cdecl FlashTable(WORD wTableID)=NULL;
 	//闪动椅子
 	virtual bool __cdecl FlashChair(WORD wTableID, WORD wChairID)=NULL;
@@ -125,7 +125,7 @@ interface ITableFrameView : public IUnknownEx
 #define VER_ITableFrameSink INTERFACE_VERSION(1,1)
 static const GUID IID_ITableFrameSink={0xc06ff71d,0x2c2,0x4e51,0x9d,0xe6,0x22,0x43,0x85,0x7c,0x16,0xda};
 
-//框架回调接口
+//桌子框架回调接口
 interface ITableFrameSink : public IUnknownEx
 {
 	//鼠标左键按下
@@ -167,7 +167,7 @@ public:
 
 	//标志变量
 public:
-	bool								m_bDZShowHand;						//德州扑克
+	bool								m_bDZShowHand;						//德州扑克//OMA 该标志的作用？
 
 	//位图资源
 public:
@@ -294,7 +294,7 @@ protected:
 protected:
 	CTableResource						m_TableResource;					//桌子资源
 	CTableView							* m_pTableViewArray;				//桌子数组
-	ITableFrameSink						* m_pITableFrameSink;			//回调接口
+	ITableFrameSink						* m_pITableFrameSink;				//回调接口
 
 	//配置参数
 protected:

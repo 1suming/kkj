@@ -69,7 +69,7 @@ CGameOption::~CGameOption()
 {
 }
 
-//加载设置
+//加载设置// OMA 对游戏配置的限制在这里进行控制
 void CGameOption::LoadOptionParameter()
 {
 	//变量定义
@@ -243,7 +243,7 @@ void CGlobalOption::LoadOptionParameter()
 	{
 		pGameOption=m_GameOptionArray[i];
 		ASSERT(pGameOption!=NULL);
-		pGameOption->LoadOptionParameter();
+		pGameOption->LoadOptionParameter(); 
 	}
 
 	//房间配置
@@ -252,7 +252,7 @@ void CGlobalOption::LoadOptionParameter()
 	{
 		pServerOption=m_ServerOptionArray[i];
 		ASSERT(pServerOption!=NULL);
-		pServerOption->LoadOptionParameter();
+		pServerOption->LoadOptionParameter();// OMA 貌似房间的配置没有实现
 	}
 
 	return;

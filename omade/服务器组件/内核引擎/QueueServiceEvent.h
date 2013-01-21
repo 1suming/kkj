@@ -199,7 +199,7 @@ public:
 		return m_pIQueueService.AddToQueue(EVENT_TCP_SOCKET_CLOSE, m_cbBuffer, sizeof(NTY_TCPSocketCloseEvent));
 	}
 
-	//网络关闭事件
+	//网络读取事件
 	bool PostTCPSocketReadEvent(WORD wServiceID, CMD_Command Command, const void * pDataBuffer, WORD wDataSize)
 	{
 		//效验参数
@@ -224,7 +224,7 @@ public:
 		return true;
 	}
 
-	//网络关闭事件
+	//网络连接事件
 	bool PostTCPSocketConnectedEvent(WORD wServiceID, INT nErrorCode)
 	{
 		//效验参数

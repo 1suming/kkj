@@ -104,7 +104,7 @@ class CListItem
 protected:
 	DWORD_PTR							m_dwData;					//绑定数据
     CListItem							* m_pParentItem;			//父项指针
-	CListItemArray						m_ListItemArray;			//子项数组//?有用到吗
+	CListItemArray						m_ListItemArray;			//子项数组
 	const enItemGenre					m_ItemGenre;				//子项类型
 
 	//静态变量
