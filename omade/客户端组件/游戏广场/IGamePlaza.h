@@ -110,7 +110,7 @@ interface IScoreParser : public IUnknownEx
 #define VER_IClientUserManager INTERFACE_VERSION(1,1)
 static const GUID IID_IClientUserManager={0xe55db51d,0x46a8,0x443e,0xa8,0x93,0x28,0xdc,0xc4,0xad,0x52,0x20};
 
-//用户管理
+//用户管理接口
 interface IClientUserManager : public IUnknownEx
 {
 	//管理接口

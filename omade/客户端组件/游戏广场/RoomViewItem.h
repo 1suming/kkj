@@ -133,7 +133,7 @@ public:
 	//管理控件
 public:
 	CManagerServer					m_ManagerServer;					//房间管理
-	CManagerMessage					m_ManagerMessage;					//系统消息
+	CManagerMessage					m_ManagerMessage;					//系统消息//OMA 系统消息管理
 	CManagerUserRight				m_ManagerUserRight;					//权限管理
 	CManagerSendWarning				m_ManagerSendWarning;				//警告管理
 
@@ -158,8 +158,8 @@ protected:
 	//其他控件
 public:
 	CToolTipCtrl					m_ToolTipCtrl;						//提示控件
-	CSkinSplitter					m_HorSplitter;						//拆分窗口
-	CSkinSplitter					m_VorSplitter;						//拆分窗口
+	CSkinSplitter					m_HorSplitter;						//拆分窗口//OMA 水平
+	CSkinSplitter					m_VorSplitter;						//拆分窗口//OMA 垂直
 	CIPCRecvCopyData				m_IPCRecvCopyData;					//信道组件
 	CTCPSocketHelper				m_ClientSocket;						//网络连接
 	CMessageProxyHelper				m_MessageProxyHelper;				//消息代理

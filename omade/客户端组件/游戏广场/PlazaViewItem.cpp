@@ -118,7 +118,7 @@ void * __cdecl CPlazaViewItem::QueryInterface(const IID & Guid, DWORD dwQueryVer
 	return NULL;
 }
 
-//网络连接消息
+//网络连接消息//OMA 网络连接后被调用
 bool __cdecl CPlazaViewItem::OnEventTCPSocketLink(WORD wSocketID, INT nErrorCode)
 {
 	//错误处理
@@ -145,7 +145,7 @@ bool __cdecl CPlazaViewItem::OnEventTCPSocketLink(WORD wSocketID, INT nErrorCode
 		DlgCustomFace.SendData();
 	}
 
-	//下载判断
+	//下载判断// OMA 下载头像
 	if ( m_bDownloadConnect )
 	{
 		//设置变量
@@ -416,7 +416,7 @@ bool CPlazaViewItem::OnSocketMainServerList(CMD_Command Command, void * pData, W
 	
 	switch (Command.wSubCmdID)
 	{
-	case SUB_GP_LIST_TYPE:			//类型信息
+	case SUB_GP_LIST_TYPE:			//类型信息列表
 		{
 			//效验参数
 			ASSERT(wDataSize%sizeof(tagGameType)==0);
@@ -429,7 +429,7 @@ bool CPlazaViewItem::OnSocketMainServerList(CMD_Command Command, void * pData, W
 
 			return true;
 		}
-	case SUB_GP_LIST_KIND:			//种类消息
+	case SUB_GP_LIST_KIND:			//种类消息列表
 		{
 			//效验参数
 			ASSERT(wDataSize%sizeof(tagGameKind)==0);
@@ -442,7 +442,7 @@ bool CPlazaViewItem::OnSocketMainServerList(CMD_Command Command, void * pData, W
 
 			return true;
 		}
-	case SUB_GP_LIST_STATION:		//站点消息
+	case SUB_GP_LIST_STATION:		//站点消息列表
 		{
 			//效验参数
 			ASSERT(wDataSize%sizeof(tagGameStation)==0);
@@ -455,7 +455,7 @@ bool CPlazaViewItem::OnSocketMainServerList(CMD_Command Command, void * pData, W
 
 			return true;
 		}
-	case SUB_GP_LIST_SERVER:		//服务器房间
+	case SUB_GP_LIST_SERVER:		//服务器房间列表
 		{
 			//效验参数
 			ASSERT(wDataSize%sizeof(tagGameServer)==0);
@@ -656,7 +656,7 @@ bool CPlazaViewItem::OnSocketMainUser(CMD_Command Command, void * pBuffer, WORD 
 			}
 			return true;
 		}
-	case SUB_GP_UPLOAD_FACE_RESULT:		//上传结果
+	case SUB_GP_UPLOAD_FACE_RESULT:		//上传头像结果
 		{
 			ASSERT(sizeof(CMD_GP_UploadFaceResult) == wDataSize);
 			if ( sizeof(CMD_GP_UploadFaceResult) != wDataSize) return true;
@@ -733,7 +733,7 @@ bool CPlazaViewItem::OnSocketMainUser(CMD_Command Command, void * pBuffer, WORD 
 
 			return true;
 		}
-	case SUB_GP_DELETE_FACE_RESULT:		//删除结果
+	case SUB_GP_DELETE_FACE_RESULT:		//删除头像结果
 		{
 			ASSERT(sizeof(CMD_GP_DeleteFaceResult) == wDataSize);
 			if ( sizeof(CMD_GP_DeleteFaceResult) != wDataSize) return true;
@@ -869,7 +869,7 @@ bool CPlazaViewItem::ConnectServer()
 	//连接服务器
 	try
 	{
-		//连接服务器
+		//连接服务器 // OMA 这里是连接到登录服务器
 		m_ClientSocket->CloseSocket();
 		if (m_ClientSocket->Connect(pszServerIP,PORT_LOGON_SERVER)!=ERROR_SUCCESS)
 		{

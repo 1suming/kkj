@@ -290,7 +290,7 @@ protected:
 
 	//接口指针
 protected:
-	IServerListSink					* m_pIServerListSink;			//回调接口	
+	IServerListSink					* m_pIServerListSink;			//回调接口	//OMA 列表回调接口
 
 	//函数定义
 public:

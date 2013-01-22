@@ -273,10 +273,10 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 
 			return TRUE;
 		}
-	case IDC_BT_BUTTON_1:				//功能按钮
-	case IDC_BT_BUTTON_2:				//功能按钮
-	case IDC_BT_BUTTON_4:				//功能按钮
-	case IDC_BT_BUTTON_5:				//功能按钮
+	case IDC_BT_BUTTON_1:				//功能按钮//OMA首页
+	case IDC_BT_BUTTON_2:				//功能按钮//OMA支付页
+	case IDC_BT_BUTTON_4:				//功能按钮//OMA兑换页
+	case IDC_BT_BUTTON_5:				//功能按钮//OMA论坛页
 		{
 			if(IDC_BT_BUTTON_1==nCommandID)WebBrowse(TEXT("http://205168.cqxunmei.com/index.asp"),true);
 			if(IDC_BT_BUTTON_2==nCommandID)WebBrowse(TEXT("http://205168.cqxunmei.com/PayBuy.asp"),true);
@@ -342,7 +342,7 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 
 			return TRUE;
 		}
-	case IDC_BT_SWITCH_ACCOUNTS :		//切换按钮
+	case IDC_BT_SWITCH_ACCOUNTS :		//切换按钮//OMA 帐号切换
 		{
 			//状态判断
 			tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
@@ -801,7 +801,7 @@ CRoomViewItem * CGameFrame::CreateRoomViewItem(CListServer * pListServer)
 		}
 	}
 
-	//创建房间
+	//创建房间视图
 	try
 	{
 		pRoomViewItem=new CRoomViewItem;

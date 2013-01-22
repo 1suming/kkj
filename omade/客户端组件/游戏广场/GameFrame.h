@@ -37,10 +37,10 @@ class CGameFrame : public CFrameWnd, public ISplitterSink, public ITreeCtrlSink
 {
 	//状态变量
 public:
-	bool								m_bRectify;						//调整标志
+	bool								m_bRectify;						//调整标志 //OMA拆分控件调整标志
 	bool								m_bHideGameList;				//隐藏标志
 	WORD								m_wShowListType;				//列表标志
-	CRect								m_rcViewItem;					//窗口位置
+	CRect								m_rcViewItem;					//窗口位置//OMA 没有用到？
 	CPlazaViewItem						m_DlgGamePlaza;					//游戏广场
 	IViewItem							* m_pActiveViewItem;			//当前视图
 	CRoomViewItem						* m_pRoomViewItemCreate;		//创建房间
@@ -154,7 +154,7 @@ public:
 
 	//房间函数
 public:
-	//激活广场
+	//激活广场// OMA 激活仅仅是指设置视图
 	void ActivePlazaViewItem();
 	//激活房间
 	void ActiveRoomViewItem(CRoomViewItem * pRoomViewItem);
@@ -164,9 +164,9 @@ public:
 	CRoomViewItem * CreateRoomViewItem(CListServer * pListServer);
 	//关闭房间
 	void CloseRoomViewItem(IRoomViewItem * pIRoomViewItem);
-	//关闭房间
+	//关闭房间//OMA 关闭所有房间
 	void CloseAllRoomViewItem();
-	//关闭当前
+	//关闭当前//OMA 关闭当前房间
 	void CloseCurrentViewItem();
 
 	//内部函数

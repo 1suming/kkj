@@ -86,7 +86,7 @@ public:
 	//控件变量
 public:
 	CHtmlBrower *				m_pHtmlBrower;						//浏览窗口
-	CToolTipCtrl				m_ToolTipCtrl;						//提示控件
+	CToolTipCtrl				m_ToolTipCtrl;						//提示控件// OMA 提示主页、前进、后退、停止等
 
 	//环绕信息
 protected:
@@ -187,7 +187,7 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	//显示消息
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
-	//下载消息
+	//下载消息//OMA 下载头像
 	LRESULT OnDownloadFace(WPARAM wParam, LPARAM lParam);
 
 	//导航按钮

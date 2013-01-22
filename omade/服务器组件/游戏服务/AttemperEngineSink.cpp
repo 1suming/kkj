@@ -2550,7 +2550,7 @@ bool CAttemperEngineSink::SendGameServerInfo(IServerUserItem * pIServerUserItem,
 	}
 	else m_pITCPNetworkEngine->SendData(dwSocketID,MDM_GR_INFO,SUB_GR_SERVER_INFO,cbBuffer,sizeof(CMD_GR_ServerInfo));
 
-	//发送列表解释
+	//发送列表解释//OMA 仅仅是列头信息
 	if (LOWORD(dwSocketID)>=INDEX_ANDROID)
 	{
 		m_AndroidUserManager.SendDataToClient(dwSocketID,MDM_GR_INFO,SUB_GR_COLUMN_INFO,&m_ColumnInfo,m_wColumnInfoSize);
