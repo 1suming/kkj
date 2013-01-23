@@ -66,7 +66,7 @@ public:
 	//控件变量
 public:
 	CDlgLogon					m_DlgLogon;							//登录对话框
-	CTCPSocketHelper			m_ClientSocket;						//网络连接
+	CTCPSocketHelper			m_ClientSocket;						//网络连接 // OMA 网络服务项目组件
 
 	//头像变量
 protected:

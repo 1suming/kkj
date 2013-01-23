@@ -589,7 +589,7 @@ LRESULT CTCPSocketService::OnSocketNotifyConnect(WPARAM wParam, LPARAM lParam)
 	return 1;
 }
 
-//ÍøÂç¶Á È¡
+//ÍøÂç¶ÁÈ¡
 LRESULT CTCPSocketService::OnSocketNotifyRead(WPARAM wParam, LPARAM lParam)
 {
 	try
