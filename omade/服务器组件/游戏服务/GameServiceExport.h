@@ -192,7 +192,7 @@ struct tagServerUserData
 	//状态信息
 	WORD								wTableID;							//桌子号码
 	WORD								wChairID;							//椅子位置
-	BYTE								cbUserStatus;						//用户状态
+	BYTE								cbUserStatus;						//用户状态 //OMA 准备好，正在玩，旁观等
 
 	//分数信息
 	LONG								lStorageScore;						//存储积分

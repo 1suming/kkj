@@ -400,17 +400,17 @@ public:
 
 	//网络接口
 public:
-	//发送数据
+	//发送用户数据
 	virtual bool __cdecl SendUserData(IServerUserItem * pIServerUserItem, WORD wSubCmdID)=NULL;
-	//发送数据
+	//发送用户数据
 	virtual bool __cdecl SendUserData(IServerUserItem * pIServerUserItem, WORD wSubCmdID, void * pData, WORD wDataSize)=NULL;
-	//发送数据
+	//发送桌子数据
 	virtual bool __cdecl SendTableData(WORD wChairID, WORD wSubCmdID)=NULL;
-	//发送数据
+	//发送桌子数据
 	virtual bool __cdecl SendTableData(WORD wChairID, WORD wSubCmdID, void * pData, WORD wDataSize)=NULL;
-	//发送数据
+	//发送旁观数据
 	virtual bool __cdecl SendLookonData(WORD wChairID, WORD wSubCmdID)=NULL;
-	//发送数据
+	//发送旁观数据
 	virtual bool __cdecl SendLookonData(WORD wChairID, WORD wSubCmdID, void * pData, WORD wDataSize)=NULL;
 
 	//消息接口

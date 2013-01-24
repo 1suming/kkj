@@ -55,7 +55,7 @@ protected:
 	CGameClientView					m_GameClientView;					//游戏视图
 	CDirectSound					m_DirectSound;						//出牌和发牌声音
 
-	bool							m_bOutMagicCard;                     // 打出听用牌  
+	bool							m_bOutMagicCard;                    // 打出听用牌  
 
 	//函数定义
 public:
