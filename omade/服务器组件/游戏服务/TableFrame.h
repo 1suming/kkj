@@ -6,6 +6,7 @@
 #include "Stdafx.h"
 #include "GameServiceExport.h"
 #include "AttemperEngineSink.h"
+#define GRANT_SCORE_COUNT           10								// หอ10ดฮ
 
 //////////////////////////////////////////////////////////////////////////
 

@@ -36,7 +36,6 @@
 #define MAX_RIGHT_COUNT				1									//最大权位DWORD个数			
 #define START_GRANT_SCORE_BASE      2000                               // 低于2000分，开始送分
 #define GRANT_SCORE_VALUE           2500								// 每次送2500分
-#define GRANT_SCORE_COUNT           10								// 送10次
 
 //////////////////////////////////////////////////////////////////////////
 

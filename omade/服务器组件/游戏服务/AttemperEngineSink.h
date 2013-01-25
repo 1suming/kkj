@@ -175,9 +175,9 @@ public:
 
 	//网络接口
 public:
-	//发送数据
+	//发送命令数据
 	virtual bool __cdecl SendData(IServerUserItem * pIServerUserItem, WORD wMainCmdID, WORD wSubCmdID);
-	//发送数据
+	//发送命令数据
 	virtual bool __cdecl SendData(IServerUserItem * pIServerUserItem, WORD wMainCmdID, WORD wSubCmdID, void * pData, WORD wDataSize);
 
 	//定时器接口
@@ -191,7 +191,7 @@ public:
 public:
 	//删除用户
 	virtual bool __cdecl DeleteUserItem(IServerUserItem * pIServerUserItem);
-	//输出信息
+	//输出日志信息
 	virtual void __cdecl ExportInformation(LPCTSTR pszString, enTraceLevel TraceLevel);
 
 	//消息函数
@@ -254,7 +254,7 @@ private:
 	bool OnDBLogonSuccess(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//用户登录失败
 	bool OnDBLogonError(DWORD dwContextID, VOID * pData, WORD wDataSize);
-	//用户信息
+	//用户信息//机器人
 	bool OnDBAndroidUser(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//用户权限
 	bool OnDBUserRightResult(DWORD dwContextID, VOID * pData, WORD wDataSize);

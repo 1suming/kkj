@@ -227,12 +227,38 @@ bool __cdecl CTableFrame::PerformStandUpAction(IServerUserItem * pIServerUserIte
 		bool bMatchServer=((m_pGameServiceOption->wServerType&GAME_GENRE_MATCH)!=0);
 		bool bControlStart=((bMatchServer==true)&&m_pGameServiceOption->cbControlStart==TRUE);
 
+		
+		//OMA START 对符合送分的用户进行送分操作
+		tagUserScore  *pUserScore = pIServerUserItem->GetUserScore();
+		if(pUserScore->lScore<m_pGameServiceOption->lLessScore
+			&& pUserScore->lGrantCount>0)
+		{
+			// 能执行到这里，表示分数不够，但是还有送分次数
+			// 送分次数减一
+			pUserScore->lGrantCount--;
+			// 生成消息
+			TCHAR szMessage[512]=TEXT("");
+			BYTE * pMessage=(BYTE *)&szMessage;
+			_snprintf(pMessage,sizeof(szMessage),TEXT("这是第%d次送分，剩余送分次数为%d 欢迎你进入游戏",GRANT_SCORE_COUNT-pUserScore->lGrantCount,pUserScore->lGrantCount));
+
+			//发送游戏消息
+			SendGameMessage(pIServerUserItem,pMessage,SMT_INFO|SMT_EJECT);
+		}
+		// OMA END
+
+		
+		
 		//开始判断
 		if ((bControlStart==false)&&(StartVerdict()==true))
 		{
 			StartGame();
 			return true;
 		}
+
+
+
+
+
 	}
 	else
 	{
@@ -388,17 +414,6 @@ bool __cdecl CTableFrame::PerformSitDownAction(WORD wChairID, IServerUserItem * 
 		return false;
 	}
 
-	//比赛游戏币不够检验
-	if (m_pGameServiceOption->wServerType==GAME_GENRE_LONGMATCH)
-	{
- 		TCHAR szDescribe[128]=TEXT("");
-		if(pUserScore->lGameGold<5)
-		{
-			lstrcpyn(szDescribe,TEXT("你的游戏币不够5个，请从银行取出足够的游戏币 "),CountArray(szDescribe));
-			SendSitFailedPacket(pIServerUserItem,szDescribe);
-			return false;
-		}
-	}
 
 	//比赛判断
 	if (m_pGameServiceOption->wServerType==GAME_GENRE_MATCH)
@@ -473,7 +488,7 @@ bool __cdecl CTableFrame::PerformSitDownAction(WORD wChairID, IServerUserItem * 
 			return true;
 		}
 
-		//积分限制//修改
+		//积分限制
 		LONG lMaxScore=m_pGameServiceOption->lMaxScore;
 		LONG lLessScore=m_pGameServiceOption->lLessScore;
 		if (lLessScore!=0L || lMaxScore>lLessScore)
@@ -513,7 +528,7 @@ bool __cdecl CTableFrame::PerformSitDownAction(WORD wChairID, IServerUserItem * 
 			}
 		}
 
-		//密码效验
+		//密码校验
 		if ((m_bTableLocked==true)&&(pUserData->dwMasterRight==0L))
 		{
 			if (szPassword==NULL || lstrcmp(m_szPassword,szPassword)!=0)
@@ -525,8 +540,8 @@ bool __cdecl CTableFrame::PerformSitDownAction(WORD wChairID, IServerUserItem * 
 		}
 
 		//积分范围
-		WORD wWinRate=pIServerUserItem->GetUserWinRate();
-		WORD wFleeRate=pIServerUserItem->GetUserFleeRate();
+		WORD wWinRate=pIServerUserItem->GetUserWinRate(); // OMA 胜率
+		WORD wFleeRate=pIServerUserItem->GetUserFleeRate();//OMA 逃率
 		for (WORD i=0;i<m_wChairCount;i++)
 		{
 			if (m_pIUserItem[i]!=NULL)
@@ -573,7 +588,7 @@ bool __cdecl CTableFrame::PerformSitDownAction(WORD wChairID, IServerUserItem * 
 			}
 		}
 
-		//限制判断
+		//IP限制判断
 		if (m_pGameServiceOption->cbUnSameIPPlay==TRUE)
 		{
 			bool bPlay = true;
@@ -660,6 +675,36 @@ bool __cdecl CTableFrame::PerformSitDownAction(WORD wChairID, IServerUserItem * 
 				}
 			}
 		}
+
+
+		// OMA 比赛游戏币不够检验
+		if (m_pGameServiceOption->wServerType==GAME_GENRE_LONGMATCH)
+		{
+			TCHAR szDescribe[128]=TEXT("");
+			if(pUserScore->lGameGold<5)
+			{
+				lstrcpyn(szDescribe,TEXT("你的游戏币不够5个，请从银行取出足够的游戏币 "),CountArray(szDescribe));
+				SendSitFailedPacket(pIServerUserItem,szDescribe);
+				return false;
+			}
+		}
+
+
+		// OMA 积分送分次数检查
+		if (m_pGameServiceOption->wServerType==GAME_GENRE_SCORE)
+		{
+			// 判断有足够的分数或者有送分次数，否则不能坐下
+			// 送分的操作不在这里进行，而是在用户ready后进行
+
+			if(pUserScore->lScore<m_pGameServiceOption->lLessScore 
+				&&  pUserScore->lGrantCount<0 )
+			{
+				LPCTSTR pszDescribe=TEXT("你的游戏分数不够，并且今天的送分次数已经用完，不能加入游戏！");
+				SendSitFailedPacket(pIServerUserItem,pszDescribe);
+				return false;
+			}
+		}
+
 	}
 
 	//更新密码
@@ -1875,6 +1920,7 @@ bool __cdecl CTableFrame::StartGame()
 			pUserData=m_pIUserItem[i]->GetUserData();
 			pUserData->cbUserStatus=US_PLAY;
 			m_dwPlayerID[i]=pUserData->dwUserID;
+			
 		}
 	}
 

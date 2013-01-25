@@ -2354,7 +2354,7 @@ bool CRoomViewItem::CanSitDownTable(WORD wTableID, WORD wChairID, bool bLookon, 
 			}
 		}
 
-		//积分效验
+		//积分校验
 		if (m_pGameOption->m_bLimitScore)
 		{
 			LONG lTableUserScore=pTableUserData->lScore;

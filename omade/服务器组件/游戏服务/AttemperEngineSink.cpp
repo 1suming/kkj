@@ -794,14 +794,14 @@ bool __cdecl CAttemperEngineSink::OnEventTimer(DWORD dwTimerID, WPARAM wBindPara
 
 				return true;
 			}
-		case IDI_LOAD_ANDROID_INFO:		//加载用户
+		case IDI_LOAD_ANDROID_INFO:		//加载机器人用户
 			{
 				//投递请求
 				m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_LOAD_ANDROID,0,NULL,0);
 
 				return true;
 			}
-		case IDI_DISTRIBUTE_ANDROID:	//分配用户
+		case IDI_DISTRIBUTE_ANDROID:	//分配机器人用户
 			{
 				//用户统计
 				tagAndroidUserStatus AndroidUserStatus;
