@@ -1,9 +1,9 @@
-﻿// Created by Microsoft (R) C/C++ Compiler Version 15.00.30729.01 (89412be3).
+﻿// Created by Microsoft (R) C/C++ Compiler Version 15.00.30729.4455 (89412be3).
 //
 // f:\omade\kkj\omade\服务器组件\游戏服务\debug\msado15.tli
 //
 // Wrapper implementations for Win32 type library MSADO15.DLL
-// compiler-generated file created 01/17/13 at 09:10:56 - DO NOT EDIT!
+// compiler-generated file created 01/26/13 at 11:30:24 - DO NOT EDIT!
 
 #pragma once
 

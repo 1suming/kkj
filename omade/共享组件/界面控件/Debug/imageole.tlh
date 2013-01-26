@@ -1,9 +1,9 @@
-﻿// Created by Microsoft (R) C/C++ Compiler Version 15.00.30729.01 (b480fd91).
+﻿// Created by Microsoft (R) C/C++ Compiler Version 15.00.30729.4455 (b480fd91).
 //
 // f:\omade\kkj\omade\共享组件\界面控件\debug\imageole.tlh
 //
 // C++ source equivalent of Win32 type library ImageOle.dll
-// compiler-generated file created 01/17/13 at 09:08:42 - DO NOT EDIT!
+// compiler-generated file created 01/26/13 at 11:29:00 - DO NOT EDIT!
 
 #pragma once
 #pragma pack(push, 8)

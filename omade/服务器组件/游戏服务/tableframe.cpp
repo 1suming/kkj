@@ -228,25 +228,7 @@ bool __cdecl CTableFrame::PerformStandUpAction(IServerUserItem * pIServerUserIte
 		bool bControlStart=((bMatchServer==true)&&m_pGameServiceOption->cbControlStart==TRUE);
 
 		
-		//OMA START 对符合送分的用户进行送分操作
-		tagUserScore  *pUserScore = pIServerUserItem->GetUserScore();
-		if(pUserScore->lScore<m_pGameServiceOption->lLessScore
-			&& pUserScore->lGrantCount>0)
-		{
-			// 能执行到这里，表示分数不够，但是还有送分次数
-			// 送分次数减一
-			pUserScore->lGrantCount--;
-			// 生成消息
-			TCHAR szMessage[512]=TEXT("");
-			BYTE * pMessage=(BYTE *)&szMessage;
-			_snprintf(pMessage,sizeof(szMessage),TEXT("这是第%d次送分，剩余送分次数为%d 欢迎你进入游戏",GRANT_SCORE_COUNT-pUserScore->lGrantCount,pUserScore->lGrantCount));
 
-			//发送游戏消息
-			SendGameMessage(pIServerUserItem,pMessage,SMT_INFO|SMT_EJECT);
-		}
-		// OMA END
-
-		
 		
 		//开始判断
 		if ((bControlStart==false)&&(StartVerdict()==true))
@@ -254,10 +236,6 @@ bool __cdecl CTableFrame::PerformStandUpAction(IServerUserItem * pIServerUserIte
 			StartGame();
 			return true;
 		}
-
-
-
-
 
 	}
 	else
@@ -931,6 +909,7 @@ bool __cdecl CTableFrame::OnEventSocketFrame(WORD wSubCmdID, const void * pDataB
 				//同意处理
 				if (m_pITableUserAction!=NULL) 
 				{
+					// 根据不同的游戏，设置不同的送分规则
 					m_pITableUserAction->OnActionUserReady(pUserData->wChairID,m_pIUserItem[pUserData->wChairID],(VOID *)pDataBuffer,wDataSize);
 				}
 

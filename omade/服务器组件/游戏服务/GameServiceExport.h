@@ -141,7 +141,7 @@ enum enScoreKind
 struct tagScoreInfo
 {
 	LONG								lScore;								//游戏积分
-	LONG								lRevenue;							//游戏积分
+	LONG								lRevenue;							//游戏积分税收
 	enScoreKind							ScoreKind;							//分数类型
 };
 

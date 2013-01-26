@@ -1,9 +1,9 @@
-﻿// Created by Microsoft (R) C/C++ Compiler Version 15.00.30729.01 (0b1b09fe).
+﻿// Created by Microsoft (R) C/C++ Compiler Version 15.00.30729.4455 (0b1b09fe).
 //
 // f:\omade\kkj\omade\服务器组件\内核引擎\debug\msado15.tlh
 //
 // C++ source equivalent of Win32 type library MSADO15.DLL
-// compiler-generated file created 01/17/13 at 09:09:20 - DO NOT EDIT!
+// compiler-generated file created 01/26/13 at 11:29:22 - DO NOT EDIT!
 
 #pragma once
 #pragma pack(push, 8)

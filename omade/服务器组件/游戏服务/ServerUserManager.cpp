@@ -171,6 +171,13 @@ bool __cdecl CServerUserItem::WriteScore(tagScoreInfo & ScoreInfo, DWORD dwPlayT
 		m_ServerUserData.UserScoreInfo.lExperience+=dwPlayTimeCount;
 	}
 
+	//OMA 修改送分次数
+
+	if(ScoreInfo.ScoreKind==enScoreKind_Present)
+	{
+		m_ScoreModify.lGrantCount--;
+	}
+
 	return true;
 }
 

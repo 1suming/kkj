@@ -1014,6 +1014,52 @@ bool __cdecl CTableFrameSink::OnActionUserSitDown(WORD wChairID, IServerUserItem
 {
 	return true;
 }
+//用户同意
+bool __cdecl CTableFrameSink::OnActionUserReady(WORD wChairID,IServerUserItem * pIServerUserItem, void * pData, WORD wDataSize)
+{
+	//OMA START 对符合送分的用户进行送分操作
+	tagUserScore  &pUserScore = pIServerUserItem->GetUserData()->UserScoreInfo;
+	if(pUserScore.lScore<m_pGameServiceOption->lLessScore
+		&& pUserScore.lGrantCount>0)
+	{
+		// 能执行到这里，表示分数不够，但是还有送分次数
+		// 送分次数减一
+		 
+		//变量定义
+		tagScoreInfo ScoreInfo;
+		ZeroMemory(&ScoreInfo,sizeof(ScoreInfo));
+
+		//设置变量
+		ScoreInfo.lScore=m_pGameServiceOption->lLessScore;//送分数值
+		ScoreInfo.ScoreKind=enScoreKind_Present; // 送分类型
+
+		//修改积分
+		pIServerUserItem->WriteScore(ScoreInfo,0);
+		//写入积分
+		m_pITableFrame->WriteUserScore(pIServerUserItem,m_pGameServiceOption->lLessScore,0,enScoreKind_Present,0);
+
+		// 发送消息
+		TCHAR szMessage[512]=TEXT("");
+		//BYTE * pMessage=(BYTE *)&szMessage;
+		_snprintf(szMessage,sizeof(szMessage),TEXT("这是第%d次送%d分，剩余送分次数为%d ",GRANT_SCORE_COUNT-pUserScore.lGrantCount,m_pGameServiceOption->lLessScore,pUserScore.lGrantCount));
+		for (WORD i=0;i<m_wPlayerCount;i++)
+		{
+			IServerUserItem *pIServerUserItem2 = NULL;
+			if( pIServerUserItem2 = m_pITableFrame->GetServerUserItem(i) != NULL )
+			{
+				WORD wTYPE = SMT_INFO;
+				if (pIServerUserItem == pIServerUserItem2)
+				{
+					//当前用户，弹出信息
+					wTYPE |= SMT_EJECT;
+				}
+				m_pITableFrame->SendGameMessage(pIServerUserItem2,szMessage,wTYPE);
+			}
+		} 
+	}
+	// OMA END
+	return true;
+}
 
 //用户起来
 bool __cdecl CTableFrameSink::OnActionUserStandUp(WORD wChairID, IServerUserItem * pIServerUserItem, bool bLookonUser)
