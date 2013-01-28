@@ -776,7 +776,6 @@ LONG CDataBaseSink::SPLogonByUserID(DWORD dwUserID, LPCTSTR pszPassword, DWORD d
 	_cprintf("wServerID =%d\n", m_pGameServiceOption->wServerID);
 #endif 
 
-
 	//×ª»¯µØÖ·
 	TCHAR szClientIP[16]=TEXT("");
 	BYTE * pClientIP=(BYTE *)&dwClientIP;

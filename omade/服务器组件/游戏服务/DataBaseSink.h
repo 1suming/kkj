@@ -408,11 +408,11 @@ protected:
 	LONG SPBuyProperty(DWORD dwUserID, DWORD dwTargetUserID, int nPropertyID, DWORD dwCurCount, DWORD dwOnceCount, DWORD dwPachurCount, LONG lPrice, DWORD dwClientIP);
 	//写入存储过程
 	LONG SPWriteProperty(DWORD dwUserID, int nPropertyID, DWORD dwUseableTime, DWORD dwClientIP);
-	//加载存储过程
+	//加载道具存储过程
 	LONG SPLoadPropertyAttribute();
-	//加载存储过程
+	//加载鲜花存储过程
 	LONG SPLoadFlowerAttribute();
-	//加载存储过程
+	//加载用户道具存储过程
 	LONG SPLoadUserProperty(DWORD dwUserID);
 	//兑换存储过程
 	LONG SPExchangeCharm(DWORD dwUserID, LONG lLoveliness, LONG lGoldValue, DWORD dwClientIP);

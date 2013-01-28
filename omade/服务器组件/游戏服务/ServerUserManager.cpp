@@ -154,9 +154,9 @@ bool __cdecl CServerUserItem::WriteScore(tagScoreInfo & ScoreInfo, DWORD dwPlayT
 	{
 		m_ScoreModify.lGameGold+=ScoreInfo.lScore;
 		m_ServerUserData.UserScoreInfo.lGameGold+=ScoreInfo.lScore;
-	}else if (m_wServerType == GAME_GENRE_LONGMATCH)
+	}else if (m_wServerType == GAME_GENRE_LONGMATCH)// OMA 扣分
 	{
-		m_ScoreModify.lGameGold-=5;//每局扣5游戏币
+		m_ScoreModify.lGameGold-=5;//OMA每局扣5游戏币
 		m_ServerUserData.UserScoreInfo.lGameGold-=5;
 	}
 
