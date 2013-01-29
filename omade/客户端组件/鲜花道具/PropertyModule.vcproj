@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="鲜花道具"
 	ProjectGUID="{3BA56C8D-483F-4FAF-8EB6-716D05293A0B}"
+	RootNamespace="鲜花道具"
 	Keyword="MFCDLLProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -51,7 +52,7 @@
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool

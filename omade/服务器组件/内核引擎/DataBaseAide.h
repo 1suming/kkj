@@ -52,6 +52,8 @@ public:
 	VOID GetValue_VarValue(LPCTSTR pszItem, CDBVarValue & DBVarValue);
 	//获取数据
 	VOID GetValue_SystemTime(LPCTSTR pszItem, SYSTEMTIME & SystemTime);
+	//获取数据 //OMA ADD
+	VOID GetValue_DATE(LPCTSTR pszItem, COleDateTime & DateTime);
 	//获取字符
 	VOID GetValue_String(LPCTSTR pszItem, LPSTR pszString, UINT uMaxCount);
 	//获取字符

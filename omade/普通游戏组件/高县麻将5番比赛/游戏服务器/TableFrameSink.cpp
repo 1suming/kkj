@@ -163,9 +163,7 @@ void __cdecl CTableFrameSink::RepositTableFrameSink()
 	m_wResumeUser=INVALID_CHAIR;
 	m_wCurrentUser=INVALID_CHAIR;
 	m_wProvideUser=INVALID_CHAIR;
-	
 	m_wBankerUser = (m_bKaiJu)?INVALID_CHAIR:m_wBankerUser;
-	
 
 	//状态变量
 	m_bSendStatus=false;
@@ -227,12 +225,11 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 	m_lSiceCount = MAKELONG(MAKEWORD(rand()%6+1,rand()%6+1),MAKEWORD(rand()%6+1,rand()%6+1));
 	m_cbLeftCardCount=CountArray(m_cbRepertoryCard);
 	m_GameLogic.RandCardData(m_cbRepertoryCard,CountArray(m_cbRepertoryCard));
-
   
 	if (m_bKaiJu)
 	{
 		m_wBankerUser = ((BYTE)(m_lSiceCount>>24)+(BYTE)(m_lSiceCount>>16)-1)%GAME_PLAYER;
-		m_bKaiJu = false; // 设置开局开始  下一局由最先胡牌的用户坐庄 
+		m_bKaiJu = false; // OMA COMMENT设置开局开始  下一局由最先胡牌的用户坐庄 
 
 	}
 
@@ -303,7 +300,7 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 
 	};
 	CopyMemory( m_cbRepertoryCard,byTest,sizeof(byTest) );
-	m_wBankerUser = 2;
+	m_wBankerUser = 2;//OMA MODIFY 设置庄家用户
 #endif
 
 	//分发扑克
@@ -327,22 +324,23 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 	m_cbCardIndex[m_wBankerUser][m_GameLogic.SwitchToCardIndex(m_cbSendCardData)]++;
 
 
-	//  设置听用牌
-	
+	//  OMA 产生牌精	
 	m_cbSendCardCount++;
 	BYTE cbTingYong = 0,cbPaiJing = 0;
 	cbPaiJing = m_cbRepertoryCard[--m_cbLeftCardCount];
+	// OMA 设置牌精
+	m_GameLogic.SetPaiJing(cbPaiJing);
 	
-	m_GameLogic.m_PaiJing.m_cbPaiJingCard = cbPaiJing;
-	
-	BYTE cbColor = cbPaiJing&MASK_COLOR;
-	BYTE cbValue = cbPaiJing&MASK_VALUE;
-	
-	cbValue = cbValue%9+1;
-	cbTingYong = (cbColor | cbValue);
-	m_GameLogic.m_PaiJing.m_cbTingYongCard = cbTingYong;
+	// OMA 这里不设置听用，有了牌精了到逻辑里面去判断
 
-	m_GameLogic.SetMagicIndex(m_GameLogic.SwitchToCardIndex(cbTingYong));
+	//BYTE cbColor = cbPaiJing&MASK_COLOR;
+	//BYTE cbValue = cbPaiJing&MASK_VALUE;
+	//
+	//cbValue = cbValue%9+1;
+	//cbTingYong = (cbColor | cbValue);
+	//m_GameLogic.m_PaiJing.m_cbTingYongCard = cbTingYong;
+
+	//m_GameLogic.SetMagicIndex(m_GameLogic.SwitchToCardIndex(cbTingYong));
 
 
 	//设置变量
@@ -408,6 +406,7 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 	GameStart.wHeapTail = m_wHeapTail;
 	GameStart.cbLeftCardCount = m_cbLeftCardCount;
 	GameStart.bKaiJu = m_bKaiJu;
+	GameStart.cbPaiJing = cbPaiJing;// OMA 设置牌精
 
 	CopyMemory(GameStart.cbHeapCardInfo,m_cbHeapCardInfo,sizeof(m_cbHeapCardInfo));
 
@@ -425,10 +424,7 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 		m_pITableFrame->SendLookonData(i,SUB_S_GAME_START,&GameStart,sizeof(GameStart));
 	}
 
-	// 发送牌精
-	m_pITableFrame->SendTableData(INVALID_CHAIR,SUB_S_PAI_JING,&m_GameLogic.m_PaiJing,sizeof(m_GameLogic.m_PaiJing));
-	m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_PAI_JING,&m_GameLogic.m_PaiJing,sizeof(m_GameLogic.m_PaiJing));
-
+ 
 	return true;
 }
 
@@ -821,7 +817,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			ZeroMemory(&GameEnd,sizeof(GameEnd));
 			GameEnd.wLeftUser = wChairID;
 
-//       记录置逃跑用户
+			//记录逃跑用户
 			m_bPlayleft[wChairID] = true; 
 		
 			if(m_wCurrentUser == wChairID )
@@ -831,7 +827,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				while( !m_bPlayStatus[m_wResumeUser] ) m_wResumeUser = (m_wResumeUser+GAME_PLAYER-1)%GAME_PLAYER;
 				DispatchCardData(m_wResumeUser,false);
 			}
-// 逃跑扣 最大番分数
+			//OMA 逃跑扣最大番分数
 
 			m_bPlayStatus[wChairID] = false;
 			LONG maxScore = (LONG)pow(2.0,MAX_CHIHU_FANSU-1);
@@ -844,7 +840,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				}
 			}
 
-				m_pITableFrame->GetServerUserItem(wChairID);
+				m_pITableFrame->GetServerUserItem(wChairID);// OMA 此句没作用？
 				
 				//设置积分
 				LONG lGameTax = 0L;
@@ -928,7 +924,8 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			StatusPlay.wHeapHand = m_wHeapHand;
 			StatusPlay.wHeapTail = m_wHeapTail;
 			CopyMemory(StatusPlay.cbHeapCardInfo,m_cbHeapCardInfo,sizeof(m_cbHeapCardInfo));
-			CopyMemory(&StatusPlay.PaiJin,&m_GameLogic.m_PaiJing,sizeof(m_GameLogic.m_PaiJing));
+			//设置牌精 //OMA
+			StatusPlay.cbPaiJing = m_GameLogic.GetPaiJing();
 
 			//扑克数据
 			StatusPlay.cbCardCount=m_GameLogic.SwitchToCardData(m_cbCardIndex[wChiarID],StatusPlay.cbCardData);
@@ -1017,10 +1014,11 @@ bool __cdecl CTableFrameSink::OnActionUserSitDown(WORD wChairID, IServerUserItem
 //用户同意
 bool __cdecl CTableFrameSink::OnActionUserReady(WORD wChairID,IServerUserItem * pIServerUserItem, void * pData, WORD wDataSize)
 {
-	//OMA START 对符合送分的用户进行送分操作
+	//OMA START 对符合送分的用户进行送分操作,仅仅是积分类型才送分
 	tagUserScore  &pUserScore = pIServerUserItem->GetUserData()->UserScoreInfo;
 	if(pUserScore.lScore<m_pGameServiceOption->lLessScore
-		&& pUserScore.lGrantCount>0)
+		&& pUserScore.lGrantCount>0 
+		&& m_pGameServiceOption->wServerType == GAME_GENRE_SCORE)
 	{
 		// 能执行到这里，表示分数不够，但是还有送分次数
 		// 送分
@@ -1032,7 +1030,7 @@ bool __cdecl CTableFrameSink::OnActionUserReady(WORD wChairID,IServerUserItem * 
 		for (WORD i=0;i<m_wPlayerCount;i++)
 		{
 			IServerUserItem *pIServerUserItem2 = NULL;
-			if( pIServerUserItem2 = m_pITableFrame->GetServerUserItem(i) != NULL )
+			if((pIServerUserItem2 = m_pITableFrame->GetServerUserItem(i))!= NULL)
 			{
 				WORD wTYPE = SMT_INFO;
 				if (pIServerUserItem == pIServerUserItem2)
@@ -1054,7 +1052,7 @@ bool __cdecl CTableFrameSink::OnActionUserStandUp(WORD wChairID, IServerUserItem
 	//庄家设置
 	if (bLookonUser==false)
 	{
-		m_bKaiJu = true;
+		m_bKaiJu = true;// 用户离开，复位开局标志 OMA
 		m_bTrustee[wChairID]=false;
 		CMD_S_Trustee Trustee;
 		Trustee.bTrustee=false;

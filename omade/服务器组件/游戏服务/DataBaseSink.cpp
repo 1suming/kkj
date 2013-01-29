@@ -237,8 +237,10 @@ bool CDataBaseSink::OnRequestLogon(DWORD dwContextID, VOID * pData, WORD wDataSi
 		LogonSuccess.lDrawCount=m_GameScoreDBAide.GetValue_LONG(TEXT("DrawCount"));
 		LogonSuccess.lFleeCount=m_GameScoreDBAide.GetValue_LONG(TEXT("FleeCount"));
 
-// oma add
-		LogonSuccess.lGrantCount = m_GameScoreDBAide.GetValue_LONG(TEXT("GrantCount"));
+		// OMA START
+		LogonSuccess.lGrantCount = m_GameScoreDBAide.GetValue_LONG(TEXT("GrantCount"));// 送分次数
+		m_GameScoreDBAide.GetValue_DATE(TEXT("LastLogonDate"),LogonSuccess.CastLogonDate);// 上次登录日期
+		// OMA END
 
 		TCHAR logStr[512] = TEXT("");
 		_snprintf(logStr,sizeof(logStr),TEXT("取得送分次数 %d"),LogonSuccess.lGrantCount);

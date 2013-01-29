@@ -175,10 +175,9 @@ class CGameLogic
 protected:
 	static const BYTE				m_cbCardDataArray[MAX_REPERTORY];	//扑克数据
 	BYTE							m_cbMagicIndex;						//钻牌索引
-
- public:
-	CMD_S_PaiJing                      m_PaiJing;                              // 牌精
- 
+	BYTE							m_PaiJing;							//牌精       
+	bool							m_bSingleMagic;						// 单双精
+  
 	//函数定义
 public:
 	//构造函数
@@ -198,9 +197,13 @@ public:
 	bool RemoveCard(BYTE cbCardData[], BYTE cbCardCount, const BYTE cbRemoveCard[], BYTE cbRemoveCount);
 	//设置钻牌
 	void SetMagicIndex( BYTE cbMagicIndex ) { m_cbMagicIndex = cbMagicIndex; }
+	//设置牌精
+	void SetPaiJing( BYTE cbPaiJing );
+	//获取牌精
+	BYTE GetPaiJing() { return m_PaiJing; }
 	//获取钻牌
 	BYTE GetMagicIndex() { return m_cbMagicIndex;}
-	//钻牌
+	//判断钻牌
 	bool IsMagicCard( BYTE cbCardData );
 
 	//辅助函数

@@ -1068,9 +1068,29 @@ bool CAttemperEngineSink::OnDBLogonSuccess(DWORD dwContextID, VOID * pData, WORD
 	ServerUserData.UserScoreInfo.lDrawCount=pLogonSuccess->lDrawCount;
 	ServerUserData.UserScoreInfo.lFleeCount=pLogonSuccess->lFleeCount;
 	ServerUserData.UserScoreInfo.lExperience=pLogonSuccess->lExperience;
-	// oma add 
-	ServerUserData.UserScoreInfo.lGrantCount=pLogonSuccess->lGrantCount;
+	// OMA START
 
+	if(m_pGameServiceOption->wServerType == GAME_GENRE_SCORE)
+	{
+		// 根据条件初始化送分次数,仅仅针对积分类型
+		COleDateTime currentdate = COleDateTime::GetCurrentTime();
+		//计算日期差
+		COleDateTimeSpan timeSpan;    //计算时间差
+		timeSpan = pLogonSuccess->CastLogonDate - currentdate;
+
+		long expi_date = timeSpan.GetDays();
+		if (expi_date>0) // 上次登录日期与本次登录日期比较
+		{
+			// 超过一天的登录，重新开始计算送分次数
+			ServerUserData.UserScoreInfo.lGrantCount=GRANT_SCORE_COUNT;
+		}else
+		{
+			// 一天之内的多次登录，保留剩余送分次数
+			ServerUserData.UserScoreInfo.lGrantCount=pLogonSuccess->lGrantCount;
+		}
+	}
+
+	// OMA END
 	lstrcpyn(ServerUserData.szAccounts,pLogonSuccess->szAccounts,CountArray(ServerUserData.szAccounts));
 	lstrcpyn(ServerUserData.szGroupName,pLogonSuccess->szGroupName,CountArray(ServerUserData.szGroupName));
 	lstrcpyn(ServerUserData.szUnderWrite,pLogonSuccess->szUnderWrite,CountArray(ServerUserData.szUnderWrite));

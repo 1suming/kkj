@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="下载组件"
 	ProjectGUID="{84612527-DBB5-4A41-B4F3-554E8A2A6A28}"
+	RootNamespace="下载组件"
 	Keyword="MFCDLLProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -51,7 +52,7 @@
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool

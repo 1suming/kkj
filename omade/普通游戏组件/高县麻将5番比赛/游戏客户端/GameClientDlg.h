@@ -18,8 +18,7 @@ protected:
 	WORD							m_wCurrentUser;						//当前用户
 	BYTE							m_cbUserAction;						//玩家动作
 	LONG							m_lSiceCount;						//
-	
-	TCHAR							m_szAccounts[GAME_PLAYER][NAME_LEN];
+ 	TCHAR							m_szAccounts[GAME_PLAYER][NAME_LEN];
 
 	//托管变量
 protected:
@@ -55,7 +54,11 @@ protected:
 	CGameClientView					m_GameClientView;					//游戏视图
 	CDirectSound					m_DirectSound;						//出牌和发牌声音
 
+	// 控制变量 OMA
+private:	
 	bool							m_bOutMagicCard;                    // 打出听用牌  
+
+
 
 	//函数定义
 public:
@@ -102,7 +105,7 @@ protected:
 	//
 	bool OnSubGangScore( const void *pBuffer, WORD wDataSize );
 	bool OnSubCardPaiJin( const void *pBuffer, WORD wDataSize ); // 牌精
-	bool OnSubGrantScore( const void *pBuffer, WORD wDataSize ); // 送分
+//	bool OnSubGrantScore( const void *pBuffer, WORD wDataSize ); // 送分
 
 	
 	//辅助函数

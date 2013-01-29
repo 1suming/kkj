@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="游戏等级"
 	ProjectGUID="{974DE662-8429-45CB-8497-0E460405D84C}"
+	RootNamespace="游戏等级"
 	Keyword="MFCDLLProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -51,7 +52,7 @@
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool

@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="界面控件"
 	ProjectGUID="{9580A9BA-2C2C-4359-852C-FD627732BF1D}"
+	RootNamespace="界面控件"
 	Keyword="MFCDLLProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -51,7 +52,7 @@
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool

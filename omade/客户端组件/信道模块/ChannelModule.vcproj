@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="信道模块"
 	ProjectGUID="{0D9684CE-A441-4D80-B449-C3AE8281C93B}"
+	RootNamespace="信道模块"
 	Keyword="MFCDLLProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -51,7 +52,7 @@
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool

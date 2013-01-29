@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="列表服务"
 	ProjectGUID="{877DA7B2-2C4E-40A5-9F28-EC1BFD6DEAAD}"
+	RootNamespace="列表服务"
 	Keyword="MFCDLLProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -51,7 +52,7 @@
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool

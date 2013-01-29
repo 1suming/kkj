@@ -201,6 +201,7 @@ CGameLogic::CGameLogic()
 {
 	m_cbMagicIndex = MAX_INDEX;
 	m_cbGenCount = 0;
+	m_bSingleMagic = true;
 }
 
 //析构函数
@@ -313,7 +314,7 @@ bool CGameLogic::HaveThreePaiJin(const BYTE cbCardIndex[MAX_INDEX],const tagWeav
 	BYTE cbPaiJinCount = 0;
 	for (BYTE k =0;k<cbWeaveCount;k++)
 	{
-		if(WeaveItem[k].cbCenterCard != m_PaiJing.m_cbPaiJingCard)
+		if(WeaveItem[k].cbCenterCard != m_PaiJing)
 			continue;
 		if (WeaveItem[k].cbWeaveKind&WIK_PENG || WeaveItem[k].cbWeaveKind&WIK_TIE_PAI)
 		{
@@ -322,12 +323,37 @@ bool CGameLogic::HaveThreePaiJin(const BYTE cbCardIndex[MAX_INDEX],const tagWeav
 		}
 	}
 	
-	BYTE cbPaiJingIndex = SwitchToCardIndex(m_PaiJing.m_cbPaiJingCard);// 牌精索引
+	BYTE cbPaiJingIndex = SwitchToCardIndex(m_PaiJing);// 牌精索引
 	cbPaiJinCount+=cbCardIndex[cbPaiJingIndex];
 
 	return cbPaiJinCount >= 3;
 	
 }
+
+void CGameLogic::SetPaiJing(BYTE cbCardData)
+{
+
+	if(!IsValidCard(cbCardData)) return;
+
+	// 设置牌精
+	m_PaiJing = cbCardData; 
+	BYTE cbColor = m_PaiJing&MASK_COLOR;
+	BYTE cbValue = m_PaiJing&MASK_VALUE;
+	cbValue = cbValue%9+1;
+	BYTE cbTingYong = (cbColor | cbValue);
+
+	// 设置听用索引
+	if (m_bSingleMagic)
+	{
+		m_cbMagicIndex = SwitchToCardIndex(cbTingYong);	
+ 	}else
+	{
+		//TODO: 实现双精判断
+	}
+
+ }
+
+
  
 //删除扑克
 bool CGameLogic::RemoveCard(BYTE cbCardData[], BYTE cbCardCount, const BYTE cbRemoveCard[], BYTE cbRemoveCount)
@@ -452,18 +478,13 @@ BYTE CGameLogic::GetUserActionRank(BYTE cbUserAction)
 {
 	//胡牌等级
 	if (cbUserAction&WIK_CHI_HU) { return 4+3; }
-
 	//杠牌等级
 	if (cbUserAction&WIK_GANG) { return 4+2; }
-
 	//碰牌等级
 	if (cbUserAction&WIK_PENG) { return 4+1; }
-
-
 	//贴牌等级
 	if (cbUserAction&WIK_TIE_PAI){	return 4; }
 	
-
 	return 0;
 }
 
@@ -503,7 +524,7 @@ WORD CGameLogic::GetChiHuActionRank(const CChiHuRight & ChiHuRight)
 		wFanShu +=1;
 	}
 
-	// 大单吊 和单吊炮不能同时出现
+	// 大单吊和单吊炮不能同时出现
 	if( !(ChiHuRight&CHR_DA_DAN_DIAO).IsEmpty() ||!(ChiHuRight&CHR_DA_DAN_DIAO_PAO).IsEmpty()) //大单吊 1番
 	{
 		wFanShu += 1;
@@ -1388,8 +1409,24 @@ bool CGameLogic::AnalyseCard(const BYTE cbCardIndex[MAX_INDEX], const tagWeaveIt
 //钻牌
 bool CGameLogic::IsMagicCard( BYTE cbCardData )
 {
-	if( m_cbMagicIndex != MAX_INDEX && IsValidCard(cbCardData))
-		return SwitchToCardIndex(cbCardData) == m_cbMagicIndex;
+	if(IsValidCard(cbCardData))
+	{
+		BYTE cbColor = m_PaiJing&MASK_COLOR;
+		BYTE cbValue = m_PaiJing&MASK_VALUE;
+
+		if (m_bSingleMagic)
+		{
+			cbValue = cbValue%9+1;
+			BYTE cbTingYong = (cbColor | cbValue);
+
+			return cbCardData == cbTingYong ? true:false;
+		}else
+		{
+			//TODO: 实现双精判断
+		
+		}
+	}
+
 	return false;
 }
 

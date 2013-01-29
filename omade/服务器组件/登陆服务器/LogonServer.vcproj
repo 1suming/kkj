@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="登陆服务器"
 	ProjectGUID="{D1D26E10-3E7E-4A5D-B614-8E03ADC03F79}"
+	RootNamespace="登陆服务器"
 	Keyword="MFCProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -51,7 +52,7 @@
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool

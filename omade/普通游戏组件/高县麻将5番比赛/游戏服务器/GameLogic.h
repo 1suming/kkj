@@ -90,7 +90,7 @@ struct tagWeaveItem
 //分析子项
 struct tagAnalyseItem
 {
-	BYTE							cbCardEye;							//牌眼扑克
+	BYTE							cbCardEye;							//牌眼扑克 牌眼就是两个相同的牌
 	bool                            bMagicEye;                          //牌眼是否是王霸
 	BYTE							cbWeaveKind[4];						//组合类型
 	BYTE							cbCenterCard[4];					//中心扑克
@@ -178,8 +178,10 @@ protected:
 	BYTE							m_cbMagicIndex;						//钻牌索引
 
 public:
-	CMD_S_PaiJing                   m_PaiJing;                          // 牌精
+	BYTE							m_PaiJing;                          // 牌精
 	BYTE							m_cbGenCount;						// 根数量
+private:
+	bool							m_bSingleMagic;						// 单双精
 
 
 	//函数定义
@@ -199,13 +201,17 @@ public:
 	bool RemoveCard(BYTE cbCardIndex[MAX_INDEX], const BYTE cbRemoveCard[], BYTE cbRemoveCount);
 	//删除扑克
 	bool RemoveCard(BYTE cbCardData[], BYTE cbCardCount, const BYTE cbRemoveCard[], BYTE cbRemoveCount);
-	
+	//设置牌精
+	void SetPaiJing( BYTE cbPaiJing );
+	//获取牌精
+	BYTE GetPaiJing() { return m_PaiJing; }
 	//设置听用牌
 	void SetMagicIndex( BYTE cbMagicIndex ) { m_cbMagicIndex = cbMagicIndex; }
 	//获取听用牌
 	BYTE GetMagicIndex() { return m_cbMagicIndex;}
-	//是否为听用牌
+	//是否听用牌
 	bool IsMagicCard( BYTE cbCardData );
+
 
 	//辅助函数
 public:
@@ -255,13 +261,13 @@ public:
 	bool IsHuaZhu( const BYTE cbCardIndex[MAX_INDEX], const tagWeaveItem WeaveItem[], BYTE cbWeaveCount );
 	//转换函数
 public:
-	//扑克转换
+	//扑克转换数据
 	BYTE SwitchToCardData(BYTE cbCardIndex);
-	//扑克转换
+	//扑克转换索引
 	BYTE SwitchToCardIndex(BYTE cbCardData);
-	//扑克转换
+	//扑克转换数据
 	BYTE SwitchToCardData(const BYTE cbCardIndex[MAX_INDEX], BYTE cbCardData[MAX_COUNT]);
-	//扑克转换
+	//扑克转换索引
 	BYTE SwitchToCardIndex(const BYTE cbCardData[], BYTE cbCardCount, BYTE cbCardIndex[MAX_INDEX]);
 
 	//胡法分析

@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="视频组件"
 	ProjectGUID="{C2D6B50F-273E-4437-AE5C-9F0E4FD962B0}"
+	RootNamespace="视频组件"
 	Keyword="MFCDLLProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -51,7 +52,7 @@
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool

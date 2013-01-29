@@ -1051,11 +1051,52 @@ bool CGameLogic::AnalyseCard(const BYTE cbCardIndex[MAX_INDEX], const tagWeaveIt
 	return (AnalyseItemArray.GetCount()>0);
 }
 
+void CGameLogic::SetPaiJing(BYTE cbCardData)
+{
+
+	if(!IsValidCard(cbCardData)) return ;
+
+	// 设置牌精
+	m_PaiJing = cbCardData; 
+	BYTE cbColor = m_PaiJing&MASK_COLOR;
+	BYTE cbValue = m_PaiJing&MASK_VALUE;
+	cbValue = cbValue%9+1;
+	BYTE cbTingYong = (cbColor | cbValue);
+
+	// 设置听用索引
+	if (m_bSingleMagic)
+	{
+		m_cbMagicIndex = SwitchToCardIndex(cbTingYong);	
+ 	}else
+	{
+		//TODO: 实现双精判断
+	}
+
+ }
+
+
+
 //钻牌
 bool CGameLogic::IsMagicCard( BYTE cbCardData )
 {
-	if( m_cbMagicIndex != MAX_INDEX )
-		return SwitchToCardIndex(cbCardData) == m_cbMagicIndex;
+	if(IsValidCard(cbCardData))
+	{
+		BYTE cbColor = m_PaiJing&MASK_COLOR;
+		BYTE cbValue = m_PaiJing&MASK_VALUE;
+
+		if (m_bSingleMagic)
+		{
+			cbValue = cbValue%9+1;
+			BYTE cbTingYong = (cbColor | cbValue);
+
+			return cbCardData == cbTingYong ? true:false;
+		}else
+		{
+			//TODO: 实现双精判断
+
+		}
+	}
+
 	return false;
 }
 

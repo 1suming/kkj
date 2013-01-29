@@ -402,17 +402,7 @@ bool __cdecl CAndroidUserItemSink::OnEventGameMessage(WORD wSubCmdID, void * pDa
 		{
 			return OnSubGameEnd(pData,wDataSize);
 		}
-#ifdef CONSOLE_OMA
-	case SUB_S_PAI_JING:		//
-		{
-			return OnSubCardPaiJin(pData,wDataSize);
-		}
-	case SUB_S_CHI_HU:
-		{
-			return OnSubUserChiHu( pData,wDataSize );
-		}
-#endif 
-
+ 
 	}
 
 	return true;
@@ -2072,24 +2062,24 @@ bool CAndroidUserItemSink::VerdictOutCard(BYTE cbCardData)
 	return true;
 }
 #ifdef CONSOLE_OMA
-bool CAndroidUserItemSink::OnSubCardPaiJin( const void *pBuffer, WORD wDataSize )
-{
-
-	ASSERT(wDataSize==sizeof(CMD_S_PaiJing));
-	if (wDataSize!=sizeof(CMD_S_PaiJing)) return false;
-
-	ZeroMemory(&m_GameLogic.m_PaiJing,sizeof(m_GameLogic.m_PaiJing));
-	//消息处理
-	CMD_S_PaiJing * pPaiJing=(CMD_S_PaiJing *)pBuffer;
-
-	m_GameLogic.SetMagicIndex(m_GameLogic.SwitchToCardIndex(pPaiJing->m_cbTingYongCard));
-
-	m_GameLogic.m_PaiJing.m_cbPaiJingCard = pPaiJing->m_cbPaiJingCard;
-	m_GameLogic.m_PaiJing.m_cbTingYongCard = pPaiJing->m_cbTingYongCard;
-
-	return true;
-
-}
+//bool CAndroidUserItemSink::OnSubCardPaiJin( const void *pBuffer, WORD wDataSize )
+//{
+//
+//	ASSERT(wDataSize==sizeof(CMD_S_PaiJing));
+//	if (wDataSize!=sizeof(CMD_S_PaiJing)) return false;
+//
+//	ZeroMemory(&m_GameLogic.m_PaiJing,sizeof(m_GameLogic.m_PaiJing));
+//	//消息处理
+//	CMD_S_PaiJing * pPaiJing=(CMD_S_PaiJing *)pBuffer;
+//
+//	m_GameLogic.SetMagicIndex(m_GameLogic.SwitchToCardIndex(pPaiJing->m_cbTingYongCard));
+//
+//	m_GameLogic.m_PaiJing.m_cbPaiJingCard = pPaiJing->m_cbPaiJingCard;
+//	m_GameLogic.m_PaiJing.m_cbTingYongCard = pPaiJing->m_cbTingYongCard;
+//
+//	return true;
+//
+//}
 bool CAndroidUserItemSink::OnSubUserChiHu( const void *pBuffer,WORD wDataSize )
 {
 	//效验消息

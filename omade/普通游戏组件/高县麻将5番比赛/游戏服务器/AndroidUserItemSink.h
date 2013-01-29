@@ -118,7 +118,7 @@ protected:
 	//操作结果
 	bool OnSubOperateResult(const void * pBuffer, WORD wDataSize);
 #ifdef CONSOLE_OMA
-	bool OnSubCardPaiJin( const void *pBuffer, WORD wDataSize ); // oma 
+	//吃胡操作OMA
 	bool OnSubUserChiHu( const void *pBuffer,WORD wDataSize );
 #else 
 	//用户听牌

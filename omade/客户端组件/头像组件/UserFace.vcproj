@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="头像组件"
 	ProjectGUID="{8CE76226-A39A-465A-9F91-BD20607AF671}"
+	RootNamespace="头像组件"
 	Keyword="MFCDLLProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -51,7 +52,7 @@
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool

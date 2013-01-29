@@ -151,7 +151,7 @@ void CDrawSiceWnd::SetSiceInfo(CDC *dc,BYTE bMoveTime,WORD wSice1,WORD wSice2,bo
 		m_ImageDrawSiceUserFirst.SetLoadInfo(IDB_DRAW_SICE1+SiceFirst-1,hInstance);
 		m_ImageDrawSiceUserSecond.SetLoadInfo(IDB_DRAW_SICE7+SiceSecond-1,hInstance);
 	}
-	m_bKaiJu = bKaiJu; // oma
+	m_bKaiJu = bKaiJu; // OMA
 	m_bSicePos = (wSice1>0)?0:9;
 	SetTimer(IDI_SICE_POS,bMoveTime,NULL);
 }

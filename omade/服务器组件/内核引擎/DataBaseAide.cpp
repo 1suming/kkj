@@ -139,6 +139,17 @@ VOID CDataBaseAide::GetValue_VarValue(LPCTSTR pszItem, CDBVarValue & DBVarValue)
 
 }
 
+VOID CDataBaseAide::GetValue_DATE(LPCTSTR pszItem, COleDateTime & DateTime)
+{
+	
+	if (m_pIDataBase != NULL)
+	{
+		((CDataBase*)m_pIDataBase)->GetFieldValue(pszItem, DateTime);
+	}
+	
+	return;
+}
+
 VOID CDataBaseAide::GetValue_SystemTime(LPCTSTR pszItem, SYSTEMTIME & SystemTime)
 {
 	return;

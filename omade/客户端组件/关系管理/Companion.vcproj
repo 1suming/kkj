@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="关系管理"
 	ProjectGUID="{43AEAD92-A098-44B9-9CCF-61AB672D2098}"
+	RootNamespace="关系管理"
 	Keyword="MFCDLLProj"
 	TargetFrameworkVersion="131072"
 	>
@@ -51,7 +52,7 @@
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool

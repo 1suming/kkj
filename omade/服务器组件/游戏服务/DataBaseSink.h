@@ -204,6 +204,7 @@ struct DBR_GR_LogonSuccess
 	LONG								lExperience;					//用户经验
 	// oma add
 	LONG								lGrantCount;                    //送分次数
+	COleDateTime                        CastLogonDate;                  //上次登录日期
 
 };
 

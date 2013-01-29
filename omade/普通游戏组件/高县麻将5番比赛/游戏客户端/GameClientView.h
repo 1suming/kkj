@@ -96,7 +96,7 @@ public:
 	CSkinButton						m_btStart;							//开始按钮
 	CSkinButton						m_btStusteeControl;					//拖管控制
 	bool							m_bEnJoinStustee;					//托管不可用标志
-	BYTE							m_cbPaiJin;                          // 牌精 
+	BYTE							m_cbPaiJin;                         // 牌精OMA 
 	CControlWnd						m_ControlWnd;						//控制窗口
 	CScoreControl					m_ScoreControl[GAME_PLAYER];		//积分控件
 	CDrawSiceWnd					m_DrawSiceWnd;						//色子控件

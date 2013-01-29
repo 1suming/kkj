@@ -306,17 +306,7 @@ bool CGameClientDlg::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WORD wD
 		{
 			return OnSubGangScore(pBuffer,wDataSize);
 		}
- 	case SUB_S_PAI_JING:		//牌精
-		{
-			return OnSubCardPaiJin(pBuffer,wDataSize);
-		}
-	case SUB_S_GRANT_SCORE:		// 送分
-		{
-			// OMA COMMENT
-			return OnSubGrantScore(pBuffer,wDataSize);
-		}
-
- 	}
+  	}
 
 	return true;
 }
@@ -403,11 +393,11 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
  
 	}
 
-			//设置牌精索引.数据
-			CopyMemory(&m_GameLogic.m_PaiJing,&(pStatusPlay->PaiJin),sizeof(pStatusPlay->PaiJin));
-			m_GameLogic.SetMagicIndex(m_GameLogic.SwitchToCardIndex(m_GameLogic.m_PaiJing.m_cbTingYongCard));
-			m_GameClientView.m_cbPaiJin = m_GameLogic.m_PaiJing.m_cbPaiJingCard;
- 		
+	//设置牌精 OMA
+	m_GameLogic.SetPaiJing(pStatusPlay->cbPaiJing);
+	//设置牌精视图 OMA 
+	m_GameClientView.m_cbPaiJin = m_GameLogic.GetPaiJing();
+		
 	
 //////////////////////////////////////////////////////////////////////////
 
@@ -669,6 +659,7 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 	m_cbLeftCardCount=pGameStart->cbLeftCardCount;
 	m_cbUserAction = pGameStart->cbUserAction;
 	m_lSiceCount = pGameStart->lSiceCount;
+	m_GameLogic.SetPaiJing(pGameStart->cbPaiJing);//OMA 设置牌精
 
 	//出牌信息
 	m_cbOutCardData=0;
@@ -2086,8 +2077,8 @@ LRESULT CGameClientDlg::OnSiceFinish(WPARAM wParam, LPARAM lParam)
 
 	//环境处理
 	PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_START"));
- 	// 摇sice 结束后，设置视图牌精
-	m_GameClientView.m_cbPaiJin = m_GameLogic.m_PaiJing.m_cbPaiJingCard;// 设置视图牌精数据
+ 	//OMA 摇sice 结束后，设置视图牌精
+	m_GameClientView.m_cbPaiJin = m_GameLogic.GetPaiJing() ;// 设置视图牌精数据
   	return 0;
 }
 
@@ -2096,40 +2087,40 @@ bool CGameClientDlg::OnSubGangScore( const void *pBuffer, WORD wDataSize )
 {
  	return true;
 }
- bool CGameClientDlg::OnSubCardPaiJin( const void *pBuffer, WORD wDataSize )
-{
+// bool CGameClientDlg::OnSubCardPaiJin( const void *pBuffer, WORD wDataSize )
+//{
+//
+//	ASSERT(wDataSize==sizeof(CMD_S_PaiJing));
+//	if (wDataSize!=sizeof(CMD_S_PaiJing)) return false;
+//
+//	ZeroMemory(&m_GameLogic.m_PaiJing,sizeof(m_GameLogic.m_PaiJing));
+//	//消息处理
+//	CMD_S_PaiJing * pPaiJing=(CMD_S_PaiJing *)pBuffer;
+//
+//	m_GameLogic.SetMagicIndex(m_GameLogic.SwitchToCardIndex(pPaiJing->m_cbTingYongCard));
+//
+//	m_GameLogic.m_PaiJing.m_cbPaiJingCard = pPaiJing->m_cbPaiJingCard;
+//	m_GameLogic.m_PaiJing.m_cbTingYongCard = pPaiJing->m_cbTingYongCard;
+//
+// 
+//	return true;
+//
+//}
+ //bool CGameClientDlg::OnSubGrantScore( const void *pBuffer, WORD wDataSize )
+ //{
 
-	ASSERT(wDataSize==sizeof(CMD_S_PaiJing));
-	if (wDataSize!=sizeof(CMD_S_PaiJing)) return false;
+	// ASSERT(wDataSize==sizeof(CMD_S_GrantScore));
+	// if (wDataSize!=sizeof(CMD_S_GrantScore)) return false;
+	// 
+	// //消息处理
+	// CMD_S_GrantScore * plGrantScore=(CMD_S_GrantScore *)pBuffer;
+	// //LONG Grantvalue = plGrantScore->lGrantScore;
+	// //BYTE Grantcount = plGrantScore->cbGrantCount;
+	// //TCHAR msg[128]=TEXT("");
+	// //_snprintf(msg,sizeof(msg),TEXT("你的积分不足2000，这是第%d次送你积分：%d ! 加油哦!"),Grantcount,Grantvalue);
+	// InsertSystemString(plGrantScore->messageContent);
 
-	ZeroMemory(&m_GameLogic.m_PaiJing,sizeof(m_GameLogic.m_PaiJing));
-	//消息处理
-	CMD_S_PaiJing * pPaiJing=(CMD_S_PaiJing *)pBuffer;
-
-	m_GameLogic.SetMagicIndex(m_GameLogic.SwitchToCardIndex(pPaiJing->m_cbTingYongCard));
-
-	m_GameLogic.m_PaiJing.m_cbPaiJingCard = pPaiJing->m_cbPaiJingCard;
-	m_GameLogic.m_PaiJing.m_cbTingYongCard = pPaiJing->m_cbTingYongCard;
-
- 
-	return true;
-
-}
- bool CGameClientDlg::OnSubGrantScore( const void *pBuffer, WORD wDataSize )
- {
-
-	 ASSERT(wDataSize==sizeof(CMD_S_GrantScore));
-	 if (wDataSize!=sizeof(CMD_S_GrantScore)) return false;
-	 
-	 //消息处理
-	 CMD_S_GrantScore * plGrantScore=(CMD_S_GrantScore *)pBuffer;
-	 //LONG Grantvalue = plGrantScore->lGrantScore;
-	 //BYTE Grantcount = plGrantScore->cbGrantCount;
-	 //TCHAR msg[128]=TEXT("");
-	 //_snprintf(msg,sizeof(msg),TEXT("你的积分不足2000，这是第%d次送你积分：%d ! 加油哦!"),Grantcount,Grantvalue);
-	 InsertSystemString(plGrantScore->messageContent);
-
-	 ShowInformationEx(plGrantScore->messageContent,0,MB_ICONINFORMATION,TEXT("高县麻将"));
-	 return true;
-   }
+	// ShowInformationEx(plGrantScore->messageContent,0,MB_ICONINFORMATION,TEXT("高县麻将"));
+	// return true;
+ //  }
  //////////////////////////////////////////////////////////////////////////

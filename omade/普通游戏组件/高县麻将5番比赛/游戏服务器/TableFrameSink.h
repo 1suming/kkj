@@ -196,9 +196,9 @@ protected:
 	bool DispatchCardData(WORD wCurrentUser,bool bTail=false);
 	//响应判断
 	bool EstimateUserRespond(WORD wCenterUser, BYTE cbCenterCard, enEstimatKind EstimatKind);
-	// 提牌校验
+	//提牌校验
 	bool EstimateTICardRespond(WORD wCenterUser,BYTE cbCenterCard);//// cbCenterCard 提回的听用为当前牌
-	// 贴牌校验
+	//贴牌校验
 	bool EstimatePengTieCardRespond(WORD wCenterUser);
 
 	// 处理吃胡用户

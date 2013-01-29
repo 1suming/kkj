@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////////
 //公共宏定义
 
-#define KIND_ID						3326									//游戏 I D // 5FAN SCORE MATCH
+#define KIND_ID						3326								//游戏 I D // 5FAN SCORE MATCH
 
 #define GAME_PLAYER					4									//游戏人数
 #define GAME_NAME					TEXT("高县麻将")					//游戏名字
@@ -61,9 +61,8 @@ struct CMD_WeaveItem
 #define SUB_S_TRUSTEE				107									//用户托管
 #define SUB_S_CHI_HU				108									//吃胡
 #define SUB_S_GANG_SCORE			110									//杠分
-#define SUB_S_PAI_JING				111									//牌精，发送随机选择的牌精到各个用户
-#define SUB_S_USER_ESCAPE           112                                 //用户逃跑
-#define SUB_S_GRANT_SCORE           113                                 //送分
+ #define SUB_S_USER_ESCAPE          111                                 //用户逃跑
+#define SUB_S_GRANT_SCORE           112                                 //送分
 
 //游戏状态
 struct CMD_S_StatusFree
@@ -73,11 +72,11 @@ struct CMD_S_StatusFree
 	bool							bTrustee[GAME_PLAYER];				//是否托管
 };
 
-struct CMD_S_PaiJing
-{
-	BYTE							m_cbPaiJingCard;                        // 牌精
-	BYTE							m_cbTingYongCard;						// 听用
-};
+//struct CMD_S_PaiJing
+//{
+//	BYTE							m_cbPaiJingCard;                        // 牌精
+//	BYTE							m_cbTingYongCard;						// 听用
+//};
 
 struct CMD_S_GrantScore
 {
@@ -125,9 +124,8 @@ struct CMD_S_StatusPlay
 	WORD							wHeapHand;									//堆立头部
 	WORD							wHeapTail;									//堆立尾部
 	BYTE							cbHeapCardInfo[GAME_PLAYER][2];				//堆牌信息
-
-	CMD_S_PaiJing                   PaiJin;                                     // 牌精
-
+	BYTE							cbPaiJing;                                  // 牌精 
+ 
 };
 
 //游戏开始
@@ -142,8 +140,9 @@ struct CMD_S_GameStart
 	WORD							wHeapTail;									//堆立牌尾
 	BYTE							cbHeapCardInfo[GAME_PLAYER][2];				//堆立信息
 	BYTE							cbLeftCardCount;							//
-
+	BYTE							cbPaiJing;									// 牌精 //OMA
 	bool 							bKaiJu;										// 新开局标志
+
 };
 
 //出牌命令

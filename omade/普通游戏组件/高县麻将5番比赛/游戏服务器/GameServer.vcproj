@@ -52,7 +52,7 @@
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -69,6 +69,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="../../../开发库/Lib/KernelEngineD.lib"
 				OutputFile="../../../运行/Debug/SparrowCDServer.dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile=""
