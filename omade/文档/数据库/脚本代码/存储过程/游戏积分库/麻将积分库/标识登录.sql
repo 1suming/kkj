@@ -6,7 +6,7 @@
 
 ----------------------------------------------------------------------------------------------------
 
-USE QPGameScoreDB
+USE QPSparrowGXDB
 GO
 
 IF EXISTS (SELECT * FROM DBO.SYSOBJECTS WHERE ID = OBJECT_ID(N'[dbo].[GSP_GR_EfficacyUserID]') and OBJECTPROPERTY(ID, N'IsProcedure') = 1)
@@ -66,6 +66,9 @@ DECLARE @LostCount INT
 DECLARE @DrawCount INT
 DECLARE @FleeCount INT
 DECLARE @Experience INT
+-- 送分信息
+DECLARE @GrantCount INT
+DECLARE @LastLogonDate DATETIME
 
 -- 道具信息
 DECLARE @PropCount INT
@@ -163,7 +166,7 @@ BEGIN
 	DECLARE @GameMasterRight INT
 	DECLARE @GameMasterOrder INT
 	SELECT @Score=Score, @WinCount=WinCount, @LostCount=LostCount, @DrawCount=DrawCount,
-		@DrawCount=DrawCount, @FleeCount=FleeCount, @GameUserRight=UserRight, @GameMasterRight=MasterRight, @GameMasterOrder=MasterOrder
+		@DrawCount=DrawCount, @FleeCount=FleeCount, @GameUserRight=UserRight, @GameMasterRight=MasterRight, @GameMasterOrder=MasterOrder,@GrantCount=GrantCount, @LastLogonDate=LastLogonDate
 	FROM GameScoreInfo WHERE UserID=@dwUserID
 
 	-- 信息判断
@@ -257,7 +260,7 @@ BEGIN
 	-- 输出变量
 	SELECT @UserID AS UserID, @GameID AS GameID, @GroupID AS GroupID, @Accounts AS Accounts, @UnderWrite AS UnderWrite, @FaceID AS FaceID, 
 		@Gender AS Gender, @GroupName AS GroupName, @MasterOrder AS MemberOrder, @UserRight AS UserRight, @MasterRight AS MasterRight, 
-		@MasterOrder AS MasterOrder, @MemberOrder AS MemberOrder, @WinCount AS WinCount, @LostCount AS LostCount, @Loveliness AS Loveliness,
+		@MasterOrder AS MasterOrder, @MemberOrder AS MemberOrder, @WinCount AS WinCount, @LostCount AS LostCount, @Loveliness AS Loveliness,@GrantCount AS GrantCount,
 		@PropCount AS PropCount, @GameGold AS GameGold, @InsureScore AS InsureScore, @Loveliness AS Loveliness,	@CustomFaceVer AS CustomFaceVer,
 		@DrawCount AS DrawCount, @FleeCount AS FleeCount, @Score AS Score, @Experience AS Experience, @ErrorDescribe AS ErrorDescribe
 END
