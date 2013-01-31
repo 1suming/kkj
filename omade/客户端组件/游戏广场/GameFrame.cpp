@@ -160,7 +160,7 @@ void __cdecl CGameFrame::OnTreeLeftClick(CListItem *pListItem, HTREEITEM hTreeIt
 
 			//连接规则
 			TCHAR szRuleUrl[256]=TEXT("");
-			_snprintf(szRuleUrl,sizeof(szRuleUrl),TEXT("http://205168.cqxunmei.com/GameRule.asp?KindID=%ld"),pGameKind->wKindID);
+			_snprintf_s(szRuleUrl,sizeof(szRuleUrl),TEXT("http://205168.cqxunmei.com/GameRule.asp?KindID=%ld"),pGameKind->wKindID);
 			WebBrowse(szRuleUrl,true);
 
 			return;
@@ -197,7 +197,7 @@ void __cdecl CGameFrame::OnTreeLeftDBClick(CListItem *pListItem, HTREEITEM hTree
 			
 				//构造提示
 				TCHAR szBuffer[512]=TEXT("");
-				_snprintf(szBuffer,sizeof(szBuffer),TEXT("【%s】还没有安装，现在是否下载？"),pGameKind->szKindName);
+				_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("【%s】还没有安装，现在是否下载？"),pGameKind->szKindName);
 
 				//提示信息
 				if (ShowMessageBox(szBuffer,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1)==IDYES)
@@ -753,7 +753,7 @@ CRoomViewItem * CGameFrame::CreateRoomViewItem(CListServer * pListServer)
 	if (WinFileInfo.OpenWinFile(pGameKind->szProcessName)==false)
 	{
 		TCHAR szBuffer[512]=TEXT("");
-		_snprintf(szBuffer,sizeof(szBuffer),TEXT("【%s】还没有安装，现在是否下载？"),pGameKind->szKindName);
+		_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("【%s】还没有安装，现在是否下载？"),pGameKind->szKindName);
 		int nResult=ShowMessageBox(szBuffer,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1);
 		if (nResult==IDYES) g_GlobalAttemper.DownLoadClient(pGameKind->szKindName,pGameKind->wKindID,true);
 		return NULL;
@@ -780,7 +780,7 @@ CRoomViewItem * CGameFrame::CreateRoomViewItem(CListServer * pListServer)
 	if ((cbFileVer1!=cbListVer1)||(cbFileVer2!=cbListVer2)||(cbFileVer3!=cbListVer3))
 	{
 		TCHAR szBuffer[512]=TEXT("");
-		_snprintf(szBuffer,sizeof(szBuffer),TEXT("【%s】已经更新为 %ld.%ld.%ld.%ld 版本，你的版本不能继续使用，现在是否下载？"),pGameKind->szKindName,
+		_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("【%s】已经更新为 %ld.%ld.%ld.%ld 版本，你的版本不能继续使用，现在是否下载？"),pGameKind->szKindName,
 			cbListVer1,cbListVer2,cbListVer3,cbListVer4);
 		int nResult=ShowMessageBox(szBuffer,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1);
 		if (nResult==IDYES) g_GlobalAttemper.DownLoadClient(pGameKind->szKindName,pGameKind->wKindID,true);
@@ -791,7 +791,7 @@ CRoomViewItem * CGameFrame::CreateRoomViewItem(CListServer * pListServer)
 	if (cbFileVer4!=cbListVer4)
 	{
 		TCHAR szBuffer[512]=TEXT("");
-		_snprintf(szBuffer,sizeof(szBuffer),TEXT("【%s】已经更新为 %ld.%ld.%ld.%ld 版本，现在是否下载升级？"),pGameKind->szKindName,
+		_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("【%s】已经更新为 %ld.%ld.%ld.%ld 版本，现在是否下载升级？"),pGameKind->szKindName,
 			cbListVer1,cbListVer2,cbListVer3,cbListVer4);
 		int nResult=ShowMessageBox(szBuffer,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1);
 		if (nResult==IDYES) 

@@ -43,7 +43,7 @@ void CInitParamter::LoadInitParamter()
 	//打开注册表
 	CRegKey RegParamter;
 	TCHAR szRegName[MAX_PATH];
-	_snprintf(szRegName,sizeof(szRegName),TEXT("Software\\%s\\LogonServer"),szSystemRegKey);
+	_snprintf_s(szRegName,sizeof(szRegName),TEXT("Software\\%s\\LogonServer"),szSystemRegKey);
 	if (RegParamter.Open(HKEY_CURRENT_USER,szRegName,KEY_READ)!=ERROR_SUCCESS) return;
 
 	//变量定义
@@ -110,7 +110,7 @@ void CInitParamter::SaveInitParamter(bool bSaveAll)
 	//打开注册表
 	CRegKey RegParamter;
 	TCHAR szRegName[MAX_PATH];
-	_snprintf(szRegName,sizeof(szRegName),TEXT("Software\\%s\\LogonServer"),szSystemRegKey);
+	_snprintf_s(szRegName,sizeof(szRegName),TEXT("Software\\%s\\LogonServer"),szSystemRegKey);
 	if (RegParamter.Create(HKEY_CURRENT_USER,szRegName)!=ERROR_SUCCESS) return;
 
 	//变量定义

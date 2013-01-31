@@ -495,7 +495,7 @@ WORD CGameLogic::GetChiHuActionRank(const CChiHuRight & ChiHuRight)
 
 	if( !(ChiHuRight&CHR_TIAN_HU).IsEmpty() || !(ChiHuRight&CHR_DI_HU).IsEmpty() ) // 天胡或者地胡 最高番
 	{
-		return MAX_CHIHU_FANSU ;
+		return (WORD)m_lMaxScoreTimes;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -567,9 +567,9 @@ WORD CGameLogic::GetChiHuActionRank(const CChiHuRight & ChiHuRight)
 	}
 
 	
-	if (wFanShu>MAX_CHIHU_FANSU)
+	if (wFanShu>m_lMaxScoreTimes)
 	{
-		wFanShu = MAX_CHIHU_FANSU;
+		wFanShu = (WORD)m_lMaxScoreTimes;
 	}
 
 

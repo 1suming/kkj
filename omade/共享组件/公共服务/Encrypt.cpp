@@ -316,8 +316,7 @@ WORD CXOREncrypt::EncryptData(LPCTSTR pszSrcData, LPTSTR pszEncrypData, WORD wSi
 	{
 		if (i<szRandKey[0]) bTempCode=pszSrcData[i]^szRandKey[i%ENCRYPT_KEY_LEN];
 		else bTempCode=szRandKey[i%ENCRYPT_KEY_LEN]^(rand()%255);
-		_snprintf(pszEncrypData+i*4,5,TEXT("%02x%02x"),szRandKey[i%ENCRYPT_KEY_LEN],bTempCode);
-	}
+		_snprintf(pszEncrypData+i*4,5,TEXT("%02x%02x"),szRandKey[i%ENCRYPT_KEY_LEN],bTempCode);	}
 
 	return wTimes*4;
 }

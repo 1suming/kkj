@@ -259,7 +259,7 @@ bool CDataBaseSink::OnRequestUploadFace(WORD wRequestID, DWORD dwContextID, VOID
 	//文件定义
 	CFile fileCustomFace;
 	TCHAR szFileName[128];
-	_snprintf(szFileName, CountArray(szFileName), TEXT("%s\\UploadFile_%ld.zip"), theApp.m_szDirWork, pUploadCustomFace->dwUserID);
+	_snprintf_s(szFileName, CountArray(szFileName), TEXT("%s\\UploadFile_%ld.zip"), theApp.m_szDirWork, pUploadCustomFace->dwUserID);
 
 	try
 	{
@@ -491,7 +491,7 @@ LONG CDataBaseSink::SPLogonByAccounts(LPCTSTR pszAccounts, LPCTSTR pszPassword, 
 	//转化地址
 	TCHAR szClientIP[16]=TEXT("");
 	BYTE * pClientIP=(BYTE *)&dwClientIP;
-	_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
+	_snprintf_s(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
 
 	//执行存储过程
 	m_AccountsDBAide.ResetParameter();
@@ -513,7 +513,7 @@ LONG CDataBaseSink::SPRegisterAccounts(LPCTSTR pszAccounts, LPCTSTR pszPassword,
 	//转化地址
 	TCHAR szClientIP[16]=TEXT("");
 	BYTE * pClientIP=(BYTE *)&dwClientIP;
-	_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
+	_snprintf_s(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
 
 	//执行存储过程
 	m_AccountsDBAide.ResetParameter();
@@ -538,7 +538,7 @@ LONG CDataBaseSink::SPLogonByUserID(DWORD dwGameID, LPCTSTR pszPassword, DWORD d
 	//转化地址
 	TCHAR szClientIP[16]=TEXT("");
 	BYTE * pClientIP=(BYTE *)&dwClientIP;
-	_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
+	_snprintf_s(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
 
 	//执行存储过程
 	m_AccountsDBAide.ResetParameter();

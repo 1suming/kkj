@@ -42,6 +42,7 @@ CGameClientView::CGameClientView()
 
 	//游戏属性
 	m_lCellScore=0L;
+	m_lMaxScoreTimes = 0L;// OMA
 	m_wBankerUser=INVALID_CHAIR;
 	m_wCurrentUser=INVALID_CHAIR;
 	ZeroMemory( m_cbWinOrder,sizeof(m_cbWinOrder) );
@@ -205,6 +206,7 @@ void CGameClientView::ResetGameView()
 
 	//游戏属性
 	m_lCellScore=0L;
+	m_lMaxScoreTimes = 0L;
 	m_wBankerUser=INVALID_CHAIR;
 	m_wCurrentUser=INVALID_CHAIR;
 	ZeroMemory( m_cbWinOrder,sizeof(m_cbWinOrder) );
@@ -431,11 +433,10 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 	//单元积分
 	m_ImageCellScore.DrawImage( pDC,m_nXBorder+5,m_nYBorder+5 );
 	TCHAR szBuffer[32] = TEXT("");
-	_snprintf( szBuffer,CountArray(szBuffer),TEXT("%ld"),m_lCellScore );
+	_snprintf_s( szBuffer,CountArray(szBuffer),TEXT("单元分数:%ld 最大倍数: %ld"),m_lCellScore,m_lMaxScoreTimes);
 	DrawTextString( pDC,szBuffer,RGB(255,255,255),RGB(0,0,0),m_nXBorder+5+56,m_nYBorder+5+12,true );
 
 #ifdef CONSOLE_OMA
-
 	if (m_cbPaiJin!=0xFF)
 	{
 		// 绘画牌精 文字
@@ -749,6 +750,22 @@ void CGameClientView::SetCellScore(LONG lCellScore)
 
 	return;
 }
+
+void CGameClientView::SetMaxScoreTimes(LONG lMaxScoreTimes)
+{
+	//设置扑克
+	if (lMaxScoreTimes!=m_lMaxScoreTimes)
+	{
+		//设置变量
+		m_lMaxScoreTimes = lMaxScoreTimes;
+		//更新界面
+		UpdateGameView(NULL);
+	}
+
+	return;
+}
+
+
 
 //庄家用户
 void CGameClientView::SetBankerUser(WORD wBankerUser)
@@ -1075,7 +1092,7 @@ void CGameClientView::DrawNumberString( CDC *pDC, CPngImage &PngNumber, int nXPo
 	nYDrawPos -= nHeightNumber/2;
 
 	CHAR szNum[256] = {0};
-	_snprintf(szNum,CountArray(szNum),"%+ld",lNumber);
+	_snprintf_s(szNum,CountArray(szNum),"%+ld",lNumber);
 
 	if( bDrawCenter )
 	{

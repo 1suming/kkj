@@ -1199,11 +1199,11 @@ void CClientKernel::UpdateGameTitle()
 	//构造标题
 	if ((m_ServerAttribute.szServerName[0]!=0)&&(m_wTableID!=INVALID_TABLE)&&(m_ServerAttribute.cbHideUserInfo==FALSE))
 	{
-		_sntprintf(szTitle,CountArray(szTitle),TEXT("%s ［ %s - 第 %d 桌 ］"),WinFileInfo.GetProductName(),m_ServerAttribute.szServerName,m_wTableID+1);
+		_sntprintf_s(szTitle,CountArray(szTitle),TEXT("%s ［ %s - 第 %d 桌 ］"),WinFileInfo.GetProductName(),m_ServerAttribute.szServerName,m_wTableID+1);
 	}
 	else
 	{
-		_sntprintf(szTitle,CountArray(szTitle),TEXT("%s － [ Ver：%s ]"),WinFileInfo.GetProductName(),WinFileInfo.GetProductVersion());
+		_sntprintf_s(szTitle,CountArray(szTitle),TEXT("%s － [ Ver：%s ]"),WinFileInfo.GetProductName(),WinFileInfo.GetProductVersion());
 	}
 
 	//设置标题

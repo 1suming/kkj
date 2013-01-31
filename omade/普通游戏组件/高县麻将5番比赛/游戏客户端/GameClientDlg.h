@@ -102,10 +102,7 @@ protected:
 	bool OnSubTrustee(const void * pBuffer,WORD wDataSize);
 	//
 	bool OnSubUserChiHu( const void *pBuffer,WORD wDataSize );
-	//
-	bool OnSubGangScore( const void *pBuffer, WORD wDataSize );
 	bool OnSubCardPaiJin( const void *pBuffer, WORD wDataSize ); // ÅÆ¾«
-//	bool OnSubGrantScore( const void *pBuffer, WORD wDataSize ); // ËÍ·Ö
 
 	
 	//¸¨Öúº¯Êý

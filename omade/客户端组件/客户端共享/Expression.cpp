@@ -282,7 +282,7 @@ void CExpression::DrawItem(CDC * pDC, int iXPos, int iYPos, bool bSelectec)
 
 		//×°ÔØÍ¼Æ¬
 		TCHAR szFileName[MAX_PATH]=TEXT("");
-		_snprintf(szFileName,sizeof(szFileName),TEXT("%s\\Face\\%d.gif"),m_szPath, nFaceIndex);
+		_snprintf_s(szFileName,sizeof(szFileName),TEXT("%s\\Face\\%d.gif"),m_szPath, nFaceIndex);
 		CImage ImageFace;
 		if ( SUCCEEDED(ImageFace.Load(szFileName) ) )
 		{

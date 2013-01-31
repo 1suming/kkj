@@ -89,7 +89,7 @@ void CSystemOptionDlg::OnOK()
 	DWORD dwDataBaseIP=INADDR_NONE;
 	BYTE * pAddrByte=(BYTE *)&dwDataBaseIP;
 	((CIPAddressCtrl *)GetDlgItem(IDC_SERVER_DATABASE_IP))->GetAddress(dwDataBaseIP);
-	_snprintf(InitParamter.m_szServerDataBaseAddr,sizeof(InitParamter.m_szServerDataBaseAddr),TEXT("%d.%d.%d.%d"),
+	_snprintf_s(InitParamter.m_szServerDataBaseAddr,sizeof(InitParamter.m_szServerDataBaseAddr),TEXT("%d.%d.%d.%d"),
 		pAddrByte[3],pAddrByte[2],pAddrByte[1],pAddrByte[0]);
 
 	//±£¥Ê…Ë÷√

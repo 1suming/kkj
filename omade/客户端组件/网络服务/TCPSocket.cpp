@@ -190,7 +190,7 @@ DWORD __cdecl CTCPSocket::Connect(DWORD dwServerIP, WORD wPort)
 				if (iErrorCode!=WSAEWOULDBLOCK)
 				{
 					static TCHAR szBuffer[64];
-					_snprintf(szBuffer,sizeof(szBuffer),TEXT("连接发生错误，错误代码 [ %d ]"),iErrorCode);
+					_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("连接发生错误，错误代码 [ %d ]"),iErrorCode);
 					throw szBuffer;
 				}
 			}

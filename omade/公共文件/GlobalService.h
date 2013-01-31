@@ -58,6 +58,7 @@ struct tagGameServiceOption
 	//积分限制
 	WORD							wRevenue;							//游戏税收
 	LONG							lCellScore;							//单位积分
+	LONG							lMaxScoreTimes;						//最大积分倍数
 	LONG							lLessScore;							//最低积分
 	LONG							lMaxScore;							//最高积分
 	LONG							lRestrictScore;						//限制积分

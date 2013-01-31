@@ -177,7 +177,8 @@ protected:
 	BYTE							m_cbMagicIndex;						//钻牌索引
 	BYTE							m_PaiJing;							//牌精       
 	bool							m_bSingleMagic;						// 单双精
-  
+	LONG							m_lMaxScoreTimes;                   // 最大倍数OMA
+
 	//函数定义
 public:
 	//构造函数
@@ -199,12 +200,20 @@ public:
 	void SetMagicIndex( BYTE cbMagicIndex ) { m_cbMagicIndex = cbMagicIndex; }
 	//设置牌精
 	void SetPaiJing( BYTE cbPaiJing );
+	// 设置最大倍数
+	void SetMaxScoreTimes( BYTE cbMaxTimes ) { m_lMaxScoreTimes = cbMaxTimes; }
+	// 获取最大倍数
+	LONG GetMaxScoreTimes() { return m_lMaxScoreTimes;}
+
+
 	//获取牌精
 	BYTE GetPaiJing() { return m_PaiJing; }
 	//获取钻牌
 	BYTE GetMagicIndex() { return m_cbMagicIndex;}
 	//判断钻牌
 	bool IsMagicCard( BYTE cbCardData );
+
+	
 
 	//辅助函数
 public:

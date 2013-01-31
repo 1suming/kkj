@@ -174,7 +174,7 @@ bool __cdecl CServerListCenter::InsertGameServer(tagGameServer * pGameServer)
 
 		//错误事件
 		TCHAR szBuffer[256]=TEXT("");
-		_snprintf(szBuffer,sizeof(szBuffer),TEXT("【%s  KindID：%ld StationID：%ld  ServerID：%ld】注册成功"),
+		_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("【%s  KindID：%ld StationID：%ld  ServerID：%ld】注册成功"),
 			pGameServer->szServerName,pGameServer->wKindID,pGameServer->wStationID,pGameServer->wServerID);
 		CTraceService::TraceString(szBuffer,TraceLevel_Debug);
 
@@ -453,7 +453,7 @@ bool __cdecl CServerListCenter::LoadServerList(tagDataBaseInfo & DataBaseInfo)
 		//转化地址
 		TCHAR szDataBaseAdr[16]=TEXT("");
 		BYTE * pcbDataBaseAdr=(BYTE *)&DataBaseInfo.dwDataBaseAddr;
-		_snprintf(szDataBaseAdr,sizeof(szDataBaseAdr),TEXT("%d.%d.%d.%d"),pcbDataBaseAdr[0],pcbDataBaseAdr[1],pcbDataBaseAdr[2],pcbDataBaseAdr[3]);
+		_snprintf_s(szDataBaseAdr,sizeof(szDataBaseAdr),TEXT("%d.%d.%d.%d"),pcbDataBaseAdr[0],pcbDataBaseAdr[1],pcbDataBaseAdr[2],pcbDataBaseAdr[3]);
 
 		//连接数据库
 		ServerInfoDBModule->SetConnectionInfo(szDataBaseAdr,DataBaseInfo.wDataBasePort,DataBaseInfo.szDataBaseName,DataBaseInfo.szDataBaseUser,DataBaseInfo.szDataBasePass);

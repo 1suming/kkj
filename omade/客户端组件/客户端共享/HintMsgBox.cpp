@@ -304,7 +304,7 @@ VOID CHintMsgBox::OnTimer(UINT_PTR nIDEvent)
 
 		//…Ë÷√ΩÁ√Ê
 		TCHAR szTitle[32]=TEXT("");
-		_sntprintf(szTitle,CountArray(szTitle),TEXT("%s £®%ld √Î£©"),m_strCaption,m_nElapse--);
+		_snprintf_s(szTitle,CountArray(szTitle),TEXT("%s £®%ld √Î£©"),m_strCaption,m_nElapse--);
 		SetWindowText(szTitle);
 
 		return;

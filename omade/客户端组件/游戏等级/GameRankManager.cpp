@@ -49,7 +49,7 @@ bool __cdecl CGameRankManager::LoadGameLevel(LPCTSTR pszDirectory, WORD wGameGen
 
 	//文件目录
 	TCHAR szFileName[MAX_PATH]=TEXT("");
-	_sntprintf(szFileName,CountArray(szFileName),TEXT("%s\\GameLevel.ini"),pszDirectory);
+	_sntprintf_s(szFileName,CountArray(szFileName),TEXT("%s\\GameLevel.ini"),pszDirectory);
 
 	//变量定义
 	WORD wItemIndex=0;
@@ -63,7 +63,7 @@ bool __cdecl CGameRankManager::LoadGameLevel(LPCTSTR pszDirectory, WORD wGameGen
 	do
 	{
 		//读取字符
-		_sntprintf(szItemName,CountArray(szItemName),TEXT("LevelItem%d"),wItemIndex+1);
+		_sntprintf_s(szItemName,CountArray(szItemName),TEXT("LevelItem%d"),wItemIndex+1);
 		GetPrivateProfileString(TEXT("LevelDescribe"),szItemName,TEXT(""),szReadData,sizeof(szReadData),szFileName);
 
 		//读取字符

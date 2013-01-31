@@ -81,6 +81,8 @@ bool __cdecl CGameServiceManager::RectifyServiceOption(tagGameServiceOption * pG
 
 	//单元积分
 	pGameServiceOption->lCellScore=__max(1L,pGameServiceOption->lCellScore);
+	//最大倍数
+	pGameServiceOption->lMaxScoreTimes=__max(1L,pGameServiceOption->lMaxScoreTimes);//OMA
 
 	//积分下限
 	if (pGameServiceOption->wServerType!=GAME_GENRE_SCORE)

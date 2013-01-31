@@ -28,6 +28,7 @@ protected:
 	//游戏属性
 protected:
 	LONG							m_lCellScore;						//基础积分
+	LONG							m_lMaxScoreTimes;					//最大倍数
 	WORD							m_wBankerUser;						//庄家用户
 	WORD							m_wCurrentUser;						//当前用户
 	BYTE							m_cbWinOrder[GAME_PLAYER];			//
@@ -75,6 +76,7 @@ protected:
 	CPngImage						m_ImageArrow;						//定时器箭头	
 	CSkinImage						m_ImageWinOrder;					//
 	CPngImage						m_ImageCellScore;					//
+	CPngImage						m_PngMaxScoreTimes;					// 最大倍数OMA
 	CPngImage						m_PngNumWin;						//
 	CPngImage						m_PngNumLost;						//
 	CPngImage						m_PngXiaYu;							//
@@ -121,6 +123,8 @@ private:
 public:
 	//基础积分
 	void SetCellScore(LONG lCellScore);
+	//基础积分
+	void SetMaxScoreTimes(LONG lMaxScoreTimes);
 	//庄家用户
 	void SetBankerUser(WORD wBankerUser);
 	//状态标志

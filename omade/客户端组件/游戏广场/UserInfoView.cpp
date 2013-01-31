@@ -157,14 +157,14 @@ BOOL CUserInfoView::OnEraseBkgnd(CDC * pDC)
 		CRect rcUnderWrite(50,32,rcClient.Width()-20,44);
 
 		//用户帐号
-		_sntprintf(szBuffer,CountArray(szBuffer),TEXT("用户帐号：%s [ %ld ]"),GlobalUserInfo.szAccounts,GlobalUserInfo.dwGameID);
+		_sntprintf_s(szBuffer,CountArray(szBuffer),TEXT("用户帐号：%s [ %ld ]"),GlobalUserInfo.szAccounts,GlobalUserInfo.dwGameID);
 		BufferDC.DrawText(szBuffer,lstrlen(szBuffer),&rcAccounts,DT_VCENTER|DT_WORD_ELLIPSIS|DT_SINGLELINE);
 
 		//会员信息
 		LPCTSTR pszMemberOrder[]={TEXT("非会员"),TEXT("红钻会员"),TEXT("蓝钻会员"),TEXT("黄钻会员"),TEXT("紫钻会员")};
 		if (GlobalUserInfo.cbMember<CountArray(pszMemberOrder))
 		{
-			_sntprintf(szBuffer,CountArray(szBuffer),TEXT("会员等级：%s"),pszMemberOrder[GlobalUserInfo.cbMember]);
+			_sntprintf_s(szBuffer,CountArray(szBuffer),TEXT("会员等级：%s"),pszMemberOrder[GlobalUserInfo.cbMember]);
 			BufferDC.DrawText(szBuffer,lstrlen(szBuffer),&rcUnderWrite,DT_VCENTER|DT_WORD_ELLIPSIS|DT_SINGLELINE);
 		}
 	}

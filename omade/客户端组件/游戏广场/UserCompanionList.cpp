@@ -120,7 +120,7 @@ bool CUserCompanionList::InsertCompanionInfo(const tagCompanionItem * pCompanion
 
 	//生成标题
 	TCHAR szTreeTitle[128]=TEXT("");
-	_sntprintf(szTreeTitle,CountArray(szTreeTitle),TEXT("%s [ %ld ]"),pCompanionInfo->szAccounts,pCompanionInfo->dwGameID);
+	_sntprintf_s(szTreeTitle,CountArray(szTreeTitle),TEXT("%s [ %ld ]"),pCompanionInfo->szAccounts,pCompanionInfo->dwGameID);
 
 	//变量定义
 	TV_INSERTSTRUCT InsertStruct;
@@ -170,7 +170,7 @@ bool CUserCompanionList::UpdateCompanionInfo(HTREEITEM hTreeItem, tagCompanionIt
 	{
 		//生成标题
 		TCHAR szTreeTitle[128]=TEXT("");
-		_sntprintf(szTreeTitle,CountArray(szTreeTitle),TEXT("%s [ %ld ]"),pCompanionInfo->szAccounts,pCompanionInfo->dwGameID);
+		_sntprintf_s(szTreeTitle,CountArray(szTreeTitle),TEXT("%s [ %ld ]"),pCompanionInfo->szAccounts,pCompanionInfo->dwGameID);
 
 		//更新树项
 		SetItemText(hTreeItem,szTreeTitle);

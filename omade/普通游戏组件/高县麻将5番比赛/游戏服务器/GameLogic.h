@@ -182,7 +182,7 @@ public:
 	BYTE							m_cbGenCount;						// 根数量
 private:
 	bool							m_bSingleMagic;						// 单双精
-
+	LONG							m_lMaxScoreTimes;                   // 最大倍数
 
 	//函数定义
 public:
@@ -205,6 +205,10 @@ public:
 	void SetPaiJing( BYTE cbPaiJing );
 	//获取牌精
 	BYTE GetPaiJing() { return m_PaiJing; }
+	// 设置最大倍数
+	void SetMaxScoreTimes( BYTE cbMaxTimes ) { m_lMaxScoreTimes = cbMaxTimes; }
+	// 获取最大倍数
+	LONG GetMaxScoreTimes() { return m_lMaxScoreTimes;}
 	//设置听用牌
 	void SetMagicIndex( BYTE cbMagicIndex ) { m_cbMagicIndex = cbMagicIndex; }
 	//获取听用牌

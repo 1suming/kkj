@@ -133,6 +133,15 @@ bool __cdecl CServerUserItem::WriteScore(tagScoreInfo & ScoreInfo, DWORD dwPlayT
 			m_ServerUserData.UserScoreInfo.lFleeCount++;
 			break;
 		}
+		//OMA 修改送分次数
+	case enScoreKind_Present:
+		{
+			//OMA m_ScoreModify 仅仅在金币存储提取过程中起作用
+			m_ScoreModify.lGrantCount--;
+			m_ServerUserData.UserScoreInfo.lGrantCount--;
+			break;
+		}
+
 	}
 
 	//修改时间
@@ -171,12 +180,6 @@ bool __cdecl CServerUserItem::WriteScore(tagScoreInfo & ScoreInfo, DWORD dwPlayT
 		m_ServerUserData.UserScoreInfo.lExperience+=dwPlayTimeCount;
 	}
 
-	//OMA 修改送分次数
-
-	if(ScoreInfo.ScoreKind==enScoreKind_Present)
-	{
-		m_ScoreModify.lGrantCount--;
-	}
 
 	return true;
 }

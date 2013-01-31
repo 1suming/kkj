@@ -304,8 +304,15 @@ bool CGameClientDlg::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WORD wD
 		}
 	case SUB_S_GANG_SCORE:		//杠分
 		{
-			return OnSubGangScore(pBuffer,wDataSize);
+			//return OnSubGangScore(pBuffer,wDataSize);
+			return false;
 		}
+	case SUB_S_USER_ESCAPE:     // 逃跑
+		{
+			//return OnSubGangScore(pBuffer,wDataSize);
+			return false;
+		}
+
   	}
 
 	return true;
@@ -331,6 +338,7 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 			//设置数据
 			m_wBankerUser=pStatusFree->wBankerUser;
 			m_GameClientView.SetCellScore(pStatusFree->lCellScore);
+			m_GameClientView.SetMaxScoreTimes(pStatusFree->lMaxScoreTimes);// OMA ADD
 			m_GameClientView.m_HandCardControl.SetDisplayItem(true);
 			//托管设置
 			for (WORD i=0;i<GAME_PLAYER;i++)
@@ -452,6 +460,7 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 
 			//界面设置
 			m_GameClientView.SetCellScore(pStatusPlay->lCellScore);
+			m_GameClientView.SetMaxScoreTimes(pStatusPlay->lMaxScoreTimes);// OMA ADD
 			m_GameClientView.SetBankerUser(wViewChairID[m_wBankerUser]);
 
 			//组合扑克
@@ -797,7 +806,7 @@ bool CGameClientDlg::OnSubOutCard(const void * pBuffer, WORD wDataSize)
 			m_bOutMagicCard = true;
 			//提示消息
 			TCHAR szBuffer[128] = TEXT("");
-			_snprintf( szBuffer,CountArray(szBuffer),TEXT("\n由于你打出了听用牌，系统将接收你的控制权直到本局结束\n"));
+			_snprintf_s( szBuffer,CountArray(szBuffer),TEXT("\n由于你打出了听用牌，系统将接收你的控制权直到本局结束\n"));
 			InsertSystemString( szBuffer );
 
 			m_bStustee = false;
@@ -1369,7 +1378,7 @@ bool CGameClientDlg::OnSubTrustee(const void * pBuffer,WORD wDataSize)
  		
 		if(pTrustee->bTrustee)
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("玩家[%s]选择了托管功能."),pUserData->szName);
+			_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("玩家[%s]选择了托管功能."),pUserData->szName);
  
 		}
 		else
@@ -1379,7 +1388,7 @@ bool CGameClientDlg::OnSubTrustee(const void * pBuffer,WORD wDataSize)
 			{
  				if(!(pUserData == NULL || pUserData->szName == NULL))
 				{
-					_snprintf(szBuffer,sizeof(szBuffer),TEXT("玩家[%s]取消了托管功能"),pUserData->szName);
+					_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("玩家[%s]取消了托管功能"),pUserData->szName);
  				}
  			}
  		}
@@ -1431,7 +1440,7 @@ bool CGameClientDlg::OnSubUserChiHu( const void *pBuffer,WORD wDataSize )
 
 	//提示消息
 	TCHAR szBuffer[128] = TEXT("");
-	_snprintf( szBuffer,CountArray(szBuffer),TEXT("\n玩家[%s]胡牌,得分:%+ld\n"),m_szAccounts[pChiHu->wChiHuUser],pChiHu->lGameScore );
+	_snprintf_s( szBuffer,CountArray(szBuffer),TEXT("\n玩家[%s]胡牌,得分:%+ld\n"),m_szAccounts[pChiHu->wChiHuUser],pChiHu->lGameScore );
 	InsertSystemString( szBuffer );
 
 	//设置界面
@@ -2082,45 +2091,4 @@ LRESULT CGameClientDlg::OnSiceFinish(WPARAM wParam, LPARAM lParam)
   	return 0;
 }
 
-//
-bool CGameClientDlg::OnSubGangScore( const void *pBuffer, WORD wDataSize )
-{
- 	return true;
-}
-// bool CGameClientDlg::OnSubCardPaiJin( const void *pBuffer, WORD wDataSize )
-//{
-//
-//	ASSERT(wDataSize==sizeof(CMD_S_PaiJing));
-//	if (wDataSize!=sizeof(CMD_S_PaiJing)) return false;
-//
-//	ZeroMemory(&m_GameLogic.m_PaiJing,sizeof(m_GameLogic.m_PaiJing));
-//	//消息处理
-//	CMD_S_PaiJing * pPaiJing=(CMD_S_PaiJing *)pBuffer;
-//
-//	m_GameLogic.SetMagicIndex(m_GameLogic.SwitchToCardIndex(pPaiJing->m_cbTingYongCard));
-//
-//	m_GameLogic.m_PaiJing.m_cbPaiJingCard = pPaiJing->m_cbPaiJingCard;
-//	m_GameLogic.m_PaiJing.m_cbTingYongCard = pPaiJing->m_cbTingYongCard;
-//
-// 
-//	return true;
-//
-//}
- //bool CGameClientDlg::OnSubGrantScore( const void *pBuffer, WORD wDataSize )
- //{
-
-	// ASSERT(wDataSize==sizeof(CMD_S_GrantScore));
-	// if (wDataSize!=sizeof(CMD_S_GrantScore)) return false;
-	// 
-	// //消息处理
-	// CMD_S_GrantScore * plGrantScore=(CMD_S_GrantScore *)pBuffer;
-	// //LONG Grantvalue = plGrantScore->lGrantScore;
-	// //BYTE Grantcount = plGrantScore->cbGrantCount;
-	// //TCHAR msg[128]=TEXT("");
-	// //_snprintf(msg,sizeof(msg),TEXT("你的积分不足2000，这是第%d次送你积分：%d ! 加油哦!"),Grantcount,Grantvalue);
-	// InsertSystemString(plGrantScore->messageContent);
-
-	// ShowInformationEx(plGrantScore->messageContent,0,MB_ICONINFORMATION,TEXT("高县麻将"));
-	// return true;
- //  }
  //////////////////////////////////////////////////////////////////////////

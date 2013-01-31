@@ -732,7 +732,7 @@ bool CAttemperEngineSink::OnSocketMainUser(WORD wSubCmdID, VOID * pData, WORD wD
 				//文件定义
 				CFile fileCustomFace;
 				TCHAR szFileName[128];
-				_snprintf(szFileName, CountArray(szFileName), TEXT("%s\\UploadFile_%ld.zip"), theApp.m_szDirWork, pUploadCustomFace->dwUserID);
+				_snprintf_s(szFileName, CountArray(szFileName), TEXT("%s\\UploadFile_%ld.zip"), theApp.m_szDirWork, pUploadCustomFace->dwUserID);
 				BOOL bSuccess=FALSE;
 				if ( pUploadCustomFace->bFirstPacket == true )
 					bSuccess=fileCustomFace.Open( szFileName, CFile::modeCreate|CFile::modeWrite|CFile::typeBinary);

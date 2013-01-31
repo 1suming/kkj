@@ -221,7 +221,7 @@ bool CTempldateHelper<IModeluInterface>::CreateInstance()
 		m_hDllInstance=AfxLoadLibrary(m_szModuleDllName);
 		if (m_hDllInstance==NULL) 
 		{
-			_sntprintf(m_szDescribe,CountArray(m_szDescribe),TEXT("“%s”模块加载失败"),m_szModuleDllName);
+			_sntprintf_s(m_szDescribe,CountArray(m_szDescribe),TEXT("“%s”模块加载失败"),m_szModuleDllName);
 			return false;
 		}
 
@@ -229,7 +229,7 @@ bool CTempldateHelper<IModeluInterface>::CreateInstance()
 		ModuleCreateProc * CreateProc=(ModuleCreateProc *)GetProcAddress(m_hDllInstance,m_szCreateProc);
 		if (CreateProc==NULL) 
 		{
-			_sntprintf(m_szDescribe,CountArray(m_szDescribe),TEXT("找不到组件创建函数“%s”"),m_szCreateProc);
+			_sntprintf_s(m_szDescribe,CountArray(m_szDescribe),TEXT("找不到组件创建函数“%s”"),m_szCreateProc);
 			return false;
 		}
 
@@ -237,18 +237,18 @@ bool CTempldateHelper<IModeluInterface>::CreateInstance()
 		m_pIModeluInterface=(IModeluInterface *)CreateProc(m_Guid,m_dwVersion);
 		if (m_pIModeluInterface==NULL) 
 		{
-			_sntprintf(m_szDescribe,CountArray(m_szDescribe),TEXT("调用函数“%s”生成对象失败"),m_szCreateProc);
+			_sntprintf_s(m_szDescribe,CountArray(m_szDescribe),TEXT("调用函数“%s”生成对象失败"),m_szCreateProc);
 			return false;
 		}
 	}
 	catch (LPCTSTR pszError)
 	{
-		_sntprintf(m_szDescribe,CountArray(m_szDescribe),TEXT("由于“%s”，组件创建失败"),pszError);
+		_sntprintf_s(m_szDescribe,CountArray(m_szDescribe),TEXT("由于“%s”，组件创建失败"),pszError);
 		return false;
 	}
 	catch (...)	
 	{ 
-		_sntprintf(m_szDescribe,CountArray(m_szDescribe),TEXT("组件创建函数“%s”产生未知异常错误，组件创建失败"),m_szCreateProc);
+		_sntprintf_s(m_szDescribe,CountArray(m_szDescribe),TEXT("组件创建函数“%s”产生未知异常错误，组件创建失败"),m_szCreateProc);
 		return false;
 	}
 

@@ -232,7 +232,7 @@ bool CGameService::LoadGameServiceModule(LPCTSTR pszModuleName)
 		if (m_hDllInstance==NULL) 
 		{
 			TCHAR szDescribe[256]=TEXT("");
-			_snprintf(szDescribe,sizeof(szDescribe),TEXT("“%s”模块加载失败"),pszModuleName);
+			_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("“%s”模块加载失败"),pszModuleName);
 			ShowErrorMessasge(szDescribe,TraceLevel_Exception);
 			throw 0;
 		}
@@ -240,7 +240,7 @@ bool CGameService::LoadGameServiceModule(LPCTSTR pszModuleName)
 		if (CreateFunc==NULL) 
 		{
 			TCHAR szDescribe[256]=TEXT("");
-			_snprintf(szDescribe,sizeof(szDescribe),TEXT("“%s”创建函数不存在"),pszModuleName);
+			_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("“%s”创建函数不存在"),pszModuleName);
 			ShowErrorMessasge(szDescribe,TraceLevel_Exception);
 			throw 0;
 		}
@@ -248,7 +248,7 @@ bool CGameService::LoadGameServiceModule(LPCTSTR pszModuleName)
 		if (m_pIGameServiceManager==NULL) 
 		{
 			TCHAR szDescribe[256]=TEXT("");
-			_snprintf(szDescribe,sizeof(szDescribe),TEXT("“%s”游戏管理接口创建失败"),pszModuleName);
+			_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("“%s”游戏管理接口创建失败"),pszModuleName);
 			ShowErrorMessasge(szDescribe,TraceLevel_Exception);
 			throw 0;
 		}

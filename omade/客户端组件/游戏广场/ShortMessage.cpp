@@ -58,7 +58,7 @@ BOOL CShortMessage::OnInitDialog()
 	if (m_pTargetUserItem!=NULL)
 	{
 		TCHAR szTitle[256];
-		_snprintf(szTitle,sizeof(szTitle),TEXT("[ %s ] － [ %s ]"),m_pTargetUserItem->GetUserData()->szName,m_strRoomName);
+		_snprintf_s(szTitle,sizeof(szTitle),TEXT("[ %s ] － [ %s ]"),m_pTargetUserItem->GetUserData()->szName,m_strRoomName);
 		SetWindowText(szTitle);
 	}
 
@@ -76,12 +76,12 @@ BOOL CShortMessage::OnInitDialog()
 
 	//消息头
 	TCHAR szTitle[128]=TEXT("");
-	_snprintf(szTitle,CountArray(szTitle),TEXT("【温馨提示】"));
+	_snprintf_s(szTitle,CountArray(szTitle),TEXT("【温馨提示】"));
 	m_MessageProxyHelper->InsertGeneralString(szTitle,RGB(255,0,0),MS_NORMAL,false);
 
 	//预警信息
 	TCHAR szMessage[128] ;
-	_snprintf(szMessage,CountArray(szMessage),TEXT("客服人员不会以任何形式向您索取您的帐户信息，请玩家提高警惕，保护好自己帐号密码！"));
+	_snprintf_s(szMessage,CountArray(szMessage),TEXT("客服人员不会以任何形式向您索取您的帐户信息，请玩家提高警惕，保护好自己帐号密码！"));
 	m_MessageProxyHelper->InsertShtickString(szMessage,RGB(0,0,0),MS_NORMAL,true);
 
 	return FALSE;
@@ -102,7 +102,7 @@ void CShortMessage::SetTalkInfo(IUserItem * pTargerUserItem, TCHAR * szRoomName)
 	{
 		//设置标题
 		TCHAR szTitle[256];
-		_snprintf(szTitle,sizeof(szTitle),TEXT("[ %s ] － [ %s ]"),m_strTargerName,m_strRoomName);
+		_snprintf_s(szTitle,sizeof(szTitle),TEXT("[ %s ] － [ %s ]"),m_strTargerName,m_strRoomName);
 		SetWindowText(szTitle);
 
 		//清理屏幕
@@ -310,7 +310,7 @@ void CShortMessage::OnRecvMessage(TCHAR * szSendName, TCHAR * szMessage, COLORRE
 
 	//消息头
 	TCHAR szTitle[128]=TEXT("");
-	_snprintf(szTitle,CountArray(szTitle),TEXT("%s %02d:%02d:%02d\n   "),szSendName,SystemTime.wHour,SystemTime.wMinute,SystemTime.wSecond);
+	_snprintf_s(szTitle,CountArray(szTitle),TEXT("%s %02d:%02d:%02d\n   "),szSendName,SystemTime.wHour,SystemTime.wMinute,SystemTime.wSecond);
 	m_MessageProxyHelper->InsertGeneralString(szTitle,(bMeMessage==true)?RGB(0,128,64):RGB(0,0,255),MS_NORMAL,false);
 
 	//插入消息
@@ -321,7 +321,7 @@ void CShortMessage::OnRecvMessage(TCHAR * szSendName, TCHAR * szMessage, COLORRE
 	try
 	{
 		TCHAR szTitle[128]=TEXT("");
-		_snprintf(szTitle,CountArray(szTitle),TEXT("[%s] %u/%u/%u %02d:%02d:%02d"),szSendName,SystemTime.wYear, SystemTime.wMonth, SystemTime.wDay,SystemTime.wHour,SystemTime.wMinute,SystemTime.wSecond);
+		_snprintf_s(szTitle,CountArray(szTitle),TEXT("[%s] %u/%u/%u %02d:%02d:%02d"),szSendName,SystemTime.wYear, SystemTime.wMonth, SystemTime.wDay,SystemTime.wHour,SystemTime.wMinute,SystemTime.wSecond);
 
 		//写入文件
 		CFile MsgFile;
@@ -391,7 +391,7 @@ void CShortMessage::OnBnClickedOpenChatMsg()
 	{
 		//打开记录
 		TCHAR szBuffer[128] ;
-		strcpy(szBuffer, m_strMsgFileName) ;
+		strcpy_s(szBuffer, sizeof(szBuffer),m_strMsgFileName) ;
 		if(!m_strMsgFileName.IsEmpty())	ShellExecute(NULL, NULL, m_strMsgFileName, NULL, NULL, SW_SHOWNORMAL);
 	}
 	catch(...){}

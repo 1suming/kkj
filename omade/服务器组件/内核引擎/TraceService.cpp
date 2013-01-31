@@ -146,11 +146,11 @@ bool __cdecl CRichEditTrace::TraceString(LPCTSTR pszString, enTraceLevel TraceLe
 	SYSTEMTIME SystemTime;
 	TCHAR szTimeBuffer[512] = {0};
 	GetLocalTime(&SystemTime);
-	_snprintf(szTimeBuffer, sizeof(szTimeBuffer), TEXT("¡¾ %04d-%02d-%02d %02d:%02d:%02d ¡¿"), SystemTime.wYear, SystemTime.wMonth, SystemTime.wDay, SystemTime.wHour, SystemTime.wMinute, SystemTime.wSecond);
+	_sntprintf_s(szTimeBuffer, sizeof(szTimeBuffer), TEXT("¡¾ %04d-%02d-%02d %02d:%02d:%02d ¡¿"), SystemTime.wYear, SystemTime.wMonth, SystemTime.wDay, SystemTime.wHour, SystemTime.wMinute, SystemTime.wSecond);
 
 //	InsertString(szTimeBuffer, CharFormat);
 
-	_snprintf(szTimeBuffer, sizeof(szTimeBuffer), TEXT("%s%s\n"), szTimeBuffer, pszString);
+	_sntprintf_s(szTimeBuffer, sizeof(szTimeBuffer), TEXT("%s%s\n"), szTimeBuffer, pszString);
 	CharFormat.crTextColor = pRichEditTrace->GetTraceColor(TraceLevel);
 	return InsertString(szTimeBuffer, CharFormat);
 }

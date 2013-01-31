@@ -492,7 +492,7 @@ bool CServerListManager::UpdateGameOnLineCount(DWORD dwOnLineCount)
 	{
 		CListInside * pListInside=m_PtrArrayInside[0];
 		tagGameInside * pGameInside=pListInside->GetItemInfo();
-		_snprintf(pGameInside->szDisplayName,sizeof(pGameInside->szDisplayName),TEXT("%s [ %ld ÈË]"),szProductName,dwOnLineCount);
+		_snprintf_s(pGameInside->szDisplayName,sizeof(pGameInside->szDisplayName),TEXT("%s [ %ld ÈË]"),szProductName,dwOnLineCount);
 		m_pIServerListSink->OnListItemUpdate(pListInside);
 		return true;
 	}

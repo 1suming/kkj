@@ -38,6 +38,8 @@
 #define IDC_DATABASE_ADDR               1017
 #define IDC_DATABASE_NAME               1018
 #define IDC_HIGH_OPTION                 1019
+#define IDC_SERVER_NAME2                1019
+#define IDC_MAX_TIMES                   1019
 #define IDC_DEF_DATABASE_NAME           1020
 #define IDC_SERVER_DATABASE_IP          1020
 #define IDC_SERVICE_MODULE              1021

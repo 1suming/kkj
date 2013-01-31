@@ -506,7 +506,7 @@ BOOL CRoomViewItem::OnCommand(WPARAM wParam, LPARAM lParam)
 			if (pUserData->cbCompanion==enCompanion_Detest)
 			{
 				TCHAR szMessage[256]=TEXT("");
-				_snprintf(szMessage,CountArray(szMessage),TEXT("[ %s ] 设置为厌恶玩家，系统将屏蔽他的一切聊天消息"),pUserData->szName);
+				_snprintf_s(szMessage,CountArray(szMessage),TEXT("[ %s ] 设置为厌恶玩家，系统将屏蔽他的一切聊天消息"),pUserData->szName);
 				m_MessageProxyHelper->InsertSystemString(szMessage,0);
 			}
 
@@ -589,13 +589,13 @@ BOOL CRoomViewItem::OnCommand(WPARAM wParam, LPARAM lParam)
 
 			//确认提示
 			TCHAR szMessage[128]=TEXT("");
-			_snprintf(szMessage,CountArray(szMessage),TEXT("确实要冻结 [ %s ] 的帐号吗？"),pIUserItem->GetUserName());
+			_snprintf_s(szMessage,CountArray(szMessage),TEXT("确实要冻结 [ %s ] 的帐号吗？"),pIUserItem->GetUserName());
 			if (ShowMessageBox(szMessage,MB_ICONQUESTION|MB_YESNO)!=IDYES) return TRUE;
 
 			//用户判断
 			if (pIUserItem->GetUserID()!=m_dwMenuUserID) 
 			{
-				_snprintf(szMessage,CountArray(szMessage),TEXT("用户 [ %s ] 已经离开了游戏房间，帐号冻结失败"),pIUserItem->GetUserName());
+				_snprintf_s(szMessage,CountArray(szMessage),TEXT("用户 [ %s ] 已经离开了游戏房间，帐号冻结失败"),pIUserItem->GetUserName());
 				m_MessageProxyHelper->InsertSystemString(szMessage,0);
 
 				return TRUE;
@@ -1190,7 +1190,7 @@ bool CRoomViewItem::InitRoomViewItem(CListServer * pListServer)
 
 	//建立共享内存
 	tagGameServer * pGameServer=m_pListServer->GetItemInfo();
-	_snprintf(m_szShareName,sizeof(m_szShareName),TEXT("0x8%ld%ld%ld%ld"),pGameServer->dwServerAddr,pGameServer->wServerPort,time(NULL),rand()%100);
+	_snprintf_s(m_szShareName,sizeof(m_szShareName),TEXT("0x8%ld%ld%ld%ld"),pGameServer->dwServerAddr,pGameServer->wServerPort,time(NULL),rand()%100);
 	m_hShareMemory=(HANDLE)CreateFileMapping((HANDLE)0xFFFFFFFFFFFF,NULL,PAGE_READWRITE,0,sizeof(tagShareMemory),m_szShareName);
 	if ((m_hShareMemory==NULL)||(GetLastError()==ERROR_ALREADY_EXISTS)) return false;
 	m_pShareMemory=(tagShareMemory *)MapViewOfFile(m_hShareMemory,FILE_MAP_ALL_ACCESS,0,0,0);
@@ -1290,12 +1290,12 @@ bool CRoomViewItem::ShowUserInfoMenu(IUserItem * pIUserItem, CPoint Point)
 	//聊天对象
 	if ((bMySelf==false)&&(m_cbHideUserInfo==FALSE)&&(m_dwChatUserID!=pUserData->dwUserID))
 	{
-		_snprintf(szBuffer,CountArray(szBuffer),TEXT("与 [ %s ] 交谈"),pUserData->szName);
+		_snprintf_s(szBuffer,CountArray(szBuffer),TEXT("与 [ %s ] 交谈"),pUserData->szName);
 		UserInfoMenu.AppendMenu(0,IDM_UM_SET_CHAT,szBuffer);
 	}
 	if (m_szChatName[0]!=0)
 	{
-		_snprintf(szBuffer,CountArray(szBuffer),TEXT("取消与 [ %s ] 交谈"),m_szChatName);
+		_snprintf_s(szBuffer,CountArray(szBuffer),TEXT("取消与 [ %s ] 交谈"),m_szChatName);
 		UserInfoMenu.AppendMenu(0,IDM_UM_CANECL_CHAT,szBuffer);
 	}
 
@@ -1308,7 +1308,7 @@ bool CRoomViewItem::ShowUserInfoMenu(IUserItem * pIUserItem, CPoint Point)
 	//邀请游戏
 	if ((bMySelf==false)&&(m_cbHideUserInfo==FALSE)&&(cbMeUserStatus!=US_PLAY)&&(wMeTableID!=INVALID_TABLE)&&(cbUserStatus<US_PLAY))
 	{
-		_snprintf(szBuffer,CountArray(szBuffer),TEXT("邀请 [ %s ] 一起游戏"),pUserData->szName);
+		_snprintf_s(szBuffer,CountArray(szBuffer),TEXT("邀请 [ %s ] 一起游戏"),pUserData->szName);
 		UserInfoMenu.AppendMenu(0,IDM_UM_INVITE_PLAY,szBuffer);
 	}
 
@@ -1346,19 +1346,19 @@ bool CRoomViewItem::ShowUserInfoMenu(IUserItem * pIUserItem, CPoint Point)
 	if ((m_cbHideUserInfo==FALSE)&&(pUserData->cbMemberOrder>0)&&(pUserData->cbMemberOrder<CountArray(pszMember)))
 	{
 		BYTE cbMemberOrder=pUserData->cbMemberOrder;
-		_snprintf(szBuffer,CountArray(szBuffer),TEXT("用户名：%s [ %s ]"),pUserData->szName,pszMember[cbMemberOrder]);
+		_snprintf_s(szBuffer,CountArray(szBuffer),TEXT("用户名：%s [ %s ]"),pUserData->szName,pszMember[cbMemberOrder]);
 	}
-	else _snprintf(szBuffer,CountArray(szBuffer),TEXT("用户名：%s"),pUserData->szName);
+	else _snprintf_s(szBuffer,CountArray(szBuffer),TEXT("用户名：%s"),pUserData->szName);
 	UserInfoMenu.AppendMenu(0,0,szBuffer);
 
 	//游戏 ID
-	_snprintf(szBuffer,CountArray(szBuffer),TEXT("游戏 ID：%ld"),pUserData->dwGameID);
+	_snprintf_s(szBuffer,CountArray(szBuffer),TEXT("游戏 ID：%ld"),pUserData->dwGameID);
 	UserInfoMenu.AppendMenu(0,0,szBuffer);
 	
 	//个性签名
 	if (pUserData->szUnderWrite[0]!=0)
 	{
-		_snprintf(szBuffer,CountArray(szBuffer),TEXT("个性签名：%s"),pUserData->szUnderWrite);
+		_snprintf_s(szBuffer,CountArray(szBuffer),TEXT("个性签名：%s"),pUserData->szUnderWrite);
 		UserInfoMenu.AppendMenu(0,0,szBuffer);
 	}
 
@@ -1366,13 +1366,13 @@ bool CRoomViewItem::ShowUserInfoMenu(IUserItem * pIUserItem, CPoint Point)
 	UserInfoMenu.AppendMenu(0,MF_SEPARATOR);
 
 	//经验数值
-	_snprintf(szBuffer,CountArray(szBuffer),TEXT("经验值：%ld"),pUserData->lExperience);
+	_snprintf_s(szBuffer,CountArray(szBuffer),TEXT("经验值：%ld"),pUserData->lExperience);
 	UserInfoMenu.AppendMenu(0,0,szBuffer);
 	
 	//玩家位置
 	if (pUserData->wTableID!=INVALID_TABLE)
 	{
-		_snprintf(szBuffer,CountArray(szBuffer),TEXT("桌号：%d"),pUserData->wTableID+1);
+		_snprintf_s(szBuffer,CountArray(szBuffer),TEXT("桌号：%d"),pUserData->wTableID+1);
 		UserInfoMenu.AppendMenu(0,0,szBuffer);
 	}
 
@@ -1383,19 +1383,19 @@ bool CRoomViewItem::ShowUserInfoMenu(IUserItem * pIUserItem, CPoint Point)
 	//积分信息
 	if (m_wGameGenre==GAME_GENRE_GOLD)
 	{
-		_snprintf(szBuffer,CountArray(szBuffer),TEXT("游戏币：%ld  逃跑率：%5.2f%%"),pUserData->lScore,dFleeRate);
+		_snprintf_s(szBuffer,CountArray(szBuffer),TEXT("游戏币：%ld  逃跑率：%5.2f%%"),pUserData->lScore,dFleeRate);
 			UserInfoMenu.AppendMenu(0,0,szBuffer);
 	}
 	else
 	{
-		_snprintf(szBuffer,CountArray(szBuffer),TEXT("积分：%ld  总局数：%ld  逃跑率：%5.2f%%"),pUserData->lScore,lPlayCount,dFleeRate);
+		_snprintf_s(szBuffer,CountArray(szBuffer),TEXT("积分：%ld  总局数：%ld  逃跑率：%5.2f%%"),pUserData->lScore,lPlayCount,dFleeRate);
 			UserInfoMenu.AppendMenu(0,0,szBuffer);
 	}
 
 	//社团信息
 	if (pUserData->szGroupName[0]!=0)
 	{
-		_snprintf(szBuffer,CountArray(szBuffer),TEXT("社团：%s"),pUserData->szGroupName);
+		_snprintf_s(szBuffer,CountArray(szBuffer),TEXT("社团：%s"),pUserData->szGroupName);
 		UserInfoMenu.AppendMenu(0,0,szBuffer);
 	}
 
@@ -1886,7 +1886,7 @@ void CRoomViewItem::DrawTableFrame(CDC * pDC)
 	//房间标题
 	TCHAR szRoomTitle[128]=TEXT("");
 	CListKind * pListKind=m_pListServer->GetListKind();
-	_snprintf(szRoomTitle,sizeof(szRoomTitle),TEXT("[ %s ] - [ %s ] （%ld 人）"),pListKind->GetItemInfo()->szKindName,
+	_snprintf_s(szRoomTitle,sizeof(szRoomTitle),TEXT("[ %s ] - [ %s ] （%ld 人）"),pListKind->GetItemInfo()->szKindName,
 		m_pListServer->GetItemInfo()->szServerName,m_ClientUserManager.GetOnLineCount());
 
 	//输出标题
@@ -2311,7 +2311,7 @@ bool CRoomViewItem::CanSitDownTable(WORD wTableID, WORD wChairID, bool bLookon, 
 				if (bShowError==true)
 				{
 					TCHAR szDescribe[128]=TEXT("");
-					_snprintf(szDescribe,sizeof(szDescribe),TEXT("你设置了不与不受欢迎的玩家游戏，此桌有你不欢迎的玩家 [ %s ] ！"),pTableUserData->szName);
+					_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("你设置了不与不受欢迎的玩家游戏，此桌有你不欢迎的玩家 [ %s ] ！"),pTableUserData->szName);
 					ShowMessageBox(szDescribe,MB_ICONINFORMATION);
 				}
 				return false;
@@ -2329,7 +2329,7 @@ bool CRoomViewItem::CanSitDownTable(WORD wTableID, WORD wChairID, bool bLookon, 
 				if (bShowError==true)
 				{
 					TCHAR szDescribe[128]=TEXT("");
-					_snprintf(szDescribe,sizeof(szDescribe),TEXT("[ %s ] 的胜率太低了，与你的设置不符！"),pTableUserData->szName);
+					_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("[ %s ] 的胜率太低了，与你的设置不符！"),pTableUserData->szName);
 					ShowMessageBox(szDescribe,MB_ICONINFORMATION);
 				}
 				return false;
@@ -2347,7 +2347,7 @@ bool CRoomViewItem::CanSitDownTable(WORD wTableID, WORD wChairID, bool bLookon, 
 				if (bShowError==true)
 				{
 					TCHAR szDescribe[128]=TEXT("");
-					_snprintf(szDescribe,sizeof(szDescribe),TEXT("[ %s ] 的逃跑率太高了，与你的设置不符！"),pTableUserData->szName);
+					_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("[ %s ] 的逃跑率太高了，与你的设置不符！"),pTableUserData->szName);
 					ShowMessageBox(szDescribe,MB_ICONINFORMATION);
 				}
 				return false;
@@ -2363,7 +2363,7 @@ bool CRoomViewItem::CanSitDownTable(WORD wTableID, WORD wChairID, bool bLookon, 
 				if (bShowError==true)
 				{
 					TCHAR szDescribe[128]=TEXT("");
-					_snprintf(szDescribe,sizeof(szDescribe),TEXT("[ %s ] 的积分太高了，与你的设置不符！"),pTableUserData->szName);
+					_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("[ %s ] 的积分太高了，与你的设置不符！"),pTableUserData->szName);
 					ShowMessageBox(szDescribe,MB_ICONINFORMATION);
 				}
 				return false;
@@ -2373,7 +2373,7 @@ bool CRoomViewItem::CanSitDownTable(WORD wTableID, WORD wChairID, bool bLookon, 
 				if (bShowError==true)
 				{
 					TCHAR szDescribe[128]=TEXT("");
-					_snprintf(szDescribe,sizeof(szDescribe),TEXT("[ %s ] 的积分太低了，与你的设置不符！"),pTableUserData->szName);
+					_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("[ %s ] 的积分太低了，与你的设置不符！"),pTableUserData->szName);
 					ShowMessageBox(szDescribe,MB_ICONINFORMATION);
 				}
 				return false;
@@ -3234,13 +3234,13 @@ bool CRoomViewItem::OnSocketSubUserCome(CMD_Command Command, void * pData, WORD 
 			if ((UserData.cbCompanion==enCompanion_Friend)||(UserData.dwMasterRight!=0L))
 			{
 				TCHAR szMessage[256]=TEXT("");
-				_snprintf(szMessage,sizeof(szMessage),TEXT("[ %s ] 进来了"),UserData.szName);
+				_snprintf_s(szMessage,sizeof(szMessage),TEXT("[ %s ] 进来了"),UserData.szName);
 				m_MessageProxyHelper->InsertSystemString(szMessage,0);
 			}
 			else if (g_GlobalOption.m_bShowInOutMessage==true)
 			{
 				TCHAR szMessage[256]=TEXT("");
-				_snprintf(szMessage,sizeof(szMessage),TEXT("[ %s ] 进来了"),UserData.szName);
+				_snprintf_s(szMessage,sizeof(szMessage),TEXT("[ %s ] 进来了"),UserData.szName);
 				m_MessageProxyHelper->InsertGeneralString(szMessage,0,0,true);
 			}
 		}
@@ -3633,7 +3633,7 @@ bool CRoomViewItem::OnSocketSubUserInvite(CMD_Command Command, void * pData, WOR
 
 	//提示消息
 	TCHAR szMessage[256]=TEXT("");
-	_snprintf(szMessage,sizeof(szMessage),TEXT("[ %s ] 邀请你加入第 [ %ld ] 游戏桌进行游戏，是否同意？"),pUserData->szName,pUserInvite->wTableID+1);
+	_snprintf_s(szMessage,sizeof(szMessage),TEXT("[ %s ] 邀请你加入第 [ %ld ] 游戏桌进行游戏，是否同意？"),pUserData->szName,pUserInvite->wTableID+1);
 	if (ShowMessageBox(szMessage,MB_ICONINFORMATION|MB_YESNO)==IDYES)
 	{
 		WORD wChairID=INVALID_CHAIR;
@@ -3973,7 +3973,7 @@ void __cdecl CRoomViewItem::OnUserItemDelete(IUserItem * pIUserItem)
 	{
 		SetChatObject(NULL);
 		TCHAR szMessage[256]=TEXT("");
-		_snprintf(szMessage,sizeof(szMessage),TEXT("[ %s ] 离开了，聊天对象设置为所有人"),pIUserItem->GetUserName());
+		_snprintf_s(szMessage,sizeof(szMessage),TEXT("[ %s ] 离开了，聊天对象设置为所有人"),pIUserItem->GetUserName());
 		m_MessageProxyHelper->InsertSystemString(szMessage,0);
 	}
 

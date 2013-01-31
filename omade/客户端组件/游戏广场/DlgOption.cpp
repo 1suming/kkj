@@ -525,11 +525,11 @@ BOOL CDlgOptionTableRule::OnInitDialog()
 	SetButtonSelected(IDC_BRING_TABLE_PASSWORD,m_TableRuleParameter.bPassword);
 
 	//最低胜率
-	_snprintf(szBuffer,sizeof(szBuffer),TEXT("%.2f"),((double)(m_TableRuleParameter.wWinRate))/100.0);
+	_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%.2f"),((double)(m_TableRuleParameter.wWinRate))/100.0);
 	SetDlgItemText(IDC_WIN_RATE,szBuffer);
 
 	//最高逃率
-	_snprintf(szBuffer,sizeof(szBuffer),TEXT("%.2f"),((double)(m_TableRuleParameter.wFleeRate))/100.0);
+	_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%.2f"),((double)(m_TableRuleParameter.wFleeRate))/100.0);
 	SetDlgItemText(IDC_FLEE_RATE,szBuffer);
 
 	//积分限制

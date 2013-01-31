@@ -74,7 +74,7 @@ void CDownLoadThread::GetDownLoadStatus(tagDownLoadStatus & DownLoadStatus)
 	case enDownLoadStatus_DownLoadIng:
 		{
 			DownLoadStatus.wProgress=(WORD)(m_dwDownLoadSize*100L/m_dwTotalFileSize);
-			_snprintf(DownLoadStatus.szStatus,sizeof(DownLoadStatus.szStatus),
+			_snprintf_s(DownLoadStatus.szStatus,sizeof(DownLoadStatus.szStatus),
 				TEXT("已复制：%ld KB （共 %ld KB）"),m_dwDownLoadSize/1000L,m_dwTotalFileSize/1000L);
 			break;
 		}
@@ -87,7 +87,7 @@ void CDownLoadThread::GetDownLoadStatus(tagDownLoadStatus & DownLoadStatus)
 	case enDownLoadStatus_Fails:
 		{
 			DownLoadStatus.wProgress=0;
-			_snprintf(DownLoadStatus.szStatus,sizeof(DownLoadStatus.szStatus),TEXT("下载失败，错误号：%ld"),m_DownLoadResult);
+			_snprintf_s(DownLoadStatus.szStatus,sizeof(DownLoadStatus.szStatus),TEXT("下载失败，错误号：%ld"),m_DownLoadResult);
 			break;
 		}
 	default: 
@@ -138,7 +138,7 @@ bool CDownLoadThread::OnEventThreadRun()
 				m_LocalFile.Close();
 
 				//移动文件
-				_snprintf(m_szLocalFile,sizeof(m_szLocalFile),TEXT("%s\\%s"),m_pDownLoadRequest->szLocalPath,m_pDownLoadRequest->szFileName);
+				_snprintf_s(m_szLocalFile,sizeof(m_szLocalFile),TEXT("%s\\%s"),m_pDownLoadRequest->szLocalPath,m_pDownLoadRequest->szFileName);
 				DeleteFile(m_szLocalFile);
 				if (MoveFileWithProgress(m_szTempFile,m_szLocalFile,NULL, NULL, MOVEFILE_WRITE_THROUGH|MOVEFILE_REPLACE_EXISTING)==FALSE)
 
@@ -264,7 +264,7 @@ void CDownLoadThread::DownLoadPreparative()
 		if (bSuccess==FALSE) throw enDownLoadResult_InternetReadError;
 
 		//本地文件
-		_snprintf(m_szTempFile,sizeof(m_szTempFile),TEXT("%s\\%s.DTM"),m_pDownLoadRequest->szLocalPath,m_pDownLoadRequest->szFileName);
+		_snprintf_s(m_szTempFile,sizeof(m_szTempFile),TEXT("%s\\%s.DTM"),m_pDownLoadRequest->szLocalPath,m_pDownLoadRequest->szFileName);
 		if (m_LocalFile.Open(m_szTempFile,CFile::modeReadWrite|CFile::modeCreate)==FALSE) throw enDownLoadResult_CreateFileFails;
 
 		//写入文件

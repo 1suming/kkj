@@ -100,7 +100,7 @@ bool CTableResource::LoadFromFiles(LPCTSTR pszGameName)
 		//加载资源
 		CFile ResourceFile;
 		TCHAR szResourcePath[MAX_PATH];
-		_snprintf(szResourcePath,sizeof(szResourcePath),TEXT("%s%s\\TableFrame.DAT"),g_GlobalUnits.GetWorkDirectory(),pszGameName);
+		_snprintf_s(szResourcePath,sizeof(szResourcePath),TEXT("%s%s\\TableFrame.DAT"),g_GlobalUnits.GetWorkDirectory(),pszGameName);
 
 	//	_cprintf("szResourcePath : %s",szResourcePath);
 		if (ResourceFile.Open(szResourcePath,CFile::modeRead,NULL)==FALSE)
@@ -150,13 +150,13 @@ bool CTableResource::LoadFromFiles(LPCTSTR pszGameName)
 		if (lstrcmp(pszGameName,TEXT("DZShowHand"))==0)
 		{
 			m_bDZShowHand=true;
-			_snprintf(szResourcePath,sizeof(szResourcePath),TEXT("%s%s\\Player.BMP"),g_GlobalUnits.GetWorkDirectory(),pszGameName);
+			_snprintf_s(szResourcePath,sizeof(szResourcePath),TEXT("%s%s\\Player.BMP"),g_GlobalUnits.GetWorkDirectory(),pszGameName);
 			m_ImagePeople.Load(szResourcePath);
 			if (m_ImagePeople.IsNull()) throw 0;
 		}
 
 		//加载锁位图
-		_snprintf(szResourcePath,sizeof(szResourcePath),TEXT("%s%s\\Locker.BMP"),g_GlobalUnits.GetWorkDirectory(),pszGameName);
+		_snprintf_s(szResourcePath,sizeof(szResourcePath),TEXT("%s%s\\Locker.BMP"),g_GlobalUnits.GetWorkDirectory(),pszGameName);
 		m_ImageLock.Load(szResourcePath);
 		if (m_ImageLock.IsNull()) 
 		{
@@ -165,7 +165,7 @@ bool CTableResource::LoadFromFiles(LPCTSTR pszGameName)
 		}
 
 		//加载准备标志
-		_snprintf(szResourcePath,sizeof(szResourcePath),TEXT("%s%s\\UserReady.BMP"),g_GlobalUnits.GetWorkDirectory(),pszGameName);
+		_snprintf_s(szResourcePath,sizeof(szResourcePath),TEXT("%s%s\\UserReady.BMP"),g_GlobalUnits.GetWorkDirectory(),pszGameName);
 		m_ImageReady.Load(szResourcePath);
 		if (m_ImageReady.IsNull()) 
 		{
@@ -175,12 +175,12 @@ bool CTableResource::LoadFromFiles(LPCTSTR pszGameName)
 		}
 
 		//加载开始标志
-		_snprintf(szResourcePath,sizeof(szResourcePath),TEXT("%s%s\\TablePlaying.BMP"),g_GlobalUnits.GetWorkDirectory(),pszGameName);
+		_snprintf_s(szResourcePath,sizeof(szResourcePath),TEXT("%s%s\\TablePlaying.BMP"),g_GlobalUnits.GetWorkDirectory(),pszGameName);
 		m_ImagePlay.Load(szResourcePath);
 		if (m_ImagePlay.IsNull()) throw 0;
 
 		//加载桌子位图
-		_snprintf(szResourcePath,sizeof(szResourcePath),TEXT("%s%s\\TableNormal.BMP"),g_GlobalUnits.GetWorkDirectory(),pszGameName);
+		_snprintf_s(szResourcePath,sizeof(szResourcePath),TEXT("%s%s\\TableNormal.BMP"),g_GlobalUnits.GetWorkDirectory(),pszGameName);
 		m_ImageTable.Load(szResourcePath);
 		if (m_ImageTable.IsNull()) throw 0;
 
@@ -522,7 +522,7 @@ void __cdecl CTableView::DrawTable(CDC * pDC, bool bHideInfo, CTableResource * p
 	{
 		TCHAR szBuffer[32];
 		pDC->SetTextColor(pTableResource->m_crTableID);
-		_snprintf(szBuffer,sizeof(szBuffer),TEXT("- %d -"),m_TableState.wTableID+1);
+		_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("- %d -"),m_TableState.wTableID+1);
 		pDC->DrawText(szBuffer,lstrlen(szBuffer),&pTableResource->m_rcTableID,DT_VCENTER|DT_CENTER|DT_NOCLIP|DT_SINGLELINE);
 	}
 	else

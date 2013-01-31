@@ -106,8 +106,13 @@ void CServiceParameter::OnOK()
 		return;
 	}
 
+
+
 	//单元积分
 	OptionParameter.GameServiceOption.lCellScore=GetDlgItemInt(IDC_CELL_SCORE,NULL,FALSE);
+
+	//最大积分倍数OMA
+	OptionParameter.GameServiceOption.lMaxScoreTimes=GetDlgItemInt(IDC_MAX_TIMES,NULL,FALSE);
 
 	//最低积分
 	OptionParameter.GameServiceOption.lLessScore=GetDlgItemInt(IDC_LESS_SCORE,NULL,FALSE);
@@ -212,7 +217,7 @@ void CServiceParameter::OnOK()
 
 	//保存地址
 	BYTE * pcbDataBaseAddr=(BYTE *)&dwDataBaseAddr;
-	_snprintf(OptionParameter.szDataBaseAddr,sizeof(OptionParameter.szDataBaseAddr),TEXT("%d.%d.%d.%d"),
+	_sntprintf_s(OptionParameter.szDataBaseAddr,sizeof(OptionParameter.szDataBaseAddr),TEXT("%d.%d.%d.%d"),
 		pcbDataBaseAddr[3],pcbDataBaseAddr[2],pcbDataBaseAddr[1],pcbDataBaseAddr[0]);
 
 	//保存参数
@@ -443,6 +448,10 @@ void CServiceParameter::UpdateOptionParameter()
 	if (m_OptionParameter.GameServiceOption.wTableCount==0) SetDlgItemText(IDC_TABLE_COUNT,TEXT(""));
 	else SetDlgItemInt(IDC_TABLE_COUNT,m_OptionParameter.GameServiceOption.wTableCount,FALSE);
 
+	//最大积分倍数//OMA 
+	if (m_OptionParameter.GameServiceOption.lMaxScoreTimes==0) SetDlgItemText(IDC_MAX_TIMES,TEXT(""));
+	else SetDlgItemInt(IDC_MAX_TIMES,m_OptionParameter.GameServiceOption.lMaxScoreTimes,FALSE);
+
 	//单元积分
 	if (m_OptionParameter.GameServiceOption.lCellScore==0) SetDlgItemText(IDC_CELL_SCORE,TEXT(""));
 	else SetDlgItemInt(IDC_CELL_SCORE,m_OptionParameter.GameServiceOption.lCellScore,FALSE);
@@ -490,7 +499,7 @@ void CServiceParameter::UpdateOptionParameter()
 	if (m_OptionParameter.GameServiceOption.szGameRoomName[0]==0) 
 	{
 		TCHAR szServerName[SERVER_LEN]=TEXT("");
-		_snprintf(szServerName,sizeof(szServerName),TEXT("%s房间"),m_GameServiceAttrib.szKindName);
+		_sntprintf_s(szServerName,sizeof(szServerName),TEXT("%s房间"),m_GameServiceAttrib.szKindName);
 		SetDlgItemText(IDC_SERVER_NAME,szServerName);
 	}
 	else SetDlgItemText(IDC_SERVER_NAME,m_OptionParameter.GameServiceOption.szGameRoomName);
@@ -519,7 +528,7 @@ void CServiceParameter::UpdateOptionParameter()
 	{
 		TCHAR szServerAddr[256]=TEXT("");
 		BYTE * cbServerAddr=(BYTE *)&m_OptionParameter.GameServiceOption.dwServerAddr;
-		_snprintf(szServerAddr,CountArray(szServerAddr),TEXT("%ld.%ld.%ld.%ld"),cbServerAddr[0],cbServerAddr[1],cbServerAddr[2],cbServerAddr[3]);
+		_sntprintf_s(szServerAddr,CountArray(szServerAddr),TEXT("%ld.%ld.%ld.%ld"),cbServerAddr[0],cbServerAddr[1],cbServerAddr[2],cbServerAddr[3]);
 		pServerAddr->SetWindowText(szServerAddr);
 	}
 

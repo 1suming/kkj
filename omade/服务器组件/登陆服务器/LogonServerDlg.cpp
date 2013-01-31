@@ -104,7 +104,7 @@ void CSystemOptionDlg::OnOK()
 	DWORD dwDataBaseIP=INADDR_NONE;
 	BYTE * pAddrByte=(BYTE *)&dwDataBaseIP;
 	((CIPAddressCtrl *)GetDlgItem(IDC_USER_DATABASE_IP))->GetAddress(dwDataBaseIP);
-	_snprintf(InitParamter.m_szUserDataBaseAddr,sizeof(InitParamter.m_szUserDataBaseAddr),TEXT("%d.%d.%d.%d"),
+	_snprintf_s(InitParamter.m_szUserDataBaseAddr,sizeof(InitParamter.m_szUserDataBaseAddr),TEXT("%d.%d.%d.%d"),
 		pAddrByte[3],pAddrByte[2],pAddrByte[1],pAddrByte[0]);
 
 	//主站地址
@@ -115,7 +115,7 @@ void CSystemOptionDlg::OnOK()
 	dwDataBaseIP=INADDR_NONE;
 	pAddrByte=(BYTE *)&dwDataBaseIP;
 	((CIPAddressCtrl *)GetDlgItem(IDC_CENTER_SERVER_IP))->GetAddress(dwDataBaseIP);
-	_snprintf(InitParamter.m_szCenterServerAddr,sizeof(InitParamter.m_szCenterServerAddr),TEXT("%d.%d.%d.%d"),
+	_snprintf_s(InitParamter.m_szCenterServerAddr,sizeof(InitParamter.m_szCenterServerAddr),TEXT("%d.%d.%d.%d"),
 		pAddrByte[0],pAddrByte[1],pAddrByte[2],pAddrByte[3]);
 
 	//保存设置

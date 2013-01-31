@@ -37,17 +37,19 @@ class CTableFrameSink : public ITableFrameSink, public ITableUserAction
 protected:
 	LONG							m_lSiceCount;							//骰子点数
 	WORD							m_wBankerUser;							//庄家用户
-	LONG							m_lGameScore[GAME_PLAYER];				//游戏得分
+	LONG							m_lGameScore[GAME_PLAYER];				//游戏得分// OMA 当前局分数记录
 	BYTE							m_cbCardIndex[GAME_PLAYER][MAX_INDEX];	//用户扑克
 	bool							m_bTrustee[GAME_PLAYER];				//是否托管
 	BYTE							m_cbGenCount[GAME_PLAYER];				//根数量
-	bool							m_bPlayStatus[GAME_PLAYER];				//玩牌状态
+	bool							m_bPlayStatus[GAME_PLAYER];				//玩牌状态 false 胡牌或者逃跑
 	BYTE							m_cbWinCount;							//赢家数目
 	WORD							m_wWinOrder[GAME_PLAYER];				//赢家排名
 	LONG							m_lGameTax[GAME_PLAYER];				//抽税分数
 	tagGangScore					m_GangScore[GAME_PLAYER];				//杠 分数
-
 	WORD							m_wLostFanShu[GAME_PLAYER][GAME_PLAYER];//输分数目
+	bool                            m_bHuaZhu[GAME_PLAYER];                 // 记录花猪
+	bool                            m_bWuJiao[GAME_PLAYER];                 // 记录无叫
+
 
 	//出牌信息
 protected:
@@ -205,7 +207,15 @@ protected:
 	void ProcessChiHuUser( WORD wChairId, bool bGiveUp );
 	// 牌权过滤
 	void FiltrateRight( WORD wChairId,CChiHuRight &chr );
- 
+	// OMA ADD
+	// OMA 花猪处理
+	bool HandleHuaZhu(int i,LONG lHuaZhuScore[GAME_PLAYER]); // true 花猪
+	// OMA 查叫处理
+	void HandleChaJiao(int i,LONG lChaJiaoScore[GAME_PLAYER]);
+	// OMA 补偿其他用户
+	void PayPunishScore(int i,LONG lHuaZhuScore[GAME_PLAYER],LONG lChaJiaoScore[GAME_PLAYER]);
+
+
 };
 
 //////////////////////////////////////////////////////////////////////////

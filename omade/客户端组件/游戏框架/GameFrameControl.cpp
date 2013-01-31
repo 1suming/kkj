@@ -435,7 +435,7 @@ void CGameFrameControl::OnBnClickedOption()
 void CGameFrameControl::OnBnClickedRule()
 {
 	TCHAR szRuleUrl[128];
-	_snprintf(szRuleUrl,sizeof(szRuleUrl),TEXT("http://205168.cqxunmei.com/GameRule.asp?KindID=%ld"),m_UserListView.m_wKindID);
+	_snprintf_s(szRuleUrl,sizeof(szRuleUrl),TEXT("http://205168.cqxunmei.com/GameRule.asp?KindID=%ld"),m_UserListView.m_wKindID);
 	ShellExecute(NULL,TEXT("open"),szRuleUrl,NULL,NULL,SW_SHOWDEFAULT);
 
 	return;
@@ -726,21 +726,21 @@ void CGameFrameControl::OnNMRclickUserList(NMHDR * pNMHDR, LRESULT * pResult)
 		LPCTSTR pszMemberOrder[]={TEXT("普通会员"),TEXT("中级会员"),TEXT("高级贵宾")};
 		if ((m_pUserData->cbMemberOrder>0)&&(m_pUserData->cbMemberOrder<CountArray(pszMemberOrder)))
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("用户名：%s [ %s ]"),m_pUserData->szName,pszMemberOrder[m_pUserData->cbMemberOrder]);
+			_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("用户名：%s [ %s ]"),m_pUserData->szName,pszMemberOrder[m_pUserData->cbMemberOrder]);
 		}
-		else _snprintf(szBuffer,sizeof(szBuffer),TEXT("用户名：%s"),m_pUserData->szName);
+		else _snprintf_s(szBuffer,sizeof(szBuffer),TEXT("用户名：%s"),m_pUserData->szName);
 		UserInfoMenu.AppendMenu(0,0,szBuffer);
 
 		//用户 ID
-		_snprintf(szBuffer,sizeof(szBuffer),TEXT("游戏 ID：%ld"),m_pUserData->dwGameID);
+		_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("游戏 ID：%ld"),m_pUserData->dwGameID);
 		UserInfoMenu.AppendMenu(0,0,szBuffer);
 
 		//用户经验
-		_snprintf(szBuffer,sizeof(szBuffer),TEXT("经验值：%ld"),m_pUserData->lExperience);
+		_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("经验值：%ld"),m_pUserData->lExperience);
 		UserInfoMenu.AppendMenu(0,0,szBuffer);
 
 		//用户积分
-		_snprintf(szBuffer,sizeof(szBuffer),TEXT("积分：%ld  总局数：%ld  逃跑率：%5.2f%%"),m_pUserData->lScore,lPlayCount,dFleeRate);
+		_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("积分：%ld  总局数：%ld  逃跑率：%5.2f%%"),m_pUserData->lScore,lPlayCount,dFleeRate);
 		UserInfoMenu.AppendMenu(0,0,szBuffer);
 
 		//获取用户
@@ -755,12 +755,12 @@ void CGameFrameControl::OnNMRclickUserList(NMHDR * pNMHDR, LRESULT * pResult)
 		if (pMeUserData->dwUserID!=m_pUserData->dwUserID) UserInfoMenu.AppendMenu(MF_SEPARATOR);
 		if ((dwCurUserID!=m_pUserData->dwUserID)&&(dwCurUserID!=pMeUserData->dwUserID)&&(pMeUserData->dwUserID!=m_pUserData->dwUserID))
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("与 [ %s ] 聊天"),m_pUserData->szName);
+			_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("与 [ %s ] 聊天"),m_pUserData->szName);
 			UserInfoMenu.AppendMenu(0,IDM_UM_SET_CHAT,szBuffer);
 		}
 		if (dwCurUserID==m_pUserData->dwUserID)
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("取消与 [ %s ] 的聊天"),m_pUserData->szName);
+			_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("取消与 [ %s ] 的聊天"),m_pUserData->szName);
 			UserInfoMenu.AppendMenu(0,IDM_UM_CANECL_CHAT,szBuffer);
 		}
 
@@ -771,11 +771,11 @@ void CGameFrameControl::OnNMRclickUserList(NMHDR * pNMHDR, LRESULT * pResult)
 			UserInfoMenu.AppendMenu(MF_SEPARATOR);
 
 			//允许旁观
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("允许 [ %s ] 观看您游戏"),m_pUserData->szName);
+			_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("允许 [ %s ] 观看您游戏"),m_pUserData->szName);
 			UserInfoMenu.AppendMenu(0,IDM_UM_ALLOW_LOOKON,szBuffer);
 
 			//禁止旁观
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("禁止 [ %s ] 观看您游戏"),m_pUserData->szName);
+			_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("禁止 [ %s ] 观看您游戏"),m_pUserData->szName);
 			UserInfoMenu.AppendMenu(0,IDM_UM_ENJOIN_LOOKON,szBuffer);
 		}
 
@@ -794,7 +794,7 @@ void CGameFrameControl::OnNMRclickUserList(NMHDR * pNMHDR, LRESULT * pResult)
 				if ( pMeUserData->cbMasterOrder<m_pUserData->cbMasterOrder ) bEnable = false;
 
 				//插入菜单
-				_snprintf(szBuffer,sizeof(szBuffer),TEXT("把 [ %s ] 踢出游戏房间"),m_pUserData->szName);
+				_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("把 [ %s ] 踢出游戏房间"),m_pUserData->szName);
 				UserInfoMenu.AppendMenu((bEnable==true)?MF_ENABLED:MF_GRAYED,IDM_UM_KICK_TABLE_USER,szBuffer);
 			}
 		}

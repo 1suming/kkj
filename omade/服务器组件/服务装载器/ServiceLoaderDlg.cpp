@@ -116,7 +116,7 @@ void CSystemOptionDlg::OnOK()
 	DWORD dwDataBaseIP=INADDR_NONE;
 	BYTE * pAddrByte=(BYTE *)&dwDataBaseIP;
 	((CIPAddressCtrl *)GetDlgItem(IDC_USER_DATABASE_IP))->GetAddress(dwDataBaseIP);
-	_snprintf(InitParamter.m_szGameUserDBAddr,sizeof(InitParamter.m_szGameUserDBAddr),TEXT("%d.%d.%d.%d"),
+	_sntprintf_s(InitParamter.m_szGameUserDBAddr,sizeof(InitParamter.m_szGameUserDBAddr),TEXT("%d.%d.%d.%d"),
 		pAddrByte[3],pAddrByte[2],pAddrByte[1],pAddrByte[0]);
 
 	//信息数据库 
@@ -129,14 +129,14 @@ void CSystemOptionDlg::OnOK()
 	dwDataBaseIP=INADDR_NONE;
 	pAddrByte=(BYTE *)&dwDataBaseIP;
 	((CIPAddressCtrl *)GetDlgItem(IDC_SERVER_DATABASE_IP))->GetAddress(dwDataBaseIP);
-	_snprintf(InitParamter.m_szServerInfoDBAddr,sizeof(InitParamter.m_szServerInfoDBAddr),TEXT("%d.%d.%d.%d"),
+	_sntprintf_s(InitParamter.m_szServerInfoDBAddr,sizeof(InitParamter.m_szServerInfoDBAddr),TEXT("%d.%d.%d.%d"),
 		pAddrByte[3],pAddrByte[2],pAddrByte[1],pAddrByte[0]);
 
 	//中心服务器
 	dwDataBaseIP=INADDR_NONE;
 	pAddrByte=(BYTE *)&dwDataBaseIP;
 	((CIPAddressCtrl *)GetDlgItem(IDC_CENTER_SERVER_IP))->GetAddress(dwDataBaseIP);
-	_snprintf(InitParamter.m_szCenterServerAddr,sizeof(InitParamter.m_szCenterServerAddr),TEXT("%d.%d.%d.%d"),
+	_sntprintf_s(InitParamter.m_szCenterServerAddr,sizeof(InitParamter.m_szCenterServerAddr),TEXT("%d.%d.%d.%d"),
 		pAddrByte[3],pAddrByte[2],pAddrByte[1],pAddrByte[0]);
 
 	//保存设置
@@ -191,12 +191,12 @@ BOOL CServiceLoaderDlg::OnInitDialog()
 			GetDlgItem(IDC_SAVE_OPTION)->EnableWindow(TRUE);
 
 			//提示信息
-			_snprintf(szDescribe,sizeof(szDescribe),TEXT("“%s”游戏房间加载成功"),pszCmdLine);
+			_sntprintf_s(szDescribe,sizeof(szDescribe),TEXT("“%s”游戏房间加载成功"),pszCmdLine);
 			ShowErrorMessasge(szDescribe,TraceLevel_Normal);
 		}
 		else 
 		{
-			_snprintf(szDescribe,sizeof(szDescribe),TEXT("“%s”游戏房间加载失败"),pszCmdLine);
+			_sntprintf_s(szDescribe,sizeof(szDescribe),TEXT("“%s”游戏房间加载失败"),pszCmdLine);
 			ShowErrorMessasge(szDescribe,TraceLevel_Exception);
 		}
 	}
@@ -301,17 +301,17 @@ void CServiceLoaderDlg::OnBnClickedStart()
 		GetDlgItem(IDC_OPTION)->EnableWindow(FALSE);
 
 		//提示信息
-		_snprintf(szDescribe,sizeof(szDescribe),TEXT("【%s - %ld】服务启动成功"),GameServiceParameter.GameServiceOption.szGameRoomName,GameServiceParameter.GameServiceOption.wServerID);
+		_sntprintf_s(szDescribe,sizeof(szDescribe),TEXT("【%s - %ld】服务启动成功"),GameServiceParameter.GameServiceOption.szGameRoomName,GameServiceParameter.GameServiceOption.wServerID);
 		ShowErrorMessasge(szDescribe,TraceLevel_Normal);
 
 		//设置标题
 		TCHAR szTitle[128]=TEXT("");
-		_snprintf(szTitle,sizeof(szTitle),TEXT("游戏服务 [运行] - %s"),GameServiceParameter.GameServiceOption.szGameRoomName);
+		_sntprintf_s(szTitle,sizeof(szTitle),TEXT("游戏服务 [运行] - %s"),GameServiceParameter.GameServiceOption.szGameRoomName);
 		SetWindowText(szTitle);
 	}
 	else 
 	{
-		_snprintf(szDescribe,sizeof(szDescribe),TEXT("【%s】服务启动失败"),GameServiceParameter.GameServiceOption.szGameRoomName);
+		_sntprintf_s(szDescribe,sizeof(szDescribe),TEXT("【%s】服务启动失败"),GameServiceParameter.GameServiceOption.szGameRoomName);
 		ShowErrorMessasge(szDescribe,TraceLevel_Exception);
 	}
 
@@ -378,12 +378,12 @@ void CServiceLoaderDlg::OnBnClickedOpen()
 	bool bSuccess=m_ServiceParameter.LoadParameter(FileDialog.GetPathName());
 	if (bSuccess==true)
 	{
-		_snprintf(szDescribe,sizeof(szDescribe),TEXT("“%s”游戏房间加载成功"),FileDialog.GetFileName());
+		_sntprintf_s(szDescribe,sizeof(szDescribe),TEXT("“%s”游戏房间加载成功"),FileDialog.GetFileName());
 		ShowErrorMessasge(szDescribe,TraceLevel_Normal);
 	}
 	else
 	{
-		_snprintf(szDescribe,sizeof(szDescribe),TEXT("“%s”游戏房间加载失败"),FileDialog.GetFileName());
+		_sntprintf_s(szDescribe,sizeof(szDescribe),TEXT("“%s”游戏房间加载失败"),FileDialog.GetFileName());
 		ShowErrorMessasge(szDescribe,TraceLevel_Exception);
 	}
 
@@ -467,7 +467,7 @@ const tagDBConnectInfo * CServiceLoaderDlg::GetDBConnectInfo(DWORD dwDataBaseAdd
 		//转化地址
 		TCHAR szDataBaseAdr[16]=TEXT("");
 		BYTE * pcbDataBaseAdr=(BYTE *)&dwDataBaseAddr;
-		_snprintf(szDataBaseAdr,sizeof(szDataBaseAdr),TEXT("%d.%d.%d.%d"),pcbDataBaseAdr[0],pcbDataBaseAdr[1],pcbDataBaseAdr[2],pcbDataBaseAdr[3]);
+		_sntprintf_s(szDataBaseAdr,sizeof(szDataBaseAdr),TEXT("%d.%d.%d.%d"),pcbDataBaseAdr[0],pcbDataBaseAdr[1],pcbDataBaseAdr[2],pcbDataBaseAdr[3]);
 
 		//执行查询
 		ServerInfoAide.ResetParameter();

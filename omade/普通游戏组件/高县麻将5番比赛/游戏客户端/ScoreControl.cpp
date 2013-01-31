@@ -223,7 +223,7 @@ void CScoreControl::DrawScoreControl( CDC *pDC )
 
  		ZeroMemory(szBuffer,sizeof(szBuffer));
 		TCHAR szGen[64];
-		_snprintf( szGen,CountArray(szGen),TEXT("得花猪分 %d"),m_ScoreInfo.lHuaZhuScore[m_ScoreInfo.wMeChairId] );
+		_snprintf_s( szGen,CountArray(szGen),TEXT("得花猪分 %d"),m_ScoreInfo.lHuaZhuScore[m_ScoreInfo.wMeChairId] );
 		lstrcat( szBuffer,szGen );
 		DrawTextString( pDC,szBuffer,RGB(255,255,255),RGB(0,0,0),nXPos,nYPos,false );
 		nYPos += 19;
@@ -235,7 +235,7 @@ void CScoreControl::DrawScoreControl( CDC *pDC )
  
 		ZeroMemory(szBuffer,sizeof(szBuffer));
 		TCHAR szGen[64];
-		_snprintf( szGen,CountArray(szGen),TEXT("得查叫分 %d"),m_ScoreInfo.lChaJiaoScore[m_ScoreInfo.wMeChairId] );
+		_snprintf_s( szGen,CountArray(szGen),TEXT("得查叫分 %d"),m_ScoreInfo.lChaJiaoScore[m_ScoreInfo.wMeChairId] );
 		lstrcat( szBuffer,szGen );
 		DrawTextString( pDC,szBuffer,RGB(255,255,255),RGB(0,0,0),nXPos,nYPos,false );
 		nYPos += 19;
@@ -281,7 +281,7 @@ void CScoreControl::DrawScoreControl( CDC *pDC )
 			TCHAR szName[NAME_LEN] = TEXT("");
 			lstrcpyn( szName,m_ScoreInfo.szUserName[i],NAME_LEN*sizeof(TCHAR));
 		
-			_snprintf( szBuffer,CountArray(szBuffer),TEXT(" %s %d "),szName,m_ScoreInfo.wLostFanShu[i] );
+			_snprintf_s( szBuffer,CountArray(szBuffer),TEXT(" %s %d "),szName,m_ScoreInfo.wLostFanShu[i] );
 
 			DrawTextString( pDC,szBuffer,RGB(255,255,255),RGB(0,0,0),nXPos,nYPos,false );
 			nYPos += 19;
@@ -293,21 +293,21 @@ void CScoreControl::DrawScoreControl( CDC *pDC )
 	{
 
 		ZeroMemory(szBuffer,sizeof(szBuffer));
-		_snprintf( szBuffer,CountArray(szBuffer),TEXT("花猪"),szBuffer,0-m_ScoreInfo.lHuaZhuScore[wMeChairId]);
+		_snprintf_s( szBuffer,CountArray(szBuffer),TEXT("花猪"),szBuffer,0-m_ScoreInfo.lHuaZhuScore[wMeChairId]);
 		DrawTextString( pDC,szBuffer,RGB(255,255,255),RGB(0,0,0),nXPos,nYPos,false );
 		nYPos += 19;
 
 	}else if(m_ScoreInfo.lChaJiaoScore[wMeChairId]<0) // 查叫
 	{
 		ZeroMemory(szBuffer,sizeof(szBuffer));
-		_snprintf( szBuffer,CountArray(szBuffer),TEXT("无叫"),szBuffer);
+		_snprintf_s( szBuffer,CountArray(szBuffer),TEXT("无叫"),szBuffer);
 		DrawTextString( pDC,szBuffer,RGB(255,255,255),RGB(0,0,0),nXPos,nYPos,false );
 		nYPos += 19;
 
 	}
  
 	//总计
-	_snprintf( szBuffer,CountArray(szBuffer),TEXT("%ld"),m_ScoreInfo.lGameScore );
+	_snprintf_s( szBuffer,CountArray(szBuffer),TEXT("%ld"),m_ScoreInfo.lGameScore );
 	if( m_ScoreInfo.lGameScore > 0 )
 		DrawTextString( pDC,szBuffer,RGB(255,255,255),RGB(0,0,0),m_ptBenchmark.x+151,m_ptBenchmark.y+117,false );
 	else
@@ -387,7 +387,7 @@ void CScoreControl::DrawNumberString( CDC *pDC, CPngImage &PngNumber, int nXPos,
 	nYDrawPos -= nHeightNumber/2;
 
 	CHAR szNum[256] = {0};
-	_snprintf(szNum,CountArray(szNum),"%+ld",lNumber);
+	_snprintf_s(szNum,CountArray(szNum),"%+ld",lNumber);
 
 	if( bDrawCenter )
 	{

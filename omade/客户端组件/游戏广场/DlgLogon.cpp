@@ -209,7 +209,7 @@ BOOL CDlgRegister::OnInitDialog()
 
 	//读取配置
 	TCHAR szFileName[MAX_PATH]=TEXT("");
-	_snprintf(szFileName,sizeof(szFileName),TEXT("%s\\Spreader.ini"),szPath);
+	_snprintf_s(szFileName,sizeof(szFileName),TEXT("%s\\Spreader.ini"),szPath);
 
 	//读取推荐人
 	TCHAR szSpreader[NAME_LEN]=TEXT("");
@@ -557,7 +557,7 @@ bool CDlgLogon::OnLogonSuccess()
 	{
 		//构造信息
 		TCHAR szBuffer[256];
-		_snprintf(szBuffer,sizeof(szBuffer),TEXT("%s\\%ld"),REG_USER_INFO,UserData.dwUserID);
+		_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%s\\%ld"),REG_USER_INFO,UserData.dwUserID);
 
 		//写入信息
 		CRegKey RegUserInfo;
@@ -575,7 +575,7 @@ bool CDlgLogon::OnLogonSuccess()
 	{
 		//构造信息
 		TCHAR szBuffer[256];
-		_snprintf(szBuffer,sizeof(szBuffer),TEXT("%ld"),UserData.dwUserID);
+		_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%ld"),UserData.dwUserID);
 
 		//写入信息
 		CRegKey RegUserID;
@@ -619,7 +619,7 @@ void CDlgLogon::LoadAccountsInfo()
 
 			//加载其他信息
 			CRegKey RegUserAccount;
-			_snprintf(szTempBuffer,sizeof(szTempBuffer),TEXT("%s\\%ld"),REG_USER_INFO,dwUserDBID);
+			_snprintf_s(szTempBuffer,sizeof(szTempBuffer),TEXT("%s\\%ld"),REG_USER_INFO,dwUserDBID);
 			RegUserAccount.Open(HKEY_CURRENT_USER,szTempBuffer,KEY_READ);
 			if (RegUserAccount!=NULL)
 			{
@@ -637,7 +637,7 @@ void CDlgLogon::LoadAccountsInfo()
 				dwBufferSize=sizeof(dwGameID);
 				if ((RegUserAccount.QueryValue(TEXT("GameID"),&dwType,&dwGameID,&dwBufferSize)==ERROR_SUCCESS)&&(dwGameID!=0L))
 				{
-					_sntprintf(szTempBuffer,CountArray(szTempBuffer),TEXT("%ld"),dwGameID);
+					_sntprintf_s(szTempBuffer,CountArray(szTempBuffer),TEXT("%ld"),dwGameID);
 					iInsertItem=pComBoxUserID->AddString(szTempBuffer);
 					pComBoxUserID->SetItemData(iInsertItem,dwUserDBID);
 				}
@@ -788,7 +788,7 @@ bool CDlgLogon::CheckLogonInput(bool bShowError)
 		if(nWidth<LESS_SCREEN_W || nHeight<LESS_SCREEN_H)
 		{
 			TCHAR szInfo[255]=TEXT("");
-			_sntprintf(szInfo,CountArray(szInfo),TEXT("屏幕像素需要在%d*%d或以上才可以正常游戏!"),LESS_SCREEN_W,LESS_SCREEN_H);
+			_sntprintf_s(szInfo,CountArray(szInfo),TEXT("屏幕像素需要在%d*%d或以上才可以正常游戏!"),LESS_SCREEN_W,LESS_SCREEN_H);
 			throw szInfo;
 		}
 

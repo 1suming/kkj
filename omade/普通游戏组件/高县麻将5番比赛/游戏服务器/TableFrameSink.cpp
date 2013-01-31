@@ -25,7 +25,10 @@ CTableFrameSink::CTableFrameSink()
 	memset( m_wWinOrder,INVALID_CHAIR,sizeof(m_wWinOrder) );
 	ZeroMemory( m_lGameTax,sizeof(m_lGameTax) );
 	ZeroMemory( m_wLostFanShu,sizeof(m_wLostFanShu) );
+	ZeroMemory( m_bHuaZhu,sizeof(m_bHuaZhu) );
+	ZeroMemory( m_bWuJiao,sizeof(m_bWuJiao) );
 
+ 
 	//出牌信息
 	m_cbOutCardData=0;
 	m_cbOutCardCount=0;
@@ -82,6 +85,7 @@ CTableFrameSink::CTableFrameSink()
 	 // 控制台输出
 	AllocConsole();
 	 //文件输出
+	
 	if((freopen("Majhonelog.txt", "w+", stdout)) == NULL)
 			exit(-1);
 #endif
@@ -121,6 +125,9 @@ bool __cdecl CTableFrameSink::InitTableFrameSink(IUnknownEx * pIUnknownEx)
 	m_pGameServiceOption=m_pITableFrame->GetGameServiceOption();
 	ASSERT(m_pGameServiceOption!=NULL);
 
+	//OMA 初始化游戏逻辑
+	m_GameLogic.SetMaxScoreTimes(m_pGameServiceOption->lMaxScoreTimes);
+
 	return true;
 }
 
@@ -139,6 +146,9 @@ void __cdecl CTableFrameSink::RepositTableFrameSink()
 	memset( m_wWinOrder,INVALID_CHAIR,sizeof(m_wWinOrder) );
 	ZeroMemory( m_lGameTax,sizeof(m_lGameTax) );
 	ZeroMemory( m_wLostFanShu,sizeof(m_wLostFanShu) );
+
+	ZeroMemory( m_bHuaZhu,sizeof(m_bHuaZhu) );
+	ZeroMemory( m_bWuJiao,sizeof(m_bWuJiao) );
 
 	//出牌信息
 	m_cbOutCardData=0;
@@ -428,6 +438,222 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 	return true;
 }
 
+// OMA 花猪处理
+bool CTableFrameSink::HandleHuaZhu(int i,LONG lHuaZhuScore[GAME_PLAYER])
+{
+
+	//OMA 查花猪
+	bool bHuaZhu = m_GameLogic.IsHuaZhu(m_cbCardIndex[i],m_WeaveItemArray[i],m_cbWeaveItemCount[i]);
+	if( bHuaZhu ) 
+	{
+		m_bHuaZhu[i] = true;// 设置花猪
+
+		//花猪赔给非花猪玩家最大番数。
+		for( WORD j = 0; j < GAME_PLAYER; j++ )
+		{
+			IServerUserItem *pUserItem = m_pITableFrame->GetServerUserItem(j);// pUserItem 可能为空
+			LPCTSTR pUserName = (NULL!=pUserItem)?pUserItem->GetAccounts():TEXT("离开用户");
+
+			//跳过自己 、逃跑者、已经胡牌者
+			if( j == i  || m_bPlayStatus[j] )
+			{
+				TCHAR msg[256] = TEXT("");
+				  _snprintf_s(msg,sizeof(msg),TEXT("查花猪跳过用户: %s"),pUserName);
+				CTraceService::TraceString(msg,TraceLevel_Debug);
+				continue;
+			}
+
+			// 花猪赔偿，对非花猪赔偿
+			if( !m_GameLogic.IsHuaZhu(m_cbCardIndex[j],m_WeaveItemArray[j],m_cbWeaveItemCount[j]) )
+			{
+				//
+				LONG maxScore = (LONG)pow(2.0,m_pGameServiceOption->lMaxScoreTimes-1);
+				lHuaZhuScore[i] -= m_pGameServiceOption->lCellScore*maxScore;
+				//lHuaZhuScore[j] += m_pGameServiceOption->lCellScore*maxScore; // 这里只检查不计算分数
+
+				TCHAR msg[256] = TEXT("");
+				  _snprintf_s(msg,sizeof(msg),TEXT("玩家: %s 得到赔偿分：%d"),pUserName,m_pGameServiceOption->lCellScore*maxScore);
+				CTraceService::TraceString(msg,TraceLevel_Debug);
+			}
+
+
+		}
+
+		CTraceService::TraceString(TEXT("当前用户查花猪结束"),TraceLevel_Debug);
+		return true;
+
+	}else
+	{
+		CTraceService::TraceString(TEXT("当前用户不是花猪"),TraceLevel_Debug);
+		return false;
+	}
+}
+// OMA 查叫处理
+void CTableFrameSink::HandleChaJiao(int i,LONG lChaJiaoScore[GAME_PLAYER])
+{
+
+	if(!m_GameLogic.IsTingCard(m_cbCardIndex[i],m_WeaveItemArray[i],m_cbWeaveItemCount[i]))
+	{
+		m_bWuJiao[i] = true;
+		for( WORD j = 0; j < GAME_PLAYER; j++ )
+		{
+
+			IServerUserItem *pUserItem = m_pITableFrame->GetServerUserItem(j);// pUserItem 可能为空
+			LPCTSTR pUserName = (NULL!=pUserItem)?pUserItem->GetAccounts():TEXT("离开用户");
+
+			// 跳过自己和停止游戏的玩家
+			if( j == i || !m_bPlayStatus[j] )
+			{
+				TCHAR msg[256] = TEXT("");
+				  _snprintf_s(msg,sizeof(msg),TEXT("跳过停止游戏玩家: %s "),pUserName);
+				CTraceService::TraceString( msg,TraceLevel_Debug);
+
+				continue;
+			}
+			// 判断剩余玩家是否有叫
+			if( m_GameLogic.IsTingCard(m_cbCardIndex[j],m_WeaveItemArray[j],m_cbWeaveItemCount[j]) )
+			{
+				//有叫
+				//查找最大番数
+				WORD wFanShu = 1;
+				CChiHuRight chr;
+				for( BYTE k = 0; k < MAX_INDEX-7; k++ )
+				{
+					BYTE cbCurrentCard = m_GameLogic.SwitchToCardData(k);
+					if( WIK_CHI_HU == m_GameLogic.AnalyseChiHuCard(m_cbCardIndex[j],m_WeaveItemArray[j],
+						m_cbWeaveItemCount[j],cbCurrentCard,chr) )
+					{
+						FiltrateRight(j,chr);
+						WORD wFanShuTemp = m_GameLogic.GetChiHuActionRank(chr);
+						//取最大番数
+						if( wFanShuTemp > wFanShu ) wFanShu = wFanShuTemp;
+					}
+				}
+
+				LONG score = (LONG)pow(2.0,wFanShu-1);
+
+				//查叫赔偿
+				lChaJiaoScore[i] -= m_pGameServiceOption->lCellScore*score;// 扣分
+				//lChaJiaoScore[j] += m_pGameServiceOption->lCellScore*score;// 这里只检查不计算分数
+
+				TCHAR msg[256] = TEXT("");
+				  _snprintf_s(msg,sizeof(msg),TEXT("查叫给用户 %s 赔偿 %d (番数 %d)"),pUserName,m_pGameServiceOption->lCellScore*score,wFanShu);
+				CTraceService::TraceString( msg,TraceLevel_Debug);
+
+			}else
+			{
+				TCHAR msg[256] = TEXT("");
+				  _snprintf_s(msg,sizeof(msg),TEXT("用户 %s 有叫"),pUserName);
+				CTraceService::TraceString( msg,TraceLevel_Debug);
+			}
+		}
+	}
+
+
+	
+}
+
+void CTableFrameSink::PayPunishScore(int i,LONG lHuaZhuScore[GAME_PLAYER],LONG lChaJiaoScore[GAME_PLAYER])
+{
+
+	// 检查用户状态
+	if(!m_bPlayStatus[i] || !m_bWuJiao[i] ) 
+	{
+		// 跳过不在局中的玩家、有叫玩家
+		return;
+	}
+ 
+	IServerUserItem *pUserItem = m_pITableFrame->GetServerUserItem(i);// 花猪用户项
+	LPCTSTR pUserName = (NULL!=pUserItem)?pUserItem->GetAccounts():TEXT("错误用户");//花猪用户名称
+	LONG lScore = 0 ;
+	if (m_pGameServiceOption->wServerType == GAME_GENRE_SCORE)
+	{
+		lScore = pUserItem->GetUserScore()->lScore;
+	}else if (m_pGameServiceOption->wServerType == GAME_GENRE_GOLD)
+	{
+		lScore = pUserItem->GetUserScore()->lGameGold;
+	}
+ 
+	if (m_bHuaZhu[i])//是花猪用户
+	{
+ 		// 统计局中非花猪玩家数量
+		WORD wNotHuaZhuCount = 0;
+		for( WORD k = 0; k < GAME_PLAYER; k++ )
+		{
+			if (!m_bHuaZhu[k] && m_bPlayStatus[k])
+			{
+				wNotHuaZhuCount++;
+			}
+		}
+
+
+		// 花猪负分处理
+		if (lScore<lHuaZhuScore[i])
+		{
+			m_lGameScore[i] = 0;
+		}
+
+ 		// 赔偿非花猪玩家
+		for( WORD j = 0; j < GAME_PLAYER; j++ )
+		{
+ 			if(i == j || m_bHuaZhu[j] || !m_bPlayStatus[j])
+			{
+				// 跳过自己、跳过其他花猪玩家，跳过不在局中玩家
+				continue;
+			}
+ 			// 赔偿分数，按照平均分配
+ 			LONG lPayPunishScore = (-lHuaZhuScore[i] > lScore)?lScore/wNotHuaZhuCount:-lHuaZhuScore[i]/wNotHuaZhuCount;
+			m_lGameScore[j] += lPayPunishScore;
+
+			IServerUserItem *pUserItem2 = m_pITableFrame->GetServerUserItem(j);// pUserItem 可能为空
+			LPCTSTR pUserName2 = (NULL!=pUserItem)?pUserItem->GetAccounts():TEXT("错误用户");
+			TCHAR msg[256] = TEXT("");
+			  _snprintf_s(msg,sizeof(msg),TEXT("花猪玩家: %s 赔偿给非花猪玩家:%s分数：%d "),pUserName,pUserName2,lPayPunishScore);
+			CTraceService::TraceString( msg,TraceLevel_Debug);
+			//TODO: 通知客户端
+
+
+  		}
+ 	}else if (m_bWuJiao[i])// 是无叫用户
+	{
+		// 统计局中有叫玩家数量
+		WORD wHaveJiaoCount = 0;
+		for( WORD k = 0; k < GAME_PLAYER; k++ )
+		{
+			if (!m_bHuaZhu[k] && m_bPlayStatus[k])
+			{
+				wHaveJiaoCount++;
+			}
+		}
+
+		// 查叫负分处理
+		if (lScore<lChaJiaoScore[i])
+		{
+			m_lGameScore[i] = 0;
+		}
+
+		// 赔偿有叫玩家
+		for( WORD j = 0; j < GAME_PLAYER; j++ )
+		{
+ 			// 赔偿有叫玩家
+			if(i != j && !m_bWuJiao[j]&& m_bPlayStatus[j])
+			{
+ 				// 分配分数
+				LONG lPayPunishScore = (-lChaJiaoScore[i] > lScore)?lScore/wHaveJiaoCount:-lChaJiaoScore[i]/wHaveJiaoCount;
+				m_lGameScore[j] += lPayPunishScore;
+
+				IServerUserItem *pUserItem2 = m_pITableFrame->GetServerUserItem(j);// pUserItem 可能为空
+				LPCTSTR pUserName2 = (NULL!=pUserItem)?pUserItem->GetAccounts():TEXT("错误用户");
+				TCHAR msg[256] = TEXT("");
+				  _snprintf_s(msg,sizeof(msg),TEXT("无叫玩家: %s 赔偿给有叫玩家:%s分数：%d "),pUserName,pUserName2,lPayPunishScore);
+				CTraceService::TraceString( msg,TraceLevel_Debug);
+
+				//TODO: 发送客户端
+			}
+ 		}
+	}
+ }
+
 //游戏结束
 bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pIServerUserItem, BYTE cbReason)
 {
@@ -442,240 +668,102 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 
 			//结束信息
 			WORD wWinner = INVALID_CHAIR;
-			BYTE cbLeftUserCount = 0;			//判断是否流局
-			bool bUserStatus[GAME_PLAYER];		//
+			BYTE cbLeftUserCount = 0;			//判断是否流局O
+			//bool bUserStatus[GAME_PLAYER];		//
+
+			// OMA 流局判断的作用？// cbLeftUserCount>1说明有流局产生，但不管是不是流局都要查叫查花猪
 			for (WORD i=0;i<GAME_PLAYER;i++)
 			{
 				GameEnd.cbCardCount[i]=m_GameLogic.SwitchToCardData(m_cbCardIndex[i],GameEnd.cbCardData[i]);
 				m_ChiHuRight[i].GetRightData( &GameEnd.dwChiHuRight[i],MAX_RIGHT_COUNT );
 				//流局玩家数
-				if( m_ChiHuRight[i].IsEmpty() )
+				if( m_ChiHuRight[i].IsEmpty())
 				{
 					cbLeftUserCount++;
 				}
-				//当前玩家状态
-
-				if( NULL != m_pITableFrame->GetServerUserItem(i) )
-				{
-					bUserStatus[i] = true;
-				}
-				else
-				{
-					bUserStatus[i] = false;
-				}
+				//当前玩家状态 // OMA 有什么用？
+				//bUserStatus[i] = ( NULL != m_pITableFrame->GetServerUserItem(i))?true:false;
+				
 			}
 			
-			LONG lHuaZhuScore[GAME_PLAYER];
-			LONG lChaJiaoScore[GAME_PLAYER];
-			LONG lGangScore[GAME_PLAYER];
-			ZeroMemory( lGangScore,sizeof(lGangScore) );
-			ZeroMemory( lHuaZhuScore,sizeof(lHuaZhuScore) );
-			ZeroMemory( lChaJiaoScore,sizeof(lChaJiaoScore) );
+			LONG lHuaZhuScore[GAME_PLAYER];		//花烛分
+			LONG lChaJiaoScore[GAME_PLAYER];	//查叫分
+			LONG lGangScore[GAME_PLAYER];		//杠分不加分，因此没有用到	
+			ZeroMemory( lGangScore,sizeof(lGangScore));
+			ZeroMemory( lHuaZhuScore,sizeof(lHuaZhuScore));
+			ZeroMemory( lChaJiaoScore,sizeof(lChaJiaoScore));
 
+			//OMA 查牌
 			for( WORD i = 0; i < GAME_PLAYER; i++ )
 			{
- 				//if( cbLeftUserCount>1 && m_bPlayStatus[i] && m_ChiHuRight[i].IsEmpty() )
-				//if( cbLeftUserCount>1 && m_bPlayStatus[i] && m_ChiHuRight[i].IsEmpty() )
- 				//{
+ 				
+				IServerUserItem *pUserItem = m_pITableFrame->GetServerUserItem(i);// pUserItem 可能为空
+				LPCTSTR pUserName = (NULL!=pUserItem)?pUserItem->GetAccounts():TEXT("离开用户");
+				
+				TCHAR pMsg[128] = TEXT("");
+				  _snprintf_s(pMsg,sizeof(pMsg),TEXT("开始对用户: %s 进行判断"),pUserName);
+				CTraceService::TraceString( pMsg,TraceLevel_Debug);
 
-					TCHAR pMsg[128] = TEXT("");
-					_snprintf(pMsg,sizeof(pMsg),TEXT("开始对用户: %d 查花猪"),i);
-					CTraceService::TraceString( pMsg,TraceLevel_Debug);
-
-					// 逃跑者(已经赔偿),已经胡牌者，不查叫，不查花猪
-					if ( m_bPlayleft[i] || !m_bPlayStatus[i])
-					{
+				// OMA 跳过停止玩牌玩家
+				if (!m_bPlayStatus[i])// 逃跑者,已经设置m_bPlayStatus为false
+				{
 						TCHAR pMsg[128] = TEXT("");
-						_snprintf(pMsg,sizeof(pMsg),TEXT("用户: %d 不查花猪 不查叫"),i);
-
-						CTraceService::TraceString( pMsg,TraceLevel_Debug);
-						//bHuaZhu = true;  //逃跑者按照花猪处理
-						continue;
-					}
-
-					//玩家 查花猪
-					bool bHuaZhu = m_GameLogic.IsHuaZhu(m_cbCardIndex[i],m_WeaveItemArray[i],m_cbWeaveItemCount[i]);
- 					if(m_bOutMagicCard[i])// 如果打出听用
-					{
-						bHuaZhu = false;//	不算花猪
-						CTraceService::TraceString(TEXT("查花猪 ：打出听用 不算花猪"),TraceLevel_Debug);
-					}
- 
-					if( bHuaZhu ) 
-					{
- 						TCHAR msg[128] = TEXT("");
-						_snprintf(msg,sizeof(msg),TEXT("用户: %d 是花猪"),i);
-						CTraceService::TraceString(msg,TraceLevel_Debug);
- 
-						//花猪赔给非花猪玩家最大番数。
-						for( WORD j = 0; j < GAME_PLAYER; j++ )
+						if ( m_bPlayleft[i])
 						{
-#if 1						//不赔偿(自己 、逃跑者、已经胡牌者) 
- 							//if( j == i || m_bPlayleft[j] || !bUserStatus[j]) 
-							if( j == i  || m_bPlayleft[j] )
- 							{
-  								TCHAR msg[256] = TEXT("");
-								_snprintf_s(msg,sizeof(msg),TEXT("查花猪 不赔偿(自己 、逃跑者)"));
-								CTraceService::TraceString(msg,TraceLevel_Debug);
- 								continue;
-							}
- 
-							// 非花猪玩家得到赔偿
-							if( !m_GameLogic.IsHuaZhu(m_cbCardIndex[j],m_WeaveItemArray[j],m_cbWeaveItemCount[j]) )
-							{
-								LONG maxScore = (LONG)pow(2.0,MAX_CHIHU_FANSU-1);
-								lHuaZhuScore[i] -= m_pGameServiceOption->lCellScore*maxScore;
-								lHuaZhuScore[j] += m_pGameServiceOption->lCellScore*maxScore;
-
-								TCHAR msg[256] = TEXT("");
-								_snprintf_s(msg,sizeof(msg),TEXT("得到赔偿玩家：%d 分值：%d"),j,lHuaZhuScore[j]);
-								CTraceService::TraceString(msg,TraceLevel_Debug);
-
-							}
-
- 
-#else
-							if( j == i || !m_bPlayStatus[j] ) continue;
-							if( !m_GameLogic.IsHuaZhu(m_cbCardIndex[j],m_WeaveItemArray[j],m_cbWeaveItemCount[j]) )
-							{
-
-								LONG maxScore = (LONG)pow(2.0,MAX_CHIHU_FANSU-1);
-								lHuaZhuScore[i] -= m_pGameServiceOption->lCellScore*maxScore;
-								lHuaZhuScore[j] += m_pGameServiceOption->lCellScore*maxScore;
-
-							}
-
-#endif 
+							  _snprintf_s(pMsg,sizeof(pMsg),TEXT("用户: %s 是逃跑用户"),pUserName);
+						}else
+						{
+							  _snprintf_s(pMsg,sizeof(pMsg),TEXT("用户: %s 是胡牌用户"),pUserName);
 						}
-						CTraceService::TraceString(TEXT("是花猪 不查叫，检查下一个用户"),TraceLevel_Debug);
+						
+						CTraceService::TraceString( pMsg,TraceLevel_Debug);
+						continue;
+				}
+//////////////////////////////////////////////////////////////////////////
+				// OMA 逻辑框架
+				
+				// OMA 是否打出听用
+				if(m_bOutMagicCard[i])
+				{
+					// 查叫，检查当前用户与其他三家用户的关系
+					HandleChaJiao(i,lChaJiaoScore);
 
-						continue; //是花猪 不查叫
-					}
- 					// 查花猪结束
-
-					CTraceService::TraceString(TEXT("不是花猪 开始查叫"),TraceLevel_Debug);
-			
-					// 开始查叫
-					bool bChajiao;
-					if (m_bOutMagicCard[i]) // 如果打出听用牌
+				}else
+				{
+					if(HandleHuaZhu(i,lHuaZhuScore))// 花猪处理
 					{
-						bChajiao = false; // 按查叫处理
-						bHuaZhu = false;  
+						continue;
 					}else
 					{
-						// 未打出听用的情况下
-						 bChajiao = m_GameLogic.IsTingCard( m_cbCardIndex[i],m_WeaveItemArray[i],m_cbWeaveItemCount[i] );
+						// 查叫
+						HandleChaJiao(i,lChaJiaoScore);
 					}
-					
-
-					//无叫 且 不是花猪
-
-					if(!bChajiao && !bHuaZhu)//无叫
-					{
-						//查大叫
-						//if( !bHuaZhu ) // 
-						//{
-							//没听牌的玩家（花猪不用）赔给听牌的玩家最大的可能番数
-							for( WORD j = 0; j < GAME_PLAYER; j++ )
-							{
-								// 不赔自己，已经胡牌的用户不赔，逃跑玩家不赔
- 								if( j == i || !m_bPlayStatus[j] || m_bPlayleft[j] )
-								{
-
-									TCHAR msg[256] = TEXT("");
-									_snprintf(msg,sizeof(msg),TEXT(" 不赔偿 %d 用户"),j);
-									CTraceService::TraceString( msg,TraceLevel_Debug);
-						
-									continue;
-								}
-
-								if( m_GameLogic.IsTingCard(m_cbCardIndex[j],m_WeaveItemArray[j],m_cbWeaveItemCount[j]) )
-								{
-									//查找最大番数
-									WORD wFanShu = 1;
-									CChiHuRight chr;
-									for( BYTE k = 0; k < MAX_INDEX-7; k++ )
-									{
-										BYTE cbCurrentCard = m_GameLogic.SwitchToCardData(k);
-										if( WIK_CHI_HU == m_GameLogic.AnalyseChiHuCard(m_cbCardIndex[j],m_WeaveItemArray[j],
-											m_cbWeaveItemCount[j],cbCurrentCard,chr) )
-										{
-											FiltrateRight(j,chr);
-		
-											WORD wFanShuTemp = m_GameLogic.GetChiHuActionRank(chr);
-											//取最大番数
-											if( wFanShuTemp > wFanShu ) wFanShu = wFanShuTemp;
-										}
-									}
-
-									//wFanShu = (wFanShu == 0)?1:wFanShu;
-
-									LONG score = (LONG)pow(2.0,wFanShu-1);
-																		
-									// 已经胡牌用户不得查叫分
-									//查叫赔钱
-									lChaJiaoScore[i] -= m_pGameServiceOption->lCellScore*score;
-									lChaJiaoScore[j] += m_pGameServiceOption->lCellScore*score;
-
-									TCHAR msg[256] = TEXT("");
-									_snprintf(msg,sizeof(msg),TEXT("查叫 给用户 %d 赔偿 %d (番数 %d)"),j,m_pGameServiceOption->lCellScore*score,wFanShu);
-									CTraceService::TraceString( msg,TraceLevel_Debug);
-
-
-								}else
-								{
-									TCHAR msg[256] = TEXT("");
-									_snprintf(msg,sizeof(msg),TEXT("查叫 用户 %d 无叫"),j);
-									CTraceService::TraceString( msg,TraceLevel_Debug);
-
-								}
-							}
-						//}
-					}
-					CTraceService::TraceString(TEXT(" 查叫结束，下一个用户查花猪 大叫"),TraceLevel_Debug);
-
-					//// 结束查叫
-				//}
-
+				}
 			}
 
+			//查牌结束
+
+//////////////////////////////////////////////////////////////////////////
+			// 处理罚分计算
 			for( WORD i = 0; i < GAME_PLAYER; i++ )
 			{
-
-				//不计算杠分
-				// 不再重复计算逃跑用户分数
-				if(	m_bPlayleft[i])
-				{
-					continue;
-				} 			
-
-				m_lGameScore[i] += lHuaZhuScore[i];
-				m_lGameScore[i] += lChaJiaoScore[i];
-
-
-				//防止负分
-				IServerUserItem *pUserItem = m_pITableFrame->GetServerUserItem(i);
-				
-				if( GAME_GENRE_SCORE == m_pGameServiceOption->wServerType 
-					&&m_lGameScore[i] < 0L && 
-					-m_lGameScore[i] > pUserItem->GetUserScore()->lScore )
-				{
-					// 负分情况
-					m_lGameScore[i] = -pUserItem->GetUserScore()->lScore;
-				}
-
-
-
+				// 循环每一个用户
+				PayPunishScore(i,lHuaZhuScore,lChaJiaoScore);
 			}
+   
 
-
-			//统计积分
+			//积分扣税
 			for (WORD i=0;i<GAME_PLAYER;i++)
 			{
-				if( NULL == m_pITableFrame->GetServerUserItem(i) ) continue;
+				if( NULL == m_pITableFrame->GetServerUserItem(i) )
+				{
+					continue;
+				}
 
-				//设置积分
-				if( GAME_GENRE_SCORE != m_pGameServiceOption->wServerType )
+				//扣税类型
+				if( GAME_GENRE_SCORE == m_pGameServiceOption->wServerType ||
+					 GAME_GENRE_GOLD == m_pGameServiceOption->wServerType||
+					 GAME_GENRE_LONGMATCH == m_pGameServiceOption->wServerType)
 				{
 
 #if 0
@@ -698,7 +786,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 // 按照固定比例抽税
 					if (m_lGameScore[i]>0L)
 					{
-						m_lGameTax[i] = (LONG)((LONGLONG)m_lGameScore[i]*m_pGameServiceOption->wRevenue/100L);
+						m_lGameTax[i] = (LONG)((LONGLONG)m_lGameScore[i]*m_pGameServiceOption->wRevenue/1000L);
 						m_lGameScore[i] -= m_lGameTax[i];
 					}
 #endif 	
@@ -712,47 +800,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				//写入积分
 				m_pITableFrame->WriteUserScore(i,m_lGameScore[i],m_lGameTax[i],ScoreKind);
 			}
-#if 0
-			// oma add 
-			for (int k = 0;k<GAME_PLAYER;k++)
-			{
-				IServerUserItem *pUserItem = m_pITableFrame->GetServerUserItem(k);
-				// 计算当局结束后分数
-				LONG totalScore  =  pUserItem->GetUserScore()->lScore;
 
-				TCHAR printmsg[512] = TEXT("");
-				_snprintf(printmsg,sizeof(printmsg),TEXT("当局游戏结束后用户分数：%d ,当前送分次数：%d 游戏类型：%d "),
-					totalScore,pUserItem->GetUserScore()->lGrantCount,m_pGameServiceOption->wServerType);
-				CTraceService::TraceString(printmsg,TraceLevel_Debug);
-
-				if( GAME_GENRE_SCORE == m_pGameServiceOption->wServerType
-					&& totalScore < m_pGameServiceOption->lLessScore 
-					&& pUserItem->GetUserScore()->lGrantCount > 0 )
-				{
-
-					// 送分，每次送 GRANT_SCORE_VALUE 分
-
-					TCHAR msg[512] = TEXT("");
-					_snprintf(msg,sizeof(msg),TEXT("你只有 %d 分了哦，亲，%d 分送给你哦！亲,剩余送分次数：%d ！加油哦"),
-						totalScore,GRANT_SCORE_VALUE,--pUserItem->GetUserData()->UserScoreInfo.lGrantCount);
-					CTraceService::TraceString(msg,TraceLevel_Debug);
-
-					//totalScore+= GRANT_SCORE_VALUE;
-					// 通知客户端用户
-					--pUserItem->GetUserData()->UserScoreInfo.lGrantCount;
-					CMD_S_GrantScore GrantScore;
-					
-					_snprintf(GrantScore.messageContent,sizeof(GrantScore.messageContent),TEXT(" 你的积分不够 %d 分了，这是第%d次送%d分(每天 %d 次)"),
-						m_pGameServiceOption->lLessScore ,GRANT_SCORE_COUNT-pUserItem->GetUserData()->UserScoreInfo.lGrantCount,GRANT_SCORE_VALUE,GRANT_SCORE_COUNT);
- 
-					m_pITableFrame->SendTableData(k,SUB_S_GRANT_SCORE,&GrantScore,sizeof(GrantScore));
-					//写入积分
-					m_pITableFrame->WriteUserScore(k,GRANT_SCORE_VALUE,0,enScoreKind_Win);// 扣税0
-				}
-
-			}
-			// oma add end 
-#endif 
 			CopyMemory( GameEnd.lHuaZhuScore,lHuaZhuScore,sizeof(lHuaZhuScore) );
 			CopyMemory( GameEnd.lChaJiaoScore,lChaJiaoScore,sizeof(lChaJiaoScore) );
 			CopyMemory( GameEnd.bPlayleft,m_bPlayleft,sizeof(m_bPlayleft));
@@ -817,53 +865,62 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			ZeroMemory(&GameEnd,sizeof(GameEnd));
 			GameEnd.wLeftUser = wChairID;
 
-			//记录逃跑用户
+			//记录逃跑用户状态
 			m_bPlayleft[wChairID] = true; 
+			m_bPlayStatus[wChairID] = false; // 设置玩牌状态为false
+	
+			//OMA 逃跑扣最大番分数
+			LONG maxScore = (LONG)pow(2.0,m_pGameServiceOption->lMaxScoreTimes-1);
+			for( WORD i = 0; i < GAME_PLAYER; i++ )
+			{
+				if( !m_bPlayleft[i] ) // 非逃跑玩家均可获得赔偿
+				{
+					m_lGameScore[i] += maxScore*m_pGameServiceOption->lCellScore; //OMA 加分
+					m_lGameScore[wChairID] -= maxScore*m_pGameServiceOption->lCellScore;// OMA 扣分
+				}
+			}
+				
+			//设置积分
+			LONG lGameTax = 0L;
+ 			if (m_lGameScore[wChairID]>0L)// OMA 赔偿后分数情况
+			{
+				lGameTax = (LONG)((LONGLONG)m_lGameScore[wChairID]*m_pGameServiceOption->wRevenue/1000L);
+				m_lGameScore[wChairID] -= lGameTax;// OMA 扣税
+			}
+			else
+			{
+ 				m_lGameScore[wChairID] = 0;// 负分数设置为0分，开局要求至少能赔偿三个满分
+				//防止负分 //TODO: 负 分处理
+				//IServerUserItem *pUserItem = m_pITableFrame->GetServerUserItem(wChairID);
+				//if( GAME_GENRE_SCORE==m_pGameServiceOption->wServerType && -m_lGameScore[wChairID] > pUserItem->GetUserScore()->lScore )
+				//	m_lGameScore[wChairID] = -pUserItem->GetUserScore()->lScore;
+			}
+			//OMA 通知其他用户该用户逃跑
+			IServerUserItem *pLeftUser =  m_pITableFrame->GetServerUserItem(wChairID);
+			LPCTSTR pUserName = (NULL!=pLeftUser)?pLeftUser->GetAccounts():TEXT("错误用户");
+			TCHAR szDescribe[128]=TEXT("");
+
+			  _snprintf_s(szDescribe,sizeof(szDescribe),TEXT("[ %s ] 逃跑，对非逃跑玩家赔偿最大番分数！本局结束后计算分数"),pUserName);
+			for (WORD i=0;i<m_wPlayerCount;i++)
+			{
+				IServerUserItem *pIServerUserItem2 = NULL;
+				if((pIServerUserItem2 = m_pITableFrame->GetServerUserItem(i))!= NULL)
+				{
+ 					m_pITableFrame->SendGameMessage(pIServerUserItem2,szDescribe,SMT_INFO|SMT_EJECT);
+				}
+			} 
+ 
+			//写入积分
+			m_pITableFrame->WriteUserScore(wChairID,m_lGameScore[wChairID],lGameTax,enScoreKind_Flee);
 		
-			if(m_wCurrentUser == wChairID )
+			// 继续游戏 OMA
+			if(m_wCurrentUser == wChairID )// OMA 发牌给下一个用户
 			{
 				m_wResumeUser = wChairID;
 				m_wResumeUser = (m_wResumeUser+GAME_PLAYER-1)%GAME_PLAYER;
 				while( !m_bPlayStatus[m_wResumeUser] ) m_wResumeUser = (m_wResumeUser+GAME_PLAYER-1)%GAME_PLAYER;
 				DispatchCardData(m_wResumeUser,false);
 			}
-			//OMA 逃跑扣最大番分数
-
-			m_bPlayStatus[wChairID] = false;
-			LONG maxScore = (LONG)pow(2.0,MAX_CHIHU_FANSU-1);
-			for( WORD i = 0; i < GAME_PLAYER; i++ )
-			{
-				if( !m_bPlayleft[i] ) // 非逃跑玩家均可获得赔偿
-				{
-					m_lGameScore[i] += maxScore*m_pGameServiceOption->lCellScore;
-					m_lGameScore[wChairID] -= maxScore*m_pGameServiceOption->lCellScore;
-				}
-			}
-
-				m_pITableFrame->GetServerUserItem(wChairID);// OMA 此句没作用？
-				
-				//设置积分
-				LONG lGameTax = 0L;
-				if( GAME_GENRE_SCORE == m_pGameServiceOption->wServerType )
-				{
-					if (m_lGameScore[wChairID]>0L)
-					{
-						lGameTax = (LONG)((LONGLONG)m_lGameScore[wChairID]*m_pGameServiceOption->wRevenue/1000L);
-						m_lGameScore[wChairID] -= lGameTax;
-					}
-					else
-					{
-						//防止负分
-						IServerUserItem *pUserItem = m_pITableFrame->GetServerUserItem(wChairID);
-						if( GAME_GENRE_SCORE==m_pGameServiceOption->wServerType && -m_lGameScore[wChairID] > pUserItem->GetUserScore()->lScore )
-							m_lGameScore[wChairID] = -pUserItem->GetUserScore()->lScore;
-					}
-				}
-
-				enScoreKind ScoreKind = enScoreKind_Flee;;
-
-				//写入积分
-				m_pITableFrame->WriteUserScore(wChairID,m_lGameScore[wChairID],lGameTax,ScoreKind);
 			return true;
 		}
 	}
@@ -887,6 +944,8 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			//构造数据
 			StatusFree.wBankerUser=m_wBankerUser;
 			StatusFree.lCellScore=m_pGameServiceOption->lCellScore;
+			StatusFree.lMaxScoreTimes=m_pGameServiceOption->lMaxScoreTimes;//OMA
+		
 			CopyMemory(StatusFree.bTrustee,m_bTrustee,sizeof(m_bTrustee));
 
 			//发送场景
@@ -902,6 +961,8 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			StatusPlay.wBankerUser=m_wBankerUser;
 			StatusPlay.wCurrentUser=m_wCurrentUser;
 			StatusPlay.lCellScore=m_pGameServiceOption->lCellScore;
+			StatusPlay.lMaxScoreTimes=m_pGameServiceOption->lMaxScoreTimes;//OMA
+
 			CopyMemory(StatusPlay.bTrustee,m_bTrustee,sizeof(m_bTrustee));
 			CopyMemory(StatusPlay.wWinOrder,m_wWinOrder,sizeof(m_wWinOrder));
 
@@ -1026,7 +1087,7 @@ bool __cdecl CTableFrameSink::OnActionUserReady(WORD wChairID,IServerUserItem * 
 
 		// 发送消息
 		TCHAR szMessage[512]=TEXT("");
- 		_snprintf(szMessage,sizeof(szMessage),TEXT("这是第%d次送%d分，剩余送分次数为%d ",GRANT_SCORE_COUNT-pUserScore.lGrantCount,m_pGameServiceOption->lLessScore,pUserScore.lGrantCount));
+ 		  _snprintf_s(szMessage,sizeof(szMessage),TEXT("这是第%d次送%d分，剩余送分次数为%d ",GRANT_SCORE_COUNT-pUserScore.lGrantCount,m_pGameServiceOption->lLessScore,pUserScore.lGrantCount));
 		for (WORD i=0;i<m_wPlayerCount;i++)
 		{
 			IServerUserItem *pIServerUserItem2 = NULL;
@@ -1899,7 +1960,7 @@ bool CTableFrameSink::EstimateTICardRespond(WORD wCenterUser,BYTE cbCenterCard)/
 	}
 
 	//胡牌判断
-	if (m_bEnjoinChiHu[wCenterUser]==false && m_bPlayStatus[wCenterUser])// 如果打出的是钻牌，取消胡牌响应
+	if (m_bEnjoinChiHu[wCenterUser]==false && m_bPlayStatus[wCenterUser])// 如果打出的是钻牌，禁止胡牌
 	{
 		//吃胡判断
 		CChiHuRight chr;

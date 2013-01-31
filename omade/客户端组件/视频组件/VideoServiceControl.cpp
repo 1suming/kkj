@@ -1095,21 +1095,21 @@ VOID CVideoServiceControl::OnBnClickedMore()
 	LPCTSTR pszMemberOrder[]={TEXT("普通会员"),TEXT("中级会员"),TEXT("高级贵宾")};
 	if ((m_pUserData->cbMemberOrder>0)&&(m_pUserData->cbMemberOrder<CountArray(pszMemberOrder)))
 	{
-		_snprintf(szBuffer,sizeof(szBuffer),TEXT("用户名：%s [ %s ]"),m_pUserData->szName,pszMemberOrder[m_pUserData->cbMemberOrder]);
+		_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("用户名：%s [ %s ]"),m_pUserData->szName,pszMemberOrder[m_pUserData->cbMemberOrder]);
 	}
-	else _snprintf(szBuffer,sizeof(szBuffer),TEXT("用户名：%s"),m_pUserData->szName);
+	else _snprintf_s(szBuffer,sizeof(szBuffer),TEXT("用户名：%s"),m_pUserData->szName);
 	UserInfoMenu.AppendMenu(0,0,szBuffer);
 
 	//用户 ID
-	_snprintf(szBuffer,sizeof(szBuffer),TEXT("游戏 ID：%ld"),m_pUserData->dwGameID);
+	_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("游戏 ID：%ld"),m_pUserData->dwGameID);
 	UserInfoMenu.AppendMenu(0,0,szBuffer);
 
 	//用户经验
-	_snprintf(szBuffer,sizeof(szBuffer),TEXT("经验值：%ld"),m_pUserData->lExperience);
+	_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("经验值：%ld"),m_pUserData->lExperience);
 	UserInfoMenu.AppendMenu(0,0,szBuffer);
 
 	//用户积分
-	_snprintf(szBuffer,sizeof(szBuffer),TEXT("积分：%ld  总局数：%ld  逃跑率：%5.2f%%"),m_pUserData->lScore,lPlayCount,dFleeRate);
+	_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("积分：%ld  总局数：%ld  逃跑率：%5.2f%%"),m_pUserData->lScore,lPlayCount,dFleeRate);
 	UserInfoMenu.AppendMenu(0,0,szBuffer);
 
 	//获取用户
@@ -1124,7 +1124,7 @@ VOID CVideoServiceControl::OnBnClickedMore()
 		if ((bEnable==true)&&(m_pUserData->cbMasterOrder>0)&&(pMeUserData->cbMasterOrder==0)) bEnable=false;
 
 		//插入菜单
-		_snprintf(szBuffer,sizeof(szBuffer),TEXT("把 [ %s ] 踢出游戏房间"),m_pUserData->szName);
+		_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("把 [ %s ] 踢出游戏房间"),m_pUserData->szName);
 		UserInfoMenu.AppendMenu((bEnable==true)?MF_ENABLED:MF_GRAYED,IDM_UM_KICK_TABLE_USER,szBuffer);
 	}
 

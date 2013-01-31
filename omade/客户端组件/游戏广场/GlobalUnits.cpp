@@ -61,7 +61,7 @@ bool CGlobalUnits::InitGlobalUnits()
 	SetCurrentDirectory(m_szDirWork);
 
 	//设置界面目录
-	_snprintf(m_szDirSkin,sizeof(m_szDirSkin),TEXT("%s\\Skin"),m_szDirWork);
+	_snprintf_s(m_szDirSkin,sizeof(m_szDirSkin),TEXT("%s\\Skin"),m_szDirWork);
 
 	//加载组件
 	if (m_UserFaceRes.CreateInstance()==false) return false;
@@ -160,11 +160,11 @@ bool CGlobalUnits::WriteUserCookie()
 	INT nCharCount=sizeof(szTokenData)/sizeof(szTokenData[0]);
 
 	//用户 I D
-	_sntprintf(szTokenData,nCharCount,TEXT("%ld"),m_GloblaUserData.dwUserID);
+	_sntprintf_s(szTokenData,nCharCount,TEXT("%ld"),m_GloblaUserData.dwUserID);
 	CInternetSession::SetCookie(szCookieUrl,TEXT("UserID"),szTokenData);
 
 	//游戏 I D
-	_sntprintf(szTokenData,nCharCount,TEXT("%ld"),m_GloblaUserData.dwGameID);
+	_sntprintf_s(szTokenData,nCharCount,TEXT("%ld"),m_GloblaUserData.dwGameID);
 	CInternetSession::SetCookie(szCookieUrl,TEXT("GameID"),szTokenData);
 
 	//用户帐号
@@ -306,9 +306,9 @@ bool CGlobalAttemper::DownLoadClient(LPCTSTR pszKindName, WORD wKindID, bool bDi
 	memset(&DownLoadRequest,0,sizeof(DownLoadRequest));
 	DownLoadRequest.bDisplay=bDisplay;
 	lstrcpyn(DownLoadRequest.szDescribe,pszKindName,CountArray(DownLoadRequest.szDescribe));
-	_snprintf(DownLoadRequest.szFileName,sizeof(DownLoadRequest.szFileName),TEXT("%s.EXE"),pszKindName);
-	_snprintf(DownLoadRequest.szLocalPath,sizeof(DownLoadRequest.szLocalPath),TEXT("%s\\DownLoad"),g_GlobalUnits.GetWorkDirectory());
-	_snprintf(DownLoadRequest.szDownLoadUrl,sizeof(DownLoadRequest.szDownLoadUrl),TEXT("http://205168.cqxunmei.com/Download.asp?KindID=%ld&LocalVersion=0&PlazaVersion=%ld"),wKindID,VER_PLAZA_FRAME);
+	_snprintf_s(DownLoadRequest.szFileName,sizeof(DownLoadRequest.szFileName),TEXT("%s.EXE"),pszKindName);
+	_snprintf_s(DownLoadRequest.szLocalPath,sizeof(DownLoadRequest.szLocalPath),TEXT("%s\\DownLoad"),g_GlobalUnits.GetWorkDirectory());
+	_snprintf_s(DownLoadRequest.szDownLoadUrl,sizeof(DownLoadRequest.szDownLoadUrl),TEXT("http://205168.cqxunmei.com/Download.asp?KindID=%ld&LocalVersion=0&PlazaVersion=%ld"),wKindID,VER_PLAZA_FRAME);
 
 	//投递请求
 	DWORD dwDownLoadID=g_GlobalUnits.m_DownLoadService->AddDownLoadRequest(DTP_GAME_CLIENT,&DownLoadRequest);

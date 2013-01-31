@@ -170,7 +170,7 @@ VOID CUserInfoView::OnPaint()
 			case 0:		//用户帐号
 				{
 					//用户帐号
-					_sntprintf(szString,CountArray(szString),TEXT("用户名：%s"),m_pCurrentUserData->szName);
+					_sntprintf_s(szString,CountArray(szString),TEXT("用户名：%s"),m_pCurrentUserData->szName);
 					BufferDC.DrawText(szString,lstrlen(szString),&rcString,DT_VCENTER|DT_SINGLELINE|DT_END_ELLIPSIS);
 
 					break;
@@ -179,10 +179,10 @@ VOID CUserInfoView::OnPaint()
 				{
 					//输出信息
 					if ( m_pCurrentUserData->cbGender == 0 ) 
-						_sntprintf(szString,CountArray(szString),TEXT("性别：保密"));
+						_sntprintf_s(szString,CountArray(szString),TEXT("性别：保密"));
 					else if ( m_pCurrentUserData->cbGender == 1 ) 
-						_sntprintf(szString,CountArray(szString),TEXT("性别：男"));
-					else _sntprintf(szString,CountArray(szString),TEXT("性别：女"));
+						_sntprintf_s(szString,CountArray(szString),TEXT("性别：男"));
+					else _sntprintf_s(szString,CountArray(szString),TEXT("性别：女"));
 					BufferDC.DrawText(szString,lstrlen(szString),&rcString,DT_VCENTER|DT_SINGLELINE|DT_END_ELLIPSIS);
 
 					break;
@@ -202,9 +202,9 @@ VOID CUserInfoView::OnPaint()
 				{
 					//输出信息
 					if ( pGameAttribute->wGameGenre == GAME_GENRE_GOLD )
-						_sntprintf(szString,CountArray(szString),TEXT("游戏币：%ld"),m_pCurrentUserData->lScore);
+						_sntprintf_s(szString,CountArray(szString),TEXT("游戏币：%ld"),m_pCurrentUserData->lScore);
 					else
-						_sntprintf(szString,CountArray(szString),TEXT("积分：%ld"),m_pCurrentUserData->lScore);
+						_sntprintf_s(szString,CountArray(szString),TEXT("积分：%ld"),m_pCurrentUserData->lScore);
 					BufferDC.DrawText(szString,lstrlen(szString),&rcString,DT_VCENTER|DT_SINGLELINE|DT_END_ELLIPSIS);
 
 					break;
@@ -215,7 +215,7 @@ VOID CUserInfoView::OnPaint()
 					CUserListView &UserListView = pGameFrameControl->m_UserListView;
 
 					//输出信息
-					_sntprintf(szString,CountArray(szString),TEXT("游戏级别：%s"),
+					_snprintf_s(szString,CountArray(szString),TEXT("游戏级别：%s"),
 						UserListView.m_GameRankManagerHelper->GetLevelDescribe(m_pCurrentUserData->lScore));
 					BufferDC.DrawText(szString,lstrlen(szString),&rcString,DT_VCENTER|DT_SINGLELINE|DT_END_ELLIPSIS);
 
@@ -231,7 +231,7 @@ VOID CUserInfoView::OnPaint()
 					if (m_pCurrentUserData->cbMemberOrder>=CountArray(pszMemberOrder))break;
 
 					//输出信息
-					_sntprintf(szString,CountArray(szString),TEXT("会员级别：%s"),pszMemberOrder[m_pCurrentUserData->cbMemberOrder]);
+					_snprintf_s(szString,CountArray(szString),TEXT("会员级别：%s"),pszMemberOrder[m_pCurrentUserData->cbMemberOrder]);
 					BufferDC.DrawText(szString,lstrlen(szString),&rcString,DT_VCENTER|DT_SINGLELINE|DT_END_ELLIPSIS);
 
 					break;
@@ -239,7 +239,7 @@ VOID CUserInfoView::OnPaint()
 			case 6:
 				{
 					//输出信息
-					_sntprintf(szString,CountArray(szString),TEXT("银行存款：%ld"),m_pCurrentUserData->lInsureScore);
+					_snprintf_s(szString,CountArray(szString),TEXT("银行存款：%ld"),m_pCurrentUserData->lInsureScore);
 					BufferDC.DrawText(szString,lstrlen(szString),&rcString,DT_VCENTER|DT_SINGLELINE|DT_END_ELLIPSIS);
 
 					break;

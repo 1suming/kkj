@@ -103,7 +103,7 @@ bool __cdecl CMessageProxy::InsertSystemTime(COLORREF crColor)
 	SYSTEMTIME SystemTime;
 	GetLocalTime(&SystemTime);
 	TCHAR szTimeBuffer[64]=TEXT("");
-	_snprintf(szTimeBuffer,sizeof(szTimeBuffer),TEXT("［%02d:%02d:%02d］"),SystemTime.wHour,SystemTime.wMinute,SystemTime.wSecond);
+	_snprintf_s(szTimeBuffer,sizeof(szTimeBuffer),TEXT("［%02d:%02d:%02d］"),SystemTime.wHour,SystemTime.wMinute,SystemTime.wSecond);
 
 	//插入消息
 	m_pSkinRichEdit->InsertString(szTimeBuffer,crColor);
@@ -281,7 +281,7 @@ bool CMessageProxy::TranslateInsert(LPCTSTR pszString, COLORREF crColor, UINT uS
 			iHandleLength+=iPassCharCount+CExpression::m_ExpreesionItem[nFaceIndex].m_wTranceLength;
 
 			//装载图片			
-			_snprintf(szFileName,sizeof(szFileName),TEXT("%s\\Face\\%d.gif"),m_szPath, nFaceIndex);
+			_snprintf_s(szFileName,sizeof(szFileName),TEXT("%s\\Face\\%d.gif"),m_szPath, nFaceIndex);
 			m_pSkinRichEdit->InsertImage(szFileName);
 		}
 		else 

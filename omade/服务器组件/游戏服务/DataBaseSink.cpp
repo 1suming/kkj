@@ -55,7 +55,7 @@ bool __cdecl CDataBaseSink::OnDataBaseEngineStart(IUnknownEx * pIUnknownEx)
 
 		//连接用户数据库
 		pcbAddr=(BYTE *)&m_pGameUserDBInfo->dwDataBaseAddr;
-		_snprintf(szDataBaseAddr,sizeof(szDataBaseAddr),TEXT("%d.%d.%d.%d"),pcbAddr[0],pcbAddr[1],pcbAddr[2],pcbAddr[3]);
+		_snprintf_s(szDataBaseAddr,sizeof(szDataBaseAddr),TEXT("%d.%d.%d.%d"),pcbAddr[0],pcbAddr[1],pcbAddr[2],pcbAddr[3]);
 		m_AccountsDBModule->SetConnectionInfo(szDataBaseAddr,m_pGameUserDBInfo->wDataBasePort,m_pGameUserDBInfo->szDataBaseName,
 			m_pGameUserDBInfo->szDataBaseUser,m_pGameUserDBInfo->szDataBasePass);
 
@@ -75,7 +75,7 @@ bool __cdecl CDataBaseSink::OnDataBaseEngineStart(IUnknownEx * pIUnknownEx)
 		_cprintf("m_pGameScoreDBInfo->szDataBaseUser :%s",m_pGameScoreDBInfo->szDataBaseUser);
 		_cprintf("m_pGameScoreDBInfo->szDataBasePass :%s",m_pGameScoreDBInfo->szDataBasePass);
 
-		_snprintf(szDataBaseAddr,sizeof(szDataBaseAddr),TEXT("%d.%d.%d.%d"),pcbAddr[0],pcbAddr[1],pcbAddr[2],pcbAddr[3]);
+		_snprintf_s(szDataBaseAddr,sizeof(szDataBaseAddr),TEXT("%d.%d.%d.%d"),pcbAddr[0],pcbAddr[1],pcbAddr[2],pcbAddr[3]);
 		m_GameScoreDBModule->SetConnectionInfo(szDataBaseAddr,m_pGameScoreDBInfo->wDataBasePort,m_pGameScoreDBInfo->szDataBaseName,
 			m_pGameScoreDBInfo->szDataBaseUser,m_pGameScoreDBInfo->szDataBasePass);
 
@@ -243,7 +243,7 @@ bool CDataBaseSink::OnRequestLogon(DWORD dwContextID, VOID * pData, WORD wDataSi
 		// OMA END
 
 		TCHAR logStr[512] = TEXT("");
-		_snprintf(logStr,sizeof(logStr),TEXT("取得送分次数 %d"),LogonSuccess.lGrantCount);
+		_snprintf_s(logStr,sizeof(logStr),TEXT("取得送分次数 %d"),LogonSuccess.lGrantCount);
 		
 		CTraceService::TraceString(logStr,TraceLevel_Info);
 
@@ -781,7 +781,7 @@ LONG CDataBaseSink::SPLogonByUserID(DWORD dwUserID, LPCTSTR pszPassword, DWORD d
 	//转化地址
 	TCHAR szClientIP[16]=TEXT("");
 	BYTE * pClientIP=(BYTE *)&dwClientIP;
-	_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
+	_snprintf_s(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
 
 	//执行存储过程
 	m_GameScoreDBAide.ResetParameter();
@@ -804,7 +804,7 @@ LONG CDataBaseSink::SPWriteUserScore(DWORD dwUserID, DWORD dwPlayTimeCount, DWOR
 	//转化地址
 	TCHAR szClientIP[16]=TEXT("");
 	BYTE * pClientIP=(BYTE *)&dwClientIP;
-	_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
+	_snprintf_s(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
 
 	//执行存储过程
 	m_GameScoreDBAide.ResetParameter();
@@ -836,7 +836,7 @@ LONG CDataBaseSink::SPLeaveGameServer(DWORD dwUserID, DWORD dwPlayTimeCount, DWO
 	//转化地址
 	TCHAR szClientIP[16]=TEXT("");
 	BYTE * pClientIP=(BYTE *)&dwClientIP;
-	_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
+	_snprintf_s(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
 
 	//执行存储过程
 	m_GameScoreDBAide.ResetParameter();
@@ -859,7 +859,7 @@ LONG CDataBaseSink::SPLeaveGameServer(DWORD dwUserID, DWORD dwPlayTimeCount, DWO
 
 	// oma add Grant Count
 	TCHAR leaveMsg[512] = TEXT("");
-	_snprintf(leaveMsg,sizeof(leaveMsg),TEXT("离开存储过程 送分次数：%d "),UserScore.lGrantCount);
+	_snprintf_s(leaveMsg,sizeof(leaveMsg),TEXT("离开存储过程 送分次数：%d "),UserScore.lGrantCount);
 	CTraceService::TraceString(leaveMsg,TraceLevel_Debug);
 
 	m_GameScoreDBAide.AddParameter(TEXT("@lGrantCount"),UserScore.lGrantCount);
@@ -877,7 +877,7 @@ LONG CDataBaseSink::SPCongealAccounts(DWORD dwUserID, DWORD dwMasterUserID, DWOR
 	//转化地址
 	TCHAR szClientIP[16]=TEXT("");
 	BYTE * pClientIP=(BYTE *)&dwClientIP;
-	_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
+	_snprintf_s(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
 
 	//执行存储过程
 	m_AccountsDBAide.ResetParameter();
@@ -897,7 +897,7 @@ LONG CDataBaseSink::SPSetUserGameRight(DWORD dwUserID, DWORD dwUserRight, DWORD 
 	//转化地址
 	TCHAR szClientIP[16]=TEXT("");
 	BYTE * pClientIP=(BYTE *)&dwClientIP;
-	_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
+	_snprintf_s(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
 
 	//执行存储过程
 	m_GameScoreDBAide.ResetParameter();
@@ -918,7 +918,7 @@ LONG CDataBaseSink::SPSetUserAccountsRight(DWORD dwUserID, DWORD dwUserRight, DW
 	//转化地址
 	TCHAR szClientIP[16]=TEXT("");
 	BYTE * pClientIP=(BYTE *)&dwClientIP;
-	_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
+	_snprintf_s(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
 
 	//执行存储过程
 	m_AccountsDBAide.ResetParameter();
@@ -939,7 +939,7 @@ LONG CDataBaseSink::SPRecordGiftGrant(DWORD dwSendUserID, DWORD dwRcvUserID, WOR
 	//转化地址
 	TCHAR szClientIP[16]=TEXT("");
 	BYTE * pClientIP=(BYTE *)&dwClientIP;
-	_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
+	_snprintf_s(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
 
 	//执行存储过程
 	m_GameScoreDBAide.ResetParameter();
@@ -966,7 +966,7 @@ LONG CDataBaseSink::SPBuyProperty(DWORD dwUserID, DWORD dwTargetUserID, int nPro
 	//转化地址
 	TCHAR szClientIP[16]=TEXT("");
 	BYTE * pClientIP=(BYTE *)&dwClientIP;
-	_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
+	_snprintf_s(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
 
 	//执行存储过程
 	m_GameScoreDBAide.ResetParameter();
@@ -992,7 +992,7 @@ LONG CDataBaseSink::SPWriteProperty(DWORD dwUserID, int nPropertyID, DWORD lUsea
 	//转化地址
 	TCHAR szClientIP[16]=TEXT("");
 	BYTE * pClientIP=(BYTE *)&dwClientIP;
-	_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
+	_snprintf_s(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
 
 	//执行存储过程
 	m_GameScoreDBAide.ResetParameter();
@@ -1048,7 +1048,7 @@ LONG CDataBaseSink::SPExchangeCharm(DWORD dwUserID, LONG lLoveliness, LONG lGold
 	//转化地址
 	TCHAR szClientIP[16]=TEXT("");
 	BYTE * pClientIP=(BYTE *)&dwClientIP;
-	_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
+	_snprintf_s(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
 
 	//执行存储过程
 	m_GameScoreDBAide.ResetParameter();
@@ -1070,7 +1070,7 @@ LONG CDataBaseSink::SPBankDrawoutGold(DWORD dwUserID, DWORD lSwapScore, DWORD dw
 	//转化地址
 	TCHAR szClientIP[16]=TEXT("");
 	BYTE * pClientIP=(BYTE *)&dwClientIP;
-	_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
+	_snprintf_s(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
 
 	//执行存储过程
 	m_GameScoreDBAide.ResetParameter();
@@ -1091,7 +1091,7 @@ LONG CDataBaseSink::SPBankStorageGold(DWORD dwUserID, DWORD lSwapScore, DWORD dw
 	//转化地址
 	TCHAR szClientIP[16]=TEXT("");
 	BYTE * pClientIP=(BYTE *)&dwClientIP;
-	_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
+	_snprintf_s(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
 
 	//执行存储过程
 	m_GameScoreDBAide.ResetParameter();

@@ -367,7 +367,7 @@ bool CDlgCustomFace::ConnectServer()
 	CRegKey RegServer;
 	LPCTSTR pszServerIP=pPlazaViewItem->m_DlgLogon.GetLogonServer();
 	TCHAR szRegServer[256]=TEXT(""),szServerAddr[64]=TEXT("");
-	_snprintf(szRegServer,sizeof(szRegServer),TEXT("%s\\%s"),REG_LOGON_SERVER,pszServerIP);
+	_snprintf_s(szRegServer,sizeof(szRegServer),TEXT("%s\\%s"),REG_LOGON_SERVER,pszServerIP);
 
 	if (RegServer.Open(HKEY_CURRENT_USER,szRegServer,KEY_READ)==ERROR_SUCCESS)
 	{

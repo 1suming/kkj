@@ -374,7 +374,7 @@ bool __cdecl CTableFrame::PerformSitDownAction(WORD wChairID, IServerUserItem * 
 			//发送消息
 			TCHAR szDescribe[128]=TEXT("");
 			pTableUserData=m_pIUserItem[wChairID]->GetUserData();
-			_snprintf(szDescribe,sizeof(szDescribe),TEXT("椅子已经被 [ %s ] 捷足先登了，下次动作要快点了！"),pTableUserData->szAccounts);
+			_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("椅子已经被 [ %s ] 捷足先登了，下次动作要快点了！"),pTableUserData->szAccounts);
 			SendSitFailedPacket(pIServerUserItem,szDescribe);
 		}
 		else
@@ -477,11 +477,11 @@ bool __cdecl CTableFrame::PerformSitDownAction(WORD wChairID, IServerUserItem * 
 				TCHAR szDescribe[128]=TEXT("");
 				if (m_pGameServiceOption->wServerType==GAME_GENRE_GOLD)
 				{
-					_snprintf(szDescribe,sizeof(szDescribe),TEXT("加入游戏至少需要 %ld 个金币，您的金币不够，不能加入！"),lLessScore);
+					_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("加入游戏至少需要 %ld 个金币，您的金币不够，不能加入！"),lLessScore);
 				}
 				else
 				{
-					_snprintf(szDescribe,sizeof(szDescribe),TEXT("加入游戏至少需要 %ld 个游戏积分，您的积分不够，不能加入！"),lLessScore);
+					_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("加入游戏至少需要 %ld 个游戏积分，您的积分不够，不能加入！"),lLessScore);
 				}
 				SendSitFailedPacket(pIServerUserItem,szDescribe);
 
@@ -494,11 +494,11 @@ bool __cdecl CTableFrame::PerformSitDownAction(WORD wChairID, IServerUserItem * 
 				TCHAR szDescribe[128]=TEXT("");
 				if (m_pGameServiceOption->wServerType==GAME_GENRE_GOLD)
 				{
-					_snprintf(szDescribe,sizeof(szDescribe),TEXT("您的金币超过本房间的最大限制额度%ld,请更换游戏房间!"),lMaxScore);
+					_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("您的金币超过本房间的最大限制额度%ld,请更换游戏房间!"),lMaxScore);
 				}
 				else
 				{
-					_snprintf(szDescribe,sizeof(szDescribe),TEXT("您的游戏积分超过本房间的最大限制额度%ld,请更换游戏房间!"),lMaxScore);
+					_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("您的游戏积分超过本房间的最大限制额度%ld,请更换游戏房间!"),lMaxScore);
 				}
 				SendSitFailedPacket(pIServerUserItem,szDescribe);
 
@@ -531,7 +531,7 @@ bool __cdecl CTableFrame::PerformSitDownAction(WORD wChairID, IServerUserItem * 
 				if ((pTableUserRule->bLimitFlee)&&(wFleeRate>pTableUserRule->wFleeRate))
 				{
 					TCHAR szDescribe[128]=TEXT("");
-					_snprintf(szDescribe,sizeof(szDescribe),TEXT("你的逃跑率太高，与 %s 设置的设置不符，不能加入游戏！"),m_pIUserItem[i]->GetAccounts());
+					_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("你的逃跑率太高，与 %s 设置的设置不符，不能加入游戏！"),m_pIUserItem[i]->GetAccounts());
 					SendSitFailedPacket(pIServerUserItem,szDescribe);
 					return false;
 				}
@@ -540,7 +540,7 @@ bool __cdecl CTableFrame::PerformSitDownAction(WORD wChairID, IServerUserItem * 
 				if ((pTableUserRule->bLimitWin)&&(wWinRate<pTableUserRule->wWinRate))
 				{
 					TCHAR szDescribe[128]=TEXT("");
-					_snprintf(szDescribe,sizeof(szDescribe),TEXT("你的胜率太低，与 %s 设置的设置不符，不能加入游戏！"),m_pIUserItem[i]->GetAccounts());
+					_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("你的胜率太低，与 %s 设置的设置不符，不能加入游戏！"),m_pIUserItem[i]->GetAccounts());
 					SendSitFailedPacket(pIServerUserItem,szDescribe);
 					return false;
 				}
@@ -551,14 +551,14 @@ bool __cdecl CTableFrame::PerformSitDownAction(WORD wChairID, IServerUserItem * 
 					if (pUserScore->lScore>pTableUserRule->lMaxScore)
 					{
 						TCHAR szDescribe[128]=TEXT("");
-						_snprintf(szDescribe,sizeof(szDescribe),TEXT("你的积分太高，与 %s 设置的设置不符，不能加入游戏！"),m_pIUserItem[i]->GetAccounts());
+						_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("你的积分太高，与 %s 设置的设置不符，不能加入游戏！"),m_pIUserItem[i]->GetAccounts());
 						SendSitFailedPacket(pIServerUserItem,szDescribe);
 						return false;
 					}
 					if (pUserScore->lScore<pTableUserRule->lLessScore)
 					{
 						TCHAR szDescribe[128]=TEXT("");
-						_snprintf(szDescribe,sizeof(szDescribe),TEXT("你的积分太低，与 %s 设置的设置不符，不能加入游戏！"),m_pIUserItem[i]->GetAccounts());
+						_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("你的积分太低，与 %s 设置的设置不符，不能加入游戏！"),m_pIUserItem[i]->GetAccounts());
 						SendSitFailedPacket(pIServerUserItem,szDescribe);
 						return false;
 					}
@@ -737,7 +737,7 @@ bool __cdecl CTableFrame::OnUserOffLine(WORD wChairID)
 
 	//构造消息
 	TCHAR szMessage[512]=TEXT("");
-	_sntprintf(szMessage,sizeof(szMessage),TEXT("[ %s ] 断线了，请耐心等待90秒。"),m_pIUserItem[wChairID]->GetAccounts());
+	_snprintf_s(szMessage,sizeof(szMessage),TEXT("[ %s ] 断线了，请耐心等待90秒。"),m_pIUserItem[wChairID]->GetAccounts());
 
 	//发送消息
 	for (WORD i=0;i<MAX_CHAIR;i++)
@@ -1147,17 +1147,17 @@ bool __cdecl CTableFrame::OnEventSocketFrame(WORD wSubCmdID, const void * pDataB
 						if ( 0 < dwUseableTime && dwPassTime <= dwUseableTime && pUserData->cbMasterOrder==0 )
 						{
 							TCHAR szDescribe[128]=TEXT("");
-							_snprintf(szDescribe,sizeof(szDescribe),TEXT("[ %s ] 使用了防踢卡，踢人失败！"),pKickUserData->szAccounts);
+							_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("[ %s ] 使用了防踢卡，踢人失败！"),pKickUserData->szAccounts);
 							SendGameMessage(pIServerUserItem,szDescribe,SMT_EJECT|SMT_INFO);
 
-							_snprintf(szDescribe,sizeof(szDescribe),TEXT("由于您使用了防踢卡，成功阻止了[ %s ]对您的踢人动作！"),pUserData->szAccounts);
+							_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("由于您使用了防踢卡，成功阻止了[ %s ]对您的踢人动作！"),pUserData->szAccounts);
 							SendGameMessage(pIKickUserItem,szDescribe,SMT_EJECT|SMT_INFO);
 
 							return true;
 						}
 
 						TCHAR szDescribe[128]=TEXT("");
-						_snprintf(szDescribe,sizeof(szDescribe),TEXT("您被 [ %s ] 踢出游戏桌！"),pUserData->szAccounts);
+						_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("您被 [ %s ] 踢出游戏桌！"),pUserData->szAccounts);
 						SendGameMessage(pIKickUserItem,szDescribe,SMT_EJECT|SMT_INFO|SMT_CLOSE_GAME);									
 					}
 				}    
@@ -1611,7 +1611,7 @@ bool __cdecl CTableFrame::ConcludeGame()
 					
 					if (pUserData->UserScoreInfo.lGameGold < 5 )
 					{
-						_snprintf(szDescribe,sizeof(szDescribe),TEXT("您的金币少于 %ld，不能继续游戏！请从银行取出游戏币"),5);
+						_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("您的金币少于 %ld，不能继续游戏！请从银行取出游戏币"),5);
 					}
 					SendGameMessage(pIServerUserItem,szDescribe,SMT_EJECT|SMT_INFO|SMT_CLOSE_GAME);
 
@@ -1627,11 +1627,11 @@ bool __cdecl CTableFrame::ConcludeGame()
 					TCHAR szDescribe[256]=TEXT("");
 					if (m_pGameServiceOption->wServerType==GAME_GENRE_GOLD)
 					{
-						_snprintf(szDescribe,sizeof(szDescribe),TEXT("您的金币少于 %ld，不能继续游戏！"),lLessScore);
+						_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("您的金币少于 %ld，不能继续游戏！"),lLessScore);
 					}
 					else 
 					{
-						_snprintf(szDescribe,sizeof(szDescribe),TEXT("您的游戏积分少于 %ld，不能继续游戏！"),lLessScore);
+						_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("您的游戏积分少于 %ld，不能继续游戏！"),lLessScore);
 					}
 					SendGameMessage(pIServerUserItem,szDescribe,SMT_EJECT|SMT_INFO|SMT_CLOSE_GAME);
 					
@@ -1645,11 +1645,11 @@ bool __cdecl CTableFrame::ConcludeGame()
 					TCHAR szDescribe[256]=TEXT("");
 					if (m_pGameServiceOption->wServerType==GAME_GENRE_GOLD)
 					{
-						_snprintf(szDescribe,sizeof(szDescribe),TEXT("您的金币超过本房间的最大限制额度%ld,请更换游戏房间!"),lMaxScore);
+						_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("您的金币超过本房间的最大限制额度%ld,请更换游戏房间!"),lMaxScore);
 					}
 					else 
 					{
-						_snprintf(szDescribe,sizeof(szDescribe),TEXT("您的游戏积分超过本房间的最大限制额度%ld,请更换游戏房间!"),lMaxScore);
+						_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("您的游戏积分超过本房间的最大限制额度%ld,请更换游戏房间!"),lMaxScore);
 					}
 					SendGameMessage(pIServerUserItem,szDescribe,SMT_EJECT|SMT_INFO|SMT_CLOSE_GAME);
 					
@@ -1852,12 +1852,12 @@ bool __cdecl CTableFrame::SendGameScene(IServerUserItem * pIServerUserItem, void
 	TCHAR szMessage[256]=TEXT("");
 	if (m_pGameServiceOption->wServerType==GAME_GENRE_MATCH)
 	{
-		_snprintf(szMessage,sizeof(szMessage),TEXT("亲爱的用户，欢迎您来到“%s”比赛游戏房间，祝比赛选手赛出水平，取得好的成绩！"),m_pGameServiceAttrib->szKindName);
+		_snprintf_s(szMessage,sizeof(szMessage),TEXT("亲爱的用户，欢迎您来到“%s”比赛游戏房间，祝比赛选手赛出水平，取得好的成绩！"),m_pGameServiceAttrib->szKindName);
 		SendGameMessage(pIServerUserItem,szMessage,SMT_INFO);
 	}
 	else
 	{
-		_snprintf(szMessage,sizeof(szMessage),TEXT("亲爱的用户，欢迎您来到“%s”，欢迎你多提宝贵建议！"),m_pGameServiceAttrib->szKindName);
+		_snprintf_s(szMessage,sizeof(szMessage),TEXT("亲爱的用户，欢迎您来到“%s”，欢迎你多提宝贵建议！"),m_pGameServiceAttrib->szKindName);
 		SendGameMessage(pIServerUserItem,szMessage,SMT_INFO);
 	}
 

@@ -27,7 +27,8 @@
 // 最大5番 得分是 16倍基数分 2^(5-1) = 16;
 
 // 设置牌局最大番数   
-#define MAX_CHIHU_FANSU				5									//最大胡牌番数
+// OMA 在游戏房间中设置参数
+//#define MAX_CHIHU_FANSU				5									//最大胡牌番数
 
 
 //扑克定义
@@ -61,13 +62,14 @@ struct CMD_WeaveItem
 #define SUB_S_TRUSTEE				107									//用户托管
 #define SUB_S_CHI_HU				108									//吃胡
 #define SUB_S_GANG_SCORE			110									//杠分
- #define SUB_S_USER_ESCAPE          111                                 //用户逃跑
+#define SUB_S_USER_ESCAPE          111                                 //用户逃跑
 #define SUB_S_GRANT_SCORE           112                                 //送分
 
 //游戏状态
 struct CMD_S_StatusFree
 {
-	LONG							lCellScore;							//基础金币
+	LONG							lCellScore;							//基础分数
+	LONG							lMaxScoreTimes;                     //最大倍数
 	WORD							wBankerUser;						//庄家用户
 	bool							bTrustee[GAME_PLAYER];				//是否托管
 };
@@ -93,6 +95,7 @@ struct CMD_S_StatusPlay
 {
 	//游戏变量
 	LONG							lCellScore;									//单元积分
+	LONG							lMaxScoreTimes;								//最大倍数
 	WORD							wBankerUser;								//庄家用户
 	WORD							wCurrentUser;								//当前用户
 
@@ -212,11 +215,11 @@ struct CMD_S_GameEnd
 	WORD							wWinOrder[GAME_PLAYER];				//胡牌排名
 	LONG							lGangScore[GAME_PLAYER];			//详细得分
 	WORD							wLostFanShu[GAME_PLAYER][GAME_PLAYER];
-	WORD							wLeftUser;				//逃跑用户
+	WORD							wLeftUser;							//逃跑用户//OMA血战可以有多个逃跑玩家
 
 	LONG							lHuaZhuScore[GAME_PLAYER];			//花猪分
 	LONG							lChaJiaoScore[GAME_PLAYER];			//查叫分
-	bool							bPlayleft[GAME_PLAYER];				// 逃跑用户
+	bool							bPlayleft[GAME_PLAYER];				//逃跑用户// OMA 记录逃跑玩家
 
 
 };

@@ -775,12 +775,12 @@ bool __cdecl CAttemperEngineSink::OnEventTimer(DWORD dwTimerID, WPARAM wBindPara
 
 				//读取配置
 				TCHAR szFileName[MAX_PATH],szMessage[1024];
-				_snprintf(szFileName,sizeof(szFileName),TEXT("%s\\GameService.ini"),szPath);
+				_snprintf_s(szFileName,sizeof(szFileName),TEXT("%s\\GameService.ini"),szPath);
 				
 				//循环消息
 				TCHAR szRoomMsgName[64],szGameMsgName[64];
-				_snprintf(szRoomMsgName,sizeof(szRoomMsgName),TEXT("RoomMessage%d"),m_cbRoomMsgIndex++);
-				_snprintf(szGameMsgName,sizeof(szGameMsgName),TEXT("GameMessage%d"),m_cbGameMsgIndex++);
+				_snprintf_s(szRoomMsgName,sizeof(szRoomMsgName),TEXT("RoomMessage%d"),m_cbRoomMsgIndex++);
+				_snprintf_s(szGameMsgName,sizeof(szGameMsgName),TEXT("GameMessage%d"),m_cbGameMsgIndex++);
 
 				//系统消息
 				GetPrivateProfileString(TEXT("Message"),szRoomMsgName,TEXT(""),szMessage,sizeof(szMessage),szFileName);
@@ -1259,7 +1259,7 @@ bool CAttemperEngineSink::OnDBUserRightResult(DWORD dwContextID, VOID * pData, W
 	{
 		//发送消息
 		TCHAR szDescribe[128]=TEXT("");
-		_snprintf(szDescribe,sizeof(szDescribe),TEXT("设置用户权限失败！"));
+		_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("设置用户权限失败！"));
 		SendGameMessage(pSendIServerUserItem,szDescribe,SMT_EJECT|SMT_INFO);		
 		return true;
 	}
@@ -1807,7 +1807,7 @@ bool CAttemperEngineSink::OnSocketMainUser(WORD wSubCmdID, VOID * pData, WORD wD
 						//构造数据
 						CMD_GR_SitFailed SitFailed;
 						memset(&SitFailed,0,sizeof(SitFailed));
-						_snprintf(SitFailed.szFailedDescribe,sizeof(SitFailed.szFailedDescribe),TEXT("你正在的 [ %d ] 号游戏桌游戏，暂时不能离开位置！"),pUserData->wTableID+1);
+						_snprintf_s(SitFailed.szFailedDescribe,sizeof(SitFailed.szFailedDescribe),TEXT("你正在的 [ %d ] 号游戏桌游戏，暂时不能离开位置！"),pUserData->wTableID+1);
 
 						//发送数据
 						WORD wSendSize=sizeof(SitFailed)-sizeof(SitFailed.szFailedDescribe)+CountStringBuffer(SitFailed.szFailedDescribe);
@@ -1837,7 +1837,7 @@ bool CAttemperEngineSink::OnSocketMainUser(WORD wSubCmdID, VOID * pData, WORD wD
 				//构造数据
 				CMD_GR_SitFailed SitFailed;
 				ZeroMemory(&SitFailed,sizeof(SitFailed));
-				_snprintf(SitFailed.szFailedDescribe,sizeof(SitFailed.szFailedDescribe),TEXT("暂时没有能够加入的游戏桌，请稍后！"));
+				_snprintf_s(SitFailed.szFailedDescribe,sizeof(SitFailed.szFailedDescribe),TEXT("暂时没有能够加入的游戏桌，请稍后！"));
 
 				//发送数据
 				WORD wSendSize=sizeof(SitFailed)-sizeof(SitFailed.szFailedDescribe)+CountStringBuffer(SitFailed.szFailedDescribe);
@@ -1852,7 +1852,7 @@ bool CAttemperEngineSink::OnSocketMainUser(WORD wSubCmdID, VOID * pData, WORD wD
 				//构造数据
 				CMD_GR_SitFailed SitFailed;
 				memset(&SitFailed,0,sizeof(SitFailed));
-				_snprintf(SitFailed.szFailedDescribe,sizeof(SitFailed.szFailedDescribe),TEXT("本房间限制了旁观游戏!"),pUserData->wTableID+1);
+				_snprintf_s(SitFailed.szFailedDescribe,sizeof(SitFailed.szFailedDescribe),TEXT("本房间限制了旁观游戏!"),pUserData->wTableID+1);
 
 				//发送数据
 				WORD wSendSize=sizeof(SitFailed)-sizeof(SitFailed.szFailedDescribe)+CountStringBuffer(SitFailed.szFailedDescribe);
@@ -1877,7 +1877,7 @@ bool CAttemperEngineSink::OnSocketMainUser(WORD wSubCmdID, VOID * pData, WORD wD
 					//构造数据
 					CMD_GR_SitFailed SitFailed;
 					memset(&SitFailed,0,sizeof(SitFailed));
-					_snprintf(SitFailed.szFailedDescribe,sizeof(SitFailed.szFailedDescribe),TEXT("你正在的 [ %d ] 号游戏桌游戏，暂时不能离开位置！"),pUserData->wTableID+1);
+					_snprintf_s(SitFailed.szFailedDescribe,sizeof(SitFailed.szFailedDescribe),TEXT("你正在的 [ %d ] 号游戏桌游戏，暂时不能离开位置！"),pUserData->wTableID+1);
 
 					//发送数据
 					WORD wSendSize=sizeof(SitFailed)-sizeof(SitFailed.szFailedDescribe)+CountStringBuffer(SitFailed.szFailedDescribe);
@@ -1917,7 +1917,7 @@ bool CAttemperEngineSink::OnSocketMainUser(WORD wSubCmdID, VOID * pData, WORD wD
 			if ((wSubCmdID==SUB_GR_USER_STANDUP_REQ)&&(pTableFrame->IsUserPlaying(pIServerUserItem)==true))
 			{
 				TCHAR szMessage[256]=TEXT("");
-				_snprintf(szMessage,sizeof(szMessage),TEXT("您正在的 [ %d ] 号游戏桌游戏，暂时不能离开位置！"),pUserData->wTableID+1);
+				_snprintf_s(szMessage,sizeof(szMessage),TEXT("您正在的 [ %d ] 号游戏桌游戏，暂时不能离开位置！"),pUserData->wTableID+1);
 				SendRoomMessage(dwSocketID,szMessage,SMT_EJECT);
 				return true;
 			}
@@ -2145,7 +2145,7 @@ bool CAttemperEngineSink::OnSocketMainManager(WORD wSubCmdID, VOID * pData, WORD
 			//构造信息
 			TCHAR szMessage[128]=TEXT("");
 			BYTE * pcbUserIP=(BYTE *)(&dwUserIP);
-			_snprintf(szMessage,CountArray(szMessage),TEXT("[ %s ]：%d.%d.%d.%d"),pIServerUserItemRecv->GetAccounts(),
+			_snprintf_s(szMessage,CountArray(szMessage),TEXT("[ %s ]：%d.%d.%d.%d"),pIServerUserItemRecv->GetAccounts(),
 				pcbUserIP[0],pcbUserIP[1],pcbUserIP[2],pcbUserIP[3]);
 
 			//发送消息
@@ -3640,7 +3640,7 @@ void CAttemperEngineSink::ModifyGameGold(IServerUserItem * pIServerUserItem,LONG
 			{
 				//发送信息
 				TCHAR szDescribe[256]=TEXT("");
-				_snprintf(szDescribe,sizeof(szDescribe),TEXT("加入游戏至少需要 %ld 的金币，您的金币不够，不能加入！"),lLessScore);
+				_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("加入游戏至少需要 %ld 的金币，您的金币不够，不能加入！"),lLessScore);
 				SendRoomMessage(pIServerUserItem,szDescribe,SMT_INFO);
 
 				//弹起用户
@@ -3658,7 +3658,7 @@ void CAttemperEngineSink::ModifyGameGold(IServerUserItem * pIServerUserItem,LONG
 			{
 				//发送信息
 				TCHAR szDescribe[256]=TEXT("");
-				_snprintf(szDescribe,sizeof(szDescribe),TEXT("您的金币超过本房间的最大限制额度%ld,请更换游戏房间!"),lMaxScore);
+				_snprintf_s(szDescribe,sizeof(szDescribe),TEXT("您的金币超过本房间的最大限制额度%ld,请更换游戏房间!"),lMaxScore);
 				SendRoomMessage(pIServerUserItem,szDescribe,SMT_INFO);
 
 				//弹起用户

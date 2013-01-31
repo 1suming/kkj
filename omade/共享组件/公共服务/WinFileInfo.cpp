@@ -57,7 +57,7 @@ LPCTSTR CWinFileInfo::QueryValue(LPCTSTR lpszValueName)
     UINT nQuerySize=0;
     LPTSTR pszValue=NULL;
 	TCHAR szBlockName[128]=TEXT("");
-	_snprintf(szBlockName,sizeof(szBlockName),TEXT("\\StringFileInfo\\%08lx\\%s"),m_dwLangCharset,lpszValueName);
+	_sntprintf_s(szBlockName,sizeof(szBlockName),TEXT("\\StringFileInfo\\%08lx\\%s"),m_dwLangCharset,lpszValueName);
     ::VerQueryValue(m_cbInfoBuffer,szBlockName,(LPVOID *)&pszValue,&nQuerySize);
 	return pszValue;
 }

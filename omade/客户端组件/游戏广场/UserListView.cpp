@@ -245,27 +245,27 @@ LPCTSTR CUserListView::GetDisplayText(IUserItem * pIUserItem, WORD wColumnPos)
 	{
 	case DTP_USER_ID:			//用户 ID
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%ld"),pIUserItem->GetUserData()->dwUserID);
+			_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%ld"),pIUserItem->GetUserData()->dwUserID);
 			return szBuffer;
 		}
 	case DTP_GAME_ID:			//游戏 ID
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%ld"),pIUserItem->GetUserData()->dwGameID);
+			_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%ld"),pIUserItem->GetUserData()->dwGameID);
 			return szBuffer;
 		}
 	case DTP_INSURE_SCORE:		//存储金币
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%ld"),pIUserItem->GetUserData()->lInsureScore);
+			_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%ld"),pIUserItem->GetUserData()->lInsureScore);
 			return szBuffer;
 		}
 	case DTP_GAME_GOLD:			//游戏金币
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%ld"),pIUserItem->GetUserData()->lGameGold);
+			_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%ld"),pIUserItem->GetUserData()->lGameGold);
 			return szBuffer;
 		}
 	case DTP_LOVE_LINESS:		//用户魅力
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%ld"),pIUserItem->GetUserData()->lLoveliness);
+			_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%ld"),pIUserItem->GetUserData()->lLoveliness);
 			return szBuffer;
 		}
 	case DTP_USER_ACCOUNTS:		//用户名字
@@ -279,43 +279,43 @@ LPCTSTR CUserListView::GetDisplayText(IUserItem * pIUserItem, WORD wColumnPos)
 	case DTP_USER_TABLE:		//游戏桌号
 		{
 			WORD wTableID=pUserData->wTableID;
-			if (wTableID!=INVALID_TABLE) _snprintf(szBuffer,sizeof(szBuffer),TEXT("%3d"),wTableID+1);
+			if (wTableID!=INVALID_TABLE) _snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%3d"),wTableID+1);
 			else szBuffer[0]=0;
 			return szBuffer;
 		}
 	case DTP_USER_SCORE:		//用户积分
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%ld"),pUserData->lScore);
+			_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%ld"),pUserData->lScore);
 			return szBuffer;
 		}
 	case DTP_USER_EXPERIENCE:	//用户经验
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%ld"),pUserData->lExperience);
+			_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%ld"),pUserData->lExperience);
 			return szBuffer;
 		}
 	case DTP_USER_WIN:			//胜局盘数
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%ld"),pUserData->lWinCount);
+			_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%ld"),pUserData->lWinCount);
 			return szBuffer;
 		}
 	case DTP_USER_LOST:			//输局盘数
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%ld"),pUserData->lLostCount);
+			_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%ld"),pUserData->lLostCount);
 			return szBuffer;
 		}
 	case DTP_USER_DRAW:			//和局盘数
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%ld"),pUserData->lDrawCount);
+			_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%ld"),pUserData->lDrawCount);
 			return szBuffer;
 		}
 	case DTP_USER_FLEE:			//逃局盘数
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%ld"),pUserData->lFleeCount);
+			_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%ld"),pUserData->lFleeCount);
 			return szBuffer;
 		}
 	case DTP_USER_PLAY_COUNT:	//总局盘数
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%ld"),pIUserItem->GetUserPlayCount());
+			_snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%ld"),pIUserItem->GetUserPlayCount());
 			return szBuffer;
 		}
 	case DTP_WIN_RATE:			//用户胜率
@@ -324,7 +324,7 @@ LPCTSTR CUserListView::GetDisplayText(IUserItem * pIUserItem, WORD wColumnPos)
 			{
 				LONG lAllCount=pIUserItem->GetUserPlayCount();
 				double dWinRate=(double)(pUserData->lWinCount*100)/(double)lAllCount;
-				if (dWinRate>=0.01) _snprintf(szBuffer,sizeof(szBuffer),TEXT("%5.2f%%"),dWinRate);
+				if (dWinRate>=0.01) _snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%5.2f%%"),dWinRate);
 				else szBuffer[0]=0;
 			}
 			else szBuffer[0]=0;
@@ -336,7 +336,7 @@ LPCTSTR CUserListView::GetDisplayText(IUserItem * pIUserItem, WORD wColumnPos)
 			{
 				LONG lAllCount=pIUserItem->GetUserPlayCount();
 				double dLostRate=(double)(pUserData->lLostCount*100)/(double)lAllCount;
-				if (dLostRate>=0.01) _snprintf(szBuffer,sizeof(szBuffer),TEXT("%5.2f%%"),dLostRate);
+				if (dLostRate>=0.01) _snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%5.2f%%"),dLostRate);
 				else szBuffer[0]=0;
 			}
 			else szBuffer[0]=0;
@@ -348,7 +348,7 @@ LPCTSTR CUserListView::GetDisplayText(IUserItem * pIUserItem, WORD wColumnPos)
 			{
 				LONG lAllCount=pIUserItem->GetUserPlayCount();
 				double dDrawRate=(double)(pUserData->lDrawCount*100)/(double)lAllCount;
-				if (dDrawRate>=0.01) _snprintf(szBuffer,sizeof(szBuffer),TEXT("%5.2f%%"),dDrawRate);
+				if (dDrawRate>=0.01) _snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%5.2f%%"),dDrawRate);
 				else szBuffer[0]=0;
 			}
 			else szBuffer[0]=0;
@@ -360,7 +360,7 @@ LPCTSTR CUserListView::GetDisplayText(IUserItem * pIUserItem, WORD wColumnPos)
 			{
 				LONG lAllCount=pIUserItem->GetUserPlayCount();
 				double dFleeRate=(double)(pUserData->lFleeCount*100)/(double)lAllCount;
-				if (dFleeRate>=0.01) _snprintf(szBuffer,sizeof(szBuffer),TEXT("%5.2f%%"),dFleeRate);
+				if (dFleeRate>=0.01) _snprintf_s(szBuffer,sizeof(szBuffer),TEXT("%5.2f%%"),dFleeRate);
 				else szBuffer[0]=0;
 			}
 			else szBuffer[0]=0;
