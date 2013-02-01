@@ -74,22 +74,7 @@ struct CMD_S_StatusFree
 	bool							bTrustee[GAME_PLAYER];				//是否托管
 };
 
-//struct CMD_S_PaiJing
-//{
-//	BYTE							m_cbPaiJingCard;                        // 牌精
-//	BYTE							m_cbTingYongCard;						// 听用
-//};
-
-struct CMD_S_GrantScore
-{
-	//LONG                            lGrantScore;    // 送分值             
-	//BYTE                            cbGrantCount;   // 送分次数
-	//BYTE						messageType;
-	TCHAR						messageContent[1024];
-
-};
-
-
+ 
 //游戏状态
 struct CMD_S_StatusPlay
 {

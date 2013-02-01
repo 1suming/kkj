@@ -80,20 +80,13 @@ CGameFrame::CGameFrame():m_Splitter(VorSpliter)
 	//界面状态
 	m_bMaxShow=false;
 	m_rcNormalSize.SetRect(0,0,0,0);
-#ifdef CONSOLE_OMA
-	AllocConsole();//在win32程序里申请一个新的控制台
-	freopen( "CONOUT$","w",stdout);
-#endif
-	return;
+ 	return;
 }
 
 //析构函数
 CGameFrame::~CGameFrame()
 {
-#ifdef CONSOLE_OMA
-	FreeConsole();//在win32程序里申请一个新的控制台
-#endif
-}
+ }
 
 //按钮消息
 bool CGameFrame::OnSplitterButton(CSkinSplitter * pSkinSplitter, CSkinButton * pSplitterButton)
@@ -671,35 +664,17 @@ CRoomViewItem * CGameFrame::SearchRoomViewItem(WORD wKindID, WORD wServerID)
 	{
 		if (m_pRoomViewItem[i]==NULL)
 		{
-#ifdef CONSOLE_OMA
-			_cprintf("m_pRoomViewItem[i] is NULL \n");
-#endif
-			return NULL;
+ 			return NULL;
 		}
 
 		pGameServer=m_pRoomViewItem[i]->GetServerInfo();
-#ifdef CONSOLE_OMA
-		_cprintf("i == %d  pGameServer->dwOnLineCount : %d \n",i,pGameServer->dwOnLineCount);
-		_cprintf("i == %d  pGameServer->dwServerAddr: %d \n",i,pGameServer->dwServerAddr);	
-		_cprintf("i == %d  pGameServer->szServerName: %s \n",i,pGameServer->szServerName);	
-		_cprintf("i == %d  pGameServer->wKindID: %d \n",i,pGameServer->wKindID);	
-		_cprintf("i == %d  pGameServer->wServerID: %d \n",i,pGameServer->wServerID);	
-		_cprintf("i == %d  pGameServer->wStationID: %d \n",i,pGameServer->wStationID);	
-#endif
-
+ 
 		if ((pGameServer->wKindID==wKindID)&&(pGameServer->wServerID==wServerID))
 		{
-#ifdef CONSOLE_OMA
-			_cprintf("get the correct room \n");
-#endif
-
-			return m_pRoomViewItem[i];
+ 			return m_pRoomViewItem[i];
 		}
 	}
-#ifdef CONSOLE_OMA
-	_cprintf("get  room  failed \n");
-#endif
-
+ 
 	return NULL;
 }
 
@@ -733,11 +708,7 @@ CRoomViewItem * CGameFrame::CreateRoomViewItem(CListServer * pListServer)
 	CRoomViewItem * pRoomViewItem=SearchRoomViewItem(pGameServer->wKindID,pGameServer->wServerID);
 	if (pRoomViewItem!=NULL) 
 	{
-#ifdef CONSOLE_OMA
-		_cprintf("get  room  ok  ActiveRoomViewItem room \n");
-#endif
-
-		ActiveRoomViewItem(pRoomViewItem);
+ 		ActiveRoomViewItem(pRoomViewItem);
 		return pRoomViewItem;
 	}
 

@@ -61,25 +61,14 @@ CGameClientDlg::CGameClientDlg() : CGameFrameDlg(&m_GameClientView)
 	m_cbLeftCardCount=0;
 	ZeroMemory(m_cbCardIndex,sizeof(m_cbCardIndex));
 	m_bOutMagicCard = false;
-  
-	// 打印调试信息
-#ifdef DEBUG
-	AllocConsole(); // open console output for trace 
-	if((freopen("Clientlog.txt", "w", stdout)) == NULL)
-		exit(-1);
-#endif
-
-
+ 
 	return;
 }
 
 //析构函数
 CGameClientDlg::~CGameClientDlg()
 {
-#ifdef DEBUG
-	FreeConsole(); //   close console
-#endif
-
+ 
 }
 
 //初始函数

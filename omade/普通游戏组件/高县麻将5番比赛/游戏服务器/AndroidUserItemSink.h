@@ -47,15 +47,13 @@ protected:
 	CGameLogic						m_GameLogic;							//游戏逻辑
 	IAndroidUserItem *				m_pIAndroidUserItem;					//用户接口
 
-#ifdef CONSOLE_OMA
-	tagGangCardResult              m_CurGangResult;                         // 当前杠牌结果
+ 	tagGangCardResult              m_CurGangResult;                         // 当前杠牌结果
 	tagTICardResult                m_CurTIResult;							// 当前提牌结果
 	
 	bool						   m_bGangStatus;                           // 当前杠牌状态
 	bool							m_bTIStatus;							// 当前抢提状态
 
-#endif 
-
+ 
 	//函数定义
 public:
 	//构造函数
@@ -117,14 +115,11 @@ protected:
 	bool OnSubOperateNotify(const void * pBuffer, WORD wDataSize);
 	//操作结果
 	bool OnSubOperateResult(const void * pBuffer, WORD wDataSize);
-#ifdef CONSOLE_OMA
-	//吃胡操作OMA
+ 	//吃胡操作OMA
 	bool OnSubUserChiHu( const void *pBuffer,WORD wDataSize );
-#else 
-	//用户听牌
+ 	//用户听牌
 	bool OnSubListenCard(const void * pBuffer, WORD wDataSize);
-#endif 
-	//校验出牌
+ 	//校验出牌
 	bool VerdictOutCard(BYTE cbPreCardData);
 	//处理函数
 protected:

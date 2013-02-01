@@ -40,10 +40,4 @@
 
 #include "..\消息定义\CMD_Sparrow.h"
 #include "..\..\..\开发库\Include\GameFrame.h"
-// 输出调试信息
-#ifdef DEBUG
-#include <conio.h>
-#endif 
-
-
 //////////////////////////////////////////////////////////////////////////

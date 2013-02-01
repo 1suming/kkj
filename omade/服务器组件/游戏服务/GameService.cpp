@@ -16,33 +16,14 @@ CGameService::CGameService()
 	memset(&m_GameScoreDBInfo,0,sizeof(m_GameScoreDBInfo));
 	memset(&m_GameServiceAttrib,0,sizeof(m_GameServiceAttrib));
 	memset(&m_GameServiceOption,0,sizeof(m_GameServiceOption));
-
-#ifdef CONSOLE_OMA
-	// oma console output
-	AllocConsole();//注意检查返回值
-#endif 
-	//3、在需要输出调试的时候调用_cprintf等函数
-	
-
-	//4、关闭控制台的时候调用
-		
-
-
+ 
 }
 
 //析构函数
 CGameService::~CGameService()
 {
 	UnLoadGameServiceModule();
-	
-#ifdef CONSOLE_OMA
-	// oma console output
-	FreeConsole();//注意检查返回值
-#endif 
-	// oma for console free;
-	
-
-	return;
+ 	return;
 }
 
 //接口查询

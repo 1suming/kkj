@@ -81,26 +81,12 @@ CTableFrameSink::CTableFrameSink()
 
 	//开局标志
 	m_bKaiJu = true;
-#ifdef DEBUG
-	 // 控制台输出
-	AllocConsole();
-	 //文件输出
-	
-	if((freopen("Majhonelog.txt", "w+", stdout)) == NULL)
-			exit(-1);
-#endif
-	return;
+ 	return;
 }
 
 //析构函数
 CTableFrameSink::~CTableFrameSink(void)
 {
-#ifdef DEBUG
-	// 关闭控制台
-	FreeConsole();
-	
-#endif
-
 }
 
 //接口查询

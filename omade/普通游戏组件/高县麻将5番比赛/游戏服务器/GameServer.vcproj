@@ -70,7 +70,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="../../../开发库/Lib/KernelEngineD.lib"
-				OutputFile="../../../运行/Debug/SparrowCDServer.dll"
+				OutputFile="../../../运行/Debug/SparrowGXServer.dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile=""
 				GenerateDebugInformation="true"

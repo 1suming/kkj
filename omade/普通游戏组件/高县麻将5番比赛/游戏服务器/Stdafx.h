@@ -44,11 +44,7 @@
 #include "..\消息定义\CMD_Sparrow.h"
 #include "..\..\..\开发库\Include\GameServiceExport.h"
 
-//是否调试信息
-#ifdef DEBUG
-#include <conio.h>
-#endif 
-
+ 
 
 //////////////////////////////////////////////////////////////////////////
 

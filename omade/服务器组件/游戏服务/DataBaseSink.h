@@ -5,10 +5,7 @@
 
 #include "Stdafx.h"
 #include "GameServiceExport.h"
-#ifdef CONSOLE_OMA
-#include <conio.h> // oma for debug
-#endif
-
+ 
 //////////////////////////////////////////////////////////////////////////
 //结构定义
 

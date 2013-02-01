@@ -198,36 +198,19 @@ bool __cdecl CAndroidUserItemSink::OnEventTimer(UINT nTimerID)
 					return true;
 				}
 
-#ifdef CONSOLE_OMA
-				
+ 				
 				if (m_bActionMask&WIK_TI_PAI) // OMA  处理提牌操作,主动操作
 				{
-				//	//_c//printf("android operate WIK_TI_PAI ........\n");
-				//	//printf("android operate WIK_TI_PAI ........\n");
-
+ 
 					if (m_CurTIResult.cbCardCount>0)
 					{
-						for (BYTE k = 0;k<m_CurTIResult.cbCardCount;k++)
-						{
-				//		//_c//printf("%x ",m_CurTIResult.cbCardData[k]);
-				//		//printf("%x ",m_CurTIResult.cbCardData[k]);
-
-						}
-						m_cbActionCard = m_CurTIResult.cbCardData[0]; // 选择一个默认的提牌，如果有多个提牌
-					//	//_c//printf("\nTI operate Choose the first one..m_cbActionCard : %x \n",m_cbActionCard);
-					//	//printf("\nTI operate Choose the first one..m_cbActionCard : %x \n",m_cbActionCard);
-
+ 						m_cbActionCard = m_CurTIResult.cbCardData[0]; // 选择一个默认的提牌，如果有多个提牌
+ 
 
 						m_bTIStatus = true; // 设置提牌状态
 						OnOperateCard(WIK_TI_PAI,m_cbActionCard);
 
-					}else
-					{
-					//	//_c//printf("WIK_TI_PAI operate NO Action ...........  \n");
-					//	//printf("WIK_TI_PAI operate NO Action ...........  \n");
-
-
-					}
+					} 
 					
 					return true;
 				}
@@ -235,27 +218,13 @@ bool __cdecl CAndroidUserItemSink::OnEventTimer(UINT nTimerID)
 			
 				if (m_bActionMask&WIK_TIE_PAI) // OMA  处理贴牌操作，被动操作
 				{
-				//	//_c//printf("android operate WIK_TIE_PAI ..........\n"); // 贴牌只有一个
-				//	//printf("android operate WIK_TIE_PAI ..........\n"); // 贴牌只有一个
-
+ 
 					OnOperateCard(WIK_TIE_PAI,0);
 					return true;
 				}
 
-
-				//if (m_bActionMask&WIK_PENG) // OMA   处理碰牌操作，被动操作
-				//{
-				//	//_c//printf("android operate WIK_PENG ..........\n");
-				//	//printf("android operate WIK_PENG ..........\n");
-
-
-				//	OnOperateCard(WIK_PENG,0);
-				//	return true;
-				//}
-
-				// oma android 操作顺序是 胡 杠 碰 贴 的优先级
-#endif 
-
+ 				// oma android 操作顺序是 胡 杠 碰 贴 的优先级
+ 
 	
 				m_bActionMask &=~WIK_LISTEN;
 				if((m_bActionMask!=WIK_NULL)&&(m_bHearStatus==false))
@@ -269,17 +238,12 @@ bool __cdecl CAndroidUserItemSink::OnEventTimer(UINT nTimerID)
 				}
 
 			}
-			////_c//printf("android: wMeChair %d operate m_wCurrentUser: %d \n",wMeChair,m_wCurrentUser);
-			////printf("android: wMeChair %d operate m_wCurrentUser: %d \n",wMeChair,m_wCurrentUser);
-
-
+ 
 			if(m_wCurrentUser==wMeChair)
 			{
 				if((m_bHearStatus==true)&&(m_cbSendCardData!=0))
 				{
-			//		//_c//printf("android: wMeChair %d operate ting outcard m_cbSendCardData: %x \n",wMeChair,m_cbSendCardData);
-			//		//printf("android: wMeChair %d operate ting outcard m_cbSendCardData: %x \n",wMeChair,m_cbSendCardData);
-
+ 
 
 					BYTE cbCardData=m_cbSendCardData;
 					//出牌效验
@@ -301,8 +265,7 @@ bool __cdecl CAndroidUserItemSink::OnEventTimer(UINT nTimerID)
 
 				}
 
-				////_c//printf("android: wMeChair %d operate GetIsolatedCard\n");
-				//智能出牌
+ 				//智能出牌
 				BYTE cbCardData=GetIsolatedCard();
 #ifdef CONSOLE_OMA
 				if((cbCardData!=0xFF))

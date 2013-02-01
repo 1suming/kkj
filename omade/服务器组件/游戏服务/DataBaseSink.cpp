@@ -66,16 +66,7 @@ bool __cdecl CDataBaseSink::OnDataBaseEngineStart(IUnknownEx * pIUnknownEx)
 		//连接游戏数据库
 		pcbAddr=(BYTE *)&m_pGameScoreDBInfo->dwDataBaseAddr;
 		
-		//memcpy(m_pGameScoreDBInfo->szDataBaseUser,"omadesala",sizeof("omadesala"));
-		//memcpy(m_pGameScoreDBInfo->szDataBasePass,"111111",sizeof("111111"));
-		
-		//m_pGameScoreDBInfo->szDataBaseUser = "omadesala";
-		//m_pGameScoreDBInfo->szDataBasePass = "111111";
-
-		_cprintf("m_pGameScoreDBInfo->szDataBaseUser :%s",m_pGameScoreDBInfo->szDataBaseUser);
-		_cprintf("m_pGameScoreDBInfo->szDataBasePass :%s",m_pGameScoreDBInfo->szDataBasePass);
-
-		_snprintf_s(szDataBaseAddr,sizeof(szDataBaseAddr),TEXT("%d.%d.%d.%d"),pcbAddr[0],pcbAddr[1],pcbAddr[2],pcbAddr[3]);
+ 		_snprintf_s(szDataBaseAddr,sizeof(szDataBaseAddr),TEXT("%d.%d.%d.%d"),pcbAddr[0],pcbAddr[1],pcbAddr[2],pcbAddr[3]);
 		m_GameScoreDBModule->SetConnectionInfo(szDataBaseAddr,m_pGameScoreDBInfo->wDataBasePort,m_pGameScoreDBInfo->szDataBaseName,
 			m_pGameScoreDBInfo->szDataBaseUser,m_pGameScoreDBInfo->szDataBasePass);
 
@@ -294,9 +285,7 @@ bool CDataBaseSink::OnRequestLogon(DWORD dwContextID, VOID * pData, WORD wDataSi
 		LPCTSTR pszDescribe=pIException->GetExceptionDescribe(); 
 		CTraceService::TraceString(pszDescribe,TraceLevel_Exception);
 	
-		_cprintf("pszDescribe =%s\n", pszDescribe);
-
-		//操作失败
+ 		//操作失败
 		DBR_GR_LogonError LogonError;
 		LogonError.lErrorCode=-1;
 		lstrcpyn(LogonError.szErrorDescribe,TEXT("由于数据库操作异常，请您稍后重试或选择另一游戏服务器！"),sizeof(LogonError.szErrorDescribe));
@@ -769,15 +758,7 @@ LONG CDataBaseSink::SPLogonByUserID(DWORD dwUserID, LPCTSTR pszPassword, DWORD d
 	//效验参数
 	ASSERT(dwUserID!=0L);
 	ASSERT(pszPassword!=NULL);
-#ifdef CONSOLE_OMA
-	_cprintf("dwUserID =%d\n", dwUserID);
-	_cprintf("strPassword =%s\n", pszPassword);
-	_cprintf("strClientIP =%d\n", dwClientIP);
-	_cprintf("strMachineSerial =%d\n", pszComputerID);
-	_cprintf("wKindID =%d\n", m_pGameServiceAttrib->wKindID);
-	_cprintf("wServerID =%d\n", m_pGameServiceOption->wServerID);
-#endif 
-
+ 
 	//转化地址
 	TCHAR szClientIP[16]=TEXT("");
 	BYTE * pClientIP=(BYTE *)&dwClientIP;

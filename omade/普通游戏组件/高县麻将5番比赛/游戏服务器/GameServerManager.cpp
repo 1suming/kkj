@@ -21,10 +21,10 @@ CGameServiceManager::CGameServiceManager()
 	m_GameServiceAttrib.wChairCount=GAME_PLAYER;
 	m_GameServiceAttrib.cbJoinInGame=FALSE;
 	lstrcpyn(m_GameServiceAttrib.szKindName,GAME_NAME,CountArray(m_GameServiceAttrib.szKindName));
-	lstrcpyn(m_GameServiceAttrib.szDataBaseName,TEXT("QPSparrowGXMatchDB"),CountArray(m_GameServiceAttrib.szDataBaseName));
-	lstrcpyn(m_GameServiceAttrib.szDescription,TEXT("高县麻将游戏服务比赛组件"),CountArray(m_GameServiceAttrib.szDescription));
-	lstrcpyn(m_GameServiceAttrib.szClientModuleName,TEXT("SparrowCD.EXE"),CountArray(m_GameServiceAttrib.szClientModuleName));
-	lstrcpyn(m_GameServiceAttrib.szServerModuleName,TEXT("SparrowGXMatch.DLL"),CountArray(m_GameServiceAttrib.szServerModuleName));
+	lstrcpyn(m_GameServiceAttrib.szDataBaseName,TEXT("QPSparrowGXDB"),CountArray(m_GameServiceAttrib.szDataBaseName));
+	lstrcpyn(m_GameServiceAttrib.szDescription,TEXT("高县麻将游戏组件"),CountArray(m_GameServiceAttrib.szDescription));
+	lstrcpyn(m_GameServiceAttrib.szClientModuleName,TEXT("SparrowGX.EXE"),CountArray(m_GameServiceAttrib.szClientModuleName));
+	lstrcpyn(m_GameServiceAttrib.szServerModuleName,TEXT("SparrowGXServer.dll"),CountArray(m_GameServiceAttrib.szServerModuleName));
 
 	return;
 }
