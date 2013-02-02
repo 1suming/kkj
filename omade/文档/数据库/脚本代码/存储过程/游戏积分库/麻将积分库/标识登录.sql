@@ -68,7 +68,7 @@ DECLARE @FleeCount INT
 DECLARE @Experience INT
 -- 送分信息
 DECLARE @GrantCount INT
-DECLARE @LastLogonDate DATETIME
+DECLARE @LastLogonDateRc DATETIME
 
 -- 道具信息
 DECLARE @PropCount INT
@@ -139,12 +139,12 @@ BEGIN
 	END
 
 	-- 房间锁定
-	IF EXISTS (SELECT UserID FROM QPTreasureDBLink.QPTreasureDB.dbo.GameScoreLocker WHERE UserID=@dwUserID)
-	BEGIN
-		SELECT [ErrorDescribe]=N'您已经在充值游戏房间了，不能同时在进入此游戏房间了！'
-		RETURN 4
-	END
-	INSERT QPTreasureDBLink.QPTreasureDB.dbo.GameScoreLocker (UserID,KindID,ServerID) VALUES (@dwUserID,@wKindID,@wServerID)
+	--IF EXISTS (SELECT UserID FROM QPTreasureDBLink.QPTreasureDB.dbo.GameScoreLocker WHERE UserID=@dwUserID)
+	--BEGIN
+	--	SELECT [ErrorDescribe]=N'您已经在充值游戏房间了，不能同时在进入此游戏房间了！'
+	--	RETURN 4
+	--END
+	--INSERT QPTreasureDBLink.QPTreasureDB.dbo.GameScoreLocker (UserID,KindID,ServerID) VALUES (@dwUserID,@wKindID,@wServerID)
 
 	-- 密码判断
 	IF @LogonPass<>@strPassword AND @strClientIP<>N'0.0.0.0' AND @strPassword<>N''
@@ -166,7 +166,7 @@ BEGIN
 	DECLARE @GameMasterRight INT
 	DECLARE @GameMasterOrder INT
 	SELECT @Score=Score, @WinCount=WinCount, @LostCount=LostCount, @DrawCount=DrawCount,
-		@DrawCount=DrawCount, @FleeCount=FleeCount, @GameUserRight=UserRight, @GameMasterRight=MasterRight, @GameMasterOrder=MasterOrder,@GrantCount=GrantCount, @LastLogonDate=LastLogonDate
+		@DrawCount=DrawCount, @FleeCount=FleeCount, @GameUserRight=UserRight, @GameMasterRight=MasterRight, @GameMasterOrder=MasterOrder,@GrantCount=GrantCount, @LastLogonDateRc=LastLogonDate
 	FROM GameScoreInfo WHERE UserID=@dwUserID
 
 	-- 信息判断
@@ -260,7 +260,7 @@ BEGIN
 	-- 输出变量
 	SELECT @UserID AS UserID, @GameID AS GameID, @GroupID AS GroupID, @Accounts AS Accounts, @UnderWrite AS UnderWrite, @FaceID AS FaceID, 
 		@Gender AS Gender, @GroupName AS GroupName, @MasterOrder AS MemberOrder, @UserRight AS UserRight, @MasterRight AS MasterRight, 
-		@MasterOrder AS MasterOrder, @MemberOrder AS MemberOrder, @WinCount AS WinCount, @LostCount AS LostCount, @Loveliness AS Loveliness,@GrantCount AS GrantCount,
+		@MasterOrder AS MasterOrder, @MemberOrder AS MemberOrder, @WinCount AS WinCount, @LostCount AS LostCount, @Loveliness AS Loveliness,@GrantCount AS GrantCount,@LastLogonDateRc AS LastLogonDate,
 		@PropCount AS PropCount, @GameGold AS GameGold, @InsureScore AS InsureScore, @Loveliness AS Loveliness,	@CustomFaceVer AS CustomFaceVer,
 		@DrawCount AS DrawCount, @FleeCount AS FleeCount, @Score AS Score, @Experience AS Experience, @ErrorDescribe AS ErrorDescribe
 END

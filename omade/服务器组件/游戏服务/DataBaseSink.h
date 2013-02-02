@@ -201,7 +201,7 @@ struct DBR_GR_LogonSuccess
 	LONG								lExperience;					//用户经验
 	// oma add
 	LONG								lGrantCount;                    //送分次数
-	COleDateTime                        CastLogonDate;                  //上次登录日期
+	COleDateTime                        LastLogonDate;                  //上次登录日期
 
 };
 
@@ -235,7 +235,6 @@ struct DBR_GR_LeaveGameServer
 	DWORD								dwPlayTimeCount;				//游戏时间
 	DWORD								dwOnlineTimeCount;				//在线时间
 	LONG								lLoveliness;					//用户魅力
-
 	//积分信息
 	LONG								lRevenue;						//游戏税收
 	tagUserScore						ScoreModifyInfo;				//修改积分

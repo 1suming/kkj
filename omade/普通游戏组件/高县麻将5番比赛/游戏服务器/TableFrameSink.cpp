@@ -225,9 +225,8 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 	if (m_bKaiJu)
 	{
 		m_wBankerUser = ((BYTE)(m_lSiceCount>>24)+(BYTE)(m_lSiceCount>>16)-1)%GAME_PLAYER;
-		m_bKaiJu = false; // OMA COMMENT设置开局开始  下一局由最先胡牌的用户坐庄 
-
-	}
+		m_bKaiJu = false; 
+ 	}
 
 
 #ifdef DEBUG
@@ -299,7 +298,7 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 	m_wBankerUser = 2;//OMA MODIFY 设置庄家用户
 #endif
 
-	//分发扑克
+	//分发扑克，发给没给用户手上13张
 	for (WORD i=0;i<m_wPlayerCount;i++)
 	{
 		if( m_pITableFrame->GetServerUserItem(i) != NULL )
@@ -314,31 +313,18 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 		}
 	}
 
-	//发送扑克
+	//发送扑克,庄家多拿一张牌
 	m_cbSendCardCount++;
 	m_cbSendCardData=m_cbRepertoryCard[--m_cbLeftCardCount];
 	m_cbCardIndex[m_wBankerUser][m_GameLogic.SwitchToCardIndex(m_cbSendCardData)]++;
 
 
-	//  OMA 产生牌精	
+	//OMA 产生牌精	
 	m_cbSendCardCount++;
-	BYTE cbTingYong = 0,cbPaiJing = 0;
-	cbPaiJing = m_cbRepertoryCard[--m_cbLeftCardCount];
-	// OMA 设置牌精
-	m_GameLogic.SetPaiJing(cbPaiJing);
+ 	//OMA 设置牌精
+	m_GameLogic.SetPaiJing(m_cbRepertoryCard[--m_cbLeftCardCount]);
 	
-	// OMA 这里不设置听用，有了牌精了到逻辑里面去判断
-
-	//BYTE cbColor = cbPaiJing&MASK_COLOR;
-	//BYTE cbValue = cbPaiJing&MASK_VALUE;
-	//
-	//cbValue = cbValue%9+1;
-	//cbTingYong = (cbColor | cbValue);
-	//m_GameLogic.m_PaiJing.m_cbTingYongCard = cbTingYong;
-
-	//m_GameLogic.SetMagicIndex(m_GameLogic.SwitchToCardIndex(cbTingYong));
-
-
+ 
 	//设置变量
 	m_cbProvideCard=0;
 	m_wProvideUser=INVALID_CHAIR;
@@ -372,7 +358,7 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 		wTakeChairID=(wTakeChairID+1)%GAME_PLAYER;
 	}
 
-	//动作分析
+	//动作分析，发牌完成先判断庄家是否胡牌或者杠牌
 	bool bAroseAction=false;
 	for (WORD i=0;i<m_wPlayerCount;i++)
 	{
@@ -402,7 +388,7 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 	GameStart.wHeapTail = m_wHeapTail;
 	GameStart.cbLeftCardCount = m_cbLeftCardCount;
 	GameStart.bKaiJu = m_bKaiJu;
-	GameStart.cbPaiJing = cbPaiJing;// OMA 设置牌精
+	GameStart.cbPaiJing = m_GameLogic.GetPaiJing();// OMA 设置牌精
 
 	CopyMemory(GameStart.cbHeapCardInfo,m_cbHeapCardInfo,sizeof(m_cbHeapCardInfo));
 
@@ -971,7 +957,7 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			StatusPlay.wHeapHand = m_wHeapHand;
 			StatusPlay.wHeapTail = m_wHeapTail;
 			CopyMemory(StatusPlay.cbHeapCardInfo,m_cbHeapCardInfo,sizeof(m_cbHeapCardInfo));
-			//设置牌精 //OMA
+			//OMA设置牌精
 			StatusPlay.cbPaiJing = m_GameLogic.GetPaiJing();
 
 			//扑克数据
@@ -1025,7 +1011,7 @@ bool __cdecl CTableFrameSink::OnGameMessage(WORD wSubCmdID, const void * pDataBu
 			CMD_C_OperateCard * pOperateCard=(CMD_C_OperateCard *)pDataBuffer;
 			return OnUserOperateCard(pUserData->wChairID,pOperateCard->cbOperateCode,pOperateCard->cbOperateCard);
 		}
-	case SUB_C_TRUSTEE:
+	case SUB_C_TRUSTEE:		// 托管消息
 		{
 			CMD_C_Trustee *pTrustee =(CMD_C_Trustee *)pDataBuffer;
 			if(wDataSize != sizeof(CMD_C_Trustee)) return false;
@@ -1170,14 +1156,10 @@ bool CTableFrameSink::OnUserOutCard(WORD wChairID, BYTE cbCardData)
 
 	if (m_GameLogic.IsMagicCard(cbCardData)) // 打出听用
 	{
-		m_bOutMagicCard[wChairID] = true;
-		// 打出的是听用牌，禁止吃胡，进入托管模式
-		m_bEnjoinChiHu[wChairID] = true;			//禁止吃胡
-		m_bEnjoinChiPeng[wChairID] = true;			//禁止吃碰
+		m_bOutMagicCard[wChairID] = true;			//设置打出听用
+		m_bEnjoinChiHu[wChairID] = true;			//设置禁止吃胡
+		m_bEnjoinChiPeng[wChairID] = true;			//设置禁止吃碰
 	}
-
-
-
 
 	//用户切换
 	m_wCurrentUser=(wChairID+m_wPlayerCount-1)%m_wPlayerCount;
@@ -1226,7 +1208,7 @@ bool CTableFrameSink::OnUserOperateCard(WORD wChairID, BYTE cbOperateCode, BYTE 
 
 		//设置变量
 		m_bResponse[wChairID]=true; // 设置ID 为 wChairID 的用户，已经执行过动作了
-		m_cbPerformAction[wChairID]=cbOperateCode; // 执行的动作码
+		m_cbPerformAction[wChairID]=cbOperateCode; // 将要执行的操作码
 		m_cbOperateCard[wChairID]=(cbOperateCard==0)?m_cbProvideCard:cbOperateCard;// 与动作操作相关的牌
 
 		//在自己未摸下一张牌的一圈内,不能弃上一家而胡下一家
@@ -1246,47 +1228,52 @@ bool CTableFrameSink::OnUserOperateCard(WORD wChairID, BYTE cbOperateCode, BYTE 
 			BYTE cbUserActionRank=m_GameLogic.GetUserActionRank(cbUserAction); // 第i个用户的 执行动作或 可执行动作 的优先级
 			BYTE cbTargetActionRank=m_GameLogic.GetUserActionRank(cbTargetAction);// cbTargetActionRank 当前用户执行的动作优先级
 
-			if((cbUserAction & WIK_TIE_PAI)!=0&& (cbTargetAction & WIK_TIE_PAI)!=0)
+			// 两个用户同时贴牌
+			if((cbTargetAction & WIK_TIE_PAI) != 0 &&
+				(cbUserAction & WIK_TIE_PAI) !=0)
 			{
 				cbTargetActionRank = 0;
 				WORD wTmpID = m_wProvideUser;
-				if(i == (--wTmpID)%4>=0?wTmpID: 3)
+				if(i == (--wTmpID)%4>=0?wTmpID: 3) // 按照出牌用户开始，依次计算相同操作码下面的用户等级
 				{
-					cbUserActionRank = 4;
+					cbUserActionRank = OPE_RANK2_LEVEL1;
 				}else if(i == ((wTmpID-=2)%4>=0?wTmpID:3))
 				{
-				   cbUserActionRank = 3;
+				   cbUserActionRank = OPE_RANK2_LEVEL2;
 				}else if(i == ((wTmpID-=3)%4>=0?wTmpID:3))
 				{
-					cbUserActionRank = 2;
+					cbUserActionRank = OPE_RANK2_LEVEL2;
 				}
 			}
+			//TODO: 2个或者三个用户同时吃胡
 
 
-			//动作判断
+			//动作判断,优先级判断
 			if (cbUserActionRank>cbTargetActionRank) 
 			{
-				// 如果当前用户的执行动作优先级低于第I个用户的可执行动作优先级
-				// wTargetUser 目标用户设置为 第i个用户，目标动作为第i个用户的 可执行动作或 执行动作
 				wTargetUser=i;
 				cbTargetAction=cbUserAction;
 			}
 		}
-		if (m_bResponse[wTargetUser]==false) // 如果目标用户（优先级高的用户）没有执行动作，返回不继续往下处理
+
+		if (m_bResponse[wTargetUser]==false) // 如果目标用户没有执行动作，返回不继续往下处理
 			return true;
 
-		//吃胡等待
+		//OMA 到这里目标用户已经产生,执行目标用户的动作
+
+		//吃胡等待,处理双响三响
 		if (cbTargetAction==WIK_CHI_HU)
 		{
-			// 目标用户动作是胡牌，并且有任何一个其他用户可执行动作为胡牌，不继续
+			
 			for (WORD i=0;i<m_wPlayerCount;i++)
 			{
+				// 等待其他可胡牌的用户响应
 				if ((m_bResponse[i]==false)&&(m_cbUserAction[i]&WIK_CHI_HU))
 					return true;
 			}
 		}
  
-		//放弃操作
+		//放弃操作, 如果有2个同时吃胡，产生两个目标用户,其中一个放弃?OMA
 		if (cbTargetAction==WIK_NULL)
 		{
 			//用户状态
@@ -1313,6 +1300,7 @@ bool CTableFrameSink::OnUserOperateCard(WORD wChairID, BYTE cbOperateCode, BYTE 
 			//结束信息
 			m_cbChiHuCard=cbTargetCard;
 
+			// 从出牌用户的下一个用户开始循环计算
 			for (WORD i=(m_wProvideUser+m_wPlayerCount-1)%GAME_PLAYER;i!=m_wProvideUser;i = (i+m_wPlayerCount-1)%GAME_PLAYER)
 			{
 				//过虑判断
@@ -1358,6 +1346,7 @@ bool CTableFrameSink::OnUserOperateCard(WORD wChairID, BYTE cbOperateCode, BYTE 
 
 				if(m_bGangStatus == true && m_wProvideUser != wTargetUser) 
 				{
+					// 抢杠失败后，恢复原样OMA,有问题？杠失败的可能情形是什么？
 					//// 改变供应用户手中杠类型为碰类型
 					for (BYTE k =0;k<m_cbWeaveItemCount[m_wProvideUser];k++) 
 					{
@@ -1375,7 +1364,7 @@ bool CTableFrameSink::OnUserOperateCard(WORD wChairID, BYTE cbOperateCode, BYTE 
 				}
 				if((m_bTIStatus == true) && m_wProvideUser != wTargetUser) 
 				{
-
+					// 处理抢提失败OMA,抢提失败的可能原因是什么？
 					// 改变供应用户手中碰类型为贴类型
 					for (BYTE k =0;k<m_cbWeaveItemCount[m_wProvideUser];k++) // 改变供应用户手中杠类型为碰类型
 					{
@@ -1453,7 +1442,9 @@ bool CTableFrameSink::OnUserOperateCard(WORD wChairID, BYTE cbOperateCode, BYTE 
 				m_GameLogic.GetWeaveCard(WIK_TIE_PAI,cbTargetCard,cbRemoveCard);
 				VERIFY( m_GameLogic.RemoveCard(cbRemoveCard,3,&cbTargetCard,1) );
 				VERIFY( m_GameLogic.RemoveCard(m_cbCardIndex[wTargetUser],cbRemoveCard,2) );
-
+				
+				// 贴牌后，估计是否可以有其他操作
+				EstimateUserRespond(m_wCurrentUser,0,EstimatKind_TIECard);
 				break;
 			}
 
@@ -1462,6 +1453,9 @@ bool CTableFrameSink::OnUserOperateCard(WORD wChairID, BYTE cbOperateCode, BYTE 
 				//删除扑克
 				BYTE cbRemoveCard[]={cbTargetCard,cbTargetCard};
 				VERIFY( m_GameLogic.RemoveCard(m_cbCardIndex[wTargetUser],cbRemoveCard,2) );
+				// 碰牌后，估计是否可以有其他操作
+				EstimateUserRespond(m_wCurrentUser,0,EstimatKind_PENGCard);
+
 				break;
 			}
 		case WIK_GANG:		//杠牌操作
@@ -1469,7 +1463,9 @@ bool CTableFrameSink::OnUserOperateCard(WORD wChairID, BYTE cbOperateCode, BYTE 
 				//删除扑克,被动杠
 				BYTE cbRemoveCard[]={cbTargetCard,cbTargetCard,cbTargetCard};
 				VERIFY( m_GameLogic.RemoveCard(m_cbCardIndex[wTargetUser],cbRemoveCard,CountArray(cbRemoveCard)) );
-			
+				m_bGangStatus = true;
+				DispatchCardData(wTargetUser,false); // 发牌给杠牌用户，估计当前用户动作
+
 				break;
 			}
 		default:
@@ -1497,14 +1493,14 @@ bool CTableFrameSink::OnUserOperateCard(WORD wChairID, BYTE cbOperateCode, BYTE 
 			m_bGangStatus = true;
 			DispatchCardData(wTargetUser,false); // 发牌给杠牌用户，估计当前用户动作
 		}
-		else 
-		{
-			// 碰贴之后，估计自己手上牌有没有 提、 杠、 胡。
-			// 动作完成之后,只估计自己手上牌
-			EstimatePengTieCardRespond(m_wCurrentUser);
+		//else 
+		//{
+		//	// 碰贴之后，估计自己手上牌有没有 提、 杠、 胡。
+		//	// 动作完成之后,只估计自己手上牌
+		//	EstimatePengTieCardRespond(m_wCurrentUser);
 
-
-		}
+		//	EstimateUserRespond(m_wCurrentUser,0,EstimatKind_TICard);
+		//}
 		return true;
 	}
 
@@ -1595,7 +1591,10 @@ bool CTableFrameSink::OnUserOperateCard(WORD wChairID, BYTE cbOperateCode, BYTE 
 				{
 
 					m_bTIStatus = false; // 没有人抢提，自己胡牌不算抢提，抢提标志复位
-					EstimateTICardRespond(wChairID,m_GameLogic.SwitchToCardData(m_GameLogic.GetMagicIndex()));
+
+					 EstimateUserRespond(wChairID,m_GameLogic.SwitchToCardData(m_GameLogic.GetMagicIndex()),
+										EstimatKind_TICard);
+ 					//EstimateTICardRespond(wChairID,m_GameLogic.SwitchToCardData(m_GameLogic.GetMagicIndex()));
 					m_cbCardIndex[wChairID][m_GameLogic.GetMagicIndex()]++;// 提回听用扑克
 				}
 				return true;
@@ -1797,44 +1796,11 @@ bool CTableFrameSink::DispatchCardData(WORD wCurrentUser,bool bTail)
 		//发送扑克
 		m_cbSendCardCount++;
 		m_cbSendCardData=m_cbRepertoryCard[--m_cbLeftCardCount];
-
-
-		m_cbUserAction[wCurrentUser] = WIK_NULL; // OMA 清零之前用户动作
-
-		//吃胡分析
-		if(m_bOutMagicCard[wCurrentUser] == false)
-		{
-			//吃胡分析
-			CChiHuRight ChiHuRight;
-			ZeroMemory(&ChiHuRight,sizeof(ChiHuRight));
-			m_cbUserAction[wCurrentUser]|= m_GameLogic.AnalyseChiHuCard(m_cbCardIndex[wCurrentUser],
-				m_WeaveItemArray[wCurrentUser], m_cbWeaveItemCount[wCurrentUser],m_cbSendCardData,ChiHuRight);
-		}
-
 		//加牌
 		m_cbCardIndex[wCurrentUser][m_GameLogic.SwitchToCardIndex(m_cbSendCardData)]++;
-
 		//设置变量
 		m_wProvideUser=wCurrentUser;
 		m_cbProvideCard=m_cbSendCardData;
-
-		
-
-		//杠牌判断
-		if ((m_bEnjoinChiPeng[wCurrentUser]==false)&&(m_cbLeftCardCount>0))
-		{
-			tagGangCardResult GangCardResult; 
-			// 在客户端具体分析有哪些杠，这里只需要知道可杠这个动作
-			ZeroMemory(&GangCardResult,sizeof(GangCardResult));
-			m_cbUserAction[wCurrentUser]|=m_GameLogic.AnalyseGangCard(m_cbCardIndex[wCurrentUser],
-				m_WeaveItemArray[wCurrentUser],m_cbWeaveItemCount[wCurrentUser],GangCardResult);
-		}
-		tagTICardResult TICardResult; 
-		ZeroMemory(&TICardResult,sizeof(TICardResult));
-
-		// 提牌分析
-		m_cbUserAction[wCurrentUser]|= m_GameLogic.AnalyseTIPaiCard(m_cbCardIndex[wCurrentUser],
-				m_WeaveItemArray[wCurrentUser], m_cbWeaveItemCount[wCurrentUser],TICardResult);
 	}
 
 	//堆立信息
@@ -1869,115 +1835,118 @@ bool CTableFrameSink::DispatchCardData(WORD wCurrentUser,bool bTail)
 	m_pITableFrame->SendTableData(INVALID_CHAIR,SUB_S_SEND_CARD,&SendCard,sizeof(SendCard));
 	m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_SEND_CARD,&SendCard,sizeof(SendCard));
 
-	return true;
-}
+	//发牌后估计OMA
+	EstimateUserRespond(wCurrentUser,m_cbSendCardData,EstimatKind_SendCard);
 
-bool CTableFrameSink::EstimatePengTieCardRespond(WORD wCenterUser)
-{
-	bool bAroseAction=false;
-
-	//用户状态
-	ZeroMemory(m_bResponse,sizeof(m_bResponse));
-	ZeroMemory(m_cbUserAction,sizeof(m_cbUserAction));
-	ZeroMemory(m_cbPerformAction,sizeof(m_cbPerformAction));
-
-	////提牌判断
-	// 估计自己手上牌是否可以提
-	tagTICardResult TICardResult;
-	ZeroMemory(&TICardResult,sizeof(TICardResult));
-	m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseTIPaiCard(m_cbCardIndex[wCenterUser],m_WeaveItemArray[wCenterUser],
-		m_cbWeaveItemCount[wCenterUser],TICardResult);
-
-	//杠牌判断
-	if (m_cbLeftCardCount>0) 
-	{
-		// 估计自己手上牌是否可以杠
-		tagGangCardResult GangCardResult;
-		ZeroMemory(&GangCardResult,sizeof(GangCardResult));
-		m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseGangCard(m_cbCardIndex[wCenterUser],m_WeaveItemArray[wCenterUser],
-			m_cbWeaveItemCount[wCenterUser],GangCardResult);
-
-	}
-
-
-	//结果判断
-	if (m_cbUserAction[wCenterUser]!=WIK_NULL) 
-		bAroseAction=true;
-
-
-	//结果处理
-	if (bAroseAction==true) 
-	{
-		//设置变量
-		m_wProvideUser=wCenterUser;
-		m_wResumeUser=m_wCurrentUser;
-		//发送提示
-		SendOperateNotify();
-	}
 
 	return true;
 }
 
-
-bool CTableFrameSink::EstimateTICardRespond(WORD wCenterUser,BYTE cbCenterCard)// cbCenterCard 提回的听用为当前牌
-{
-
-	bool bAroseAction=false;
-	
-	//用户状态
-	ZeroMemory(m_bResponse,sizeof(m_bResponse));
-	ZeroMemory(m_cbUserAction,sizeof(m_cbUserAction));
-	ZeroMemory(m_cbPerformAction,sizeof(m_cbPerformAction));
-	
-	////提牌判断
-	// 估计自己手上牌是否可以提
-	tagTICardResult TICardResult;
-	m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseTIPaiCard(m_cbCardIndex[wCenterUser],m_WeaveItemArray[wCenterUser],
-		m_cbWeaveItemCount[wCenterUser],TICardResult);
-
-	//杠牌判断
-	if (m_cbLeftCardCount>0) 
-	{
-		// 估计自己手上牌是否可以杠
-		tagGangCardResult GangCardResult;
-		m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseGangCard(m_cbCardIndex[wCenterUser],m_WeaveItemArray[wCenterUser],
-			m_cbWeaveItemCount[wCenterUser],GangCardResult);
-
-	}
-
-	//胡牌判断
-	if (m_bEnjoinChiHu[wCenterUser]==false && m_bPlayStatus[wCenterUser])// 如果打出的是钻牌，禁止胡牌
-	{
-		//吃胡判断
-		CChiHuRight chr;
-		BYTE cbWeaveCount=m_cbWeaveItemCount[wCenterUser];
-		m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseChiHuCard(m_cbCardIndex[wCenterUser],m_WeaveItemArray[wCenterUser],cbWeaveCount,cbCenterCard,chr);
-
-	}
-
-	//结果判断
-	if (m_cbUserAction[wCenterUser]!=WIK_NULL) 
-		bAroseAction=true;
-
-	//结果处理
-	if (bAroseAction==true) 
-	{
-
-		//设置变量
-		m_wProvideUser=wCenterUser;
-		m_cbProvideCard=cbCenterCard;
-		m_wResumeUser=m_wCurrentUser;
-		//发送提示
-		SendOperateNotify();
-
-	}
-
-	return true;
-
-}
+//bool CTableFrameSink::EstimatePengTieCardRespond(WORD wCenterUser)
+//{
+//	bool bAroseAction=false;
+//
+//	//用户状态
+//	ZeroMemory(m_bResponse,sizeof(m_bResponse));
+//	ZeroMemory(m_cbUserAction,sizeof(m_cbUserAction));
+//	ZeroMemory(m_cbPerformAction,sizeof(m_cbPerformAction));
+//
+//	////提牌判断
+//	// 估计自己手上牌是否可以提
+//	tagTICardResult TICardResult;
+//	ZeroMemory(&TICardResult,sizeof(TICardResult));
+//	m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseTIPaiCard(m_cbCardIndex[wCenterUser],m_WeaveItemArray[wCenterUser],
+//		m_cbWeaveItemCount[wCenterUser],TICardResult);
+//
+//	//杠牌判断
+//	if (m_cbLeftCardCount>0) 
+//	{
+//		// 估计自己手上牌是否可以杠
+//		tagGangCardResult GangCardResult;
+//		ZeroMemory(&GangCardResult,sizeof(GangCardResult));
+//		m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseGangCard(m_cbCardIndex[wCenterUser],m_WeaveItemArray[wCenterUser],
+//			m_cbWeaveItemCount[wCenterUser],GangCardResult);
+//
+//	}
+//
+//
+//	//结果判断
+//	if (m_cbUserAction[wCenterUser]!=WIK_NULL) 
+//		bAroseAction=true;
+//
+//
+//	//结果处理
+//	if (bAroseAction==true) 
+//	{
+//		//设置变量
+//		m_wProvideUser=wCenterUser;
+//		m_wResumeUser=m_wCurrentUser;
+//		//发送提示
+//		SendOperateNotify();
+//	}
+//
+//	return true;
+//}
 
 
-//响应判断 // 是估计EstimatKind 动作后其他用户响应
+//bool CTableFrameSink::EstimateTICardRespond(WORD wCenterUser,BYTE cbCenterCard)// cbCenterCard 提回的听用为当前牌
+//{
+//
+//	bool bAroseAction=false;
+//	
+//	//用户状态
+//	ZeroMemory(m_bResponse,sizeof(m_bResponse));
+//	ZeroMemory(m_cbUserAction,sizeof(m_cbUserAction));
+//	ZeroMemory(m_cbPerformAction,sizeof(m_cbPerformAction));
+//	
+//	////提牌判断
+//	tagTICardResult TICardResult;
+//	m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseTIPaiCard(m_cbCardIndex[wCenterUser],m_WeaveItemArray[wCenterUser],
+//		m_cbWeaveItemCount[wCenterUser],TICardResult);
+//
+//	//杠牌判断
+//	if (m_cbLeftCardCount>0) 
+//	{
+//		// 估计自己手上牌是否可以杠
+//		tagGangCardResult GangCardResult;
+//		m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseGangCard(m_cbCardIndex[wCenterUser],m_WeaveItemArray[wCenterUser],
+//			m_cbWeaveItemCount[wCenterUser],GangCardResult);
+//
+//	}
+//
+//	//胡牌判断
+//	if (m_bEnjoinChiHu[wCenterUser]==false && m_bPlayStatus[wCenterUser])// 如果打出的是钻牌，禁止胡牌
+//	{
+//		//吃胡判断
+//		CChiHuRight chr;
+//		BYTE cbWeaveCount=m_cbWeaveItemCount[wCenterUser];
+//		m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseChiHuCard(m_cbCardIndex[wCenterUser],m_WeaveItemArray[wCenterUser],cbWeaveCount,cbCenterCard,chr);
+//
+//	}
+//
+//	//结果判断
+//	if (m_cbUserAction[wCenterUser]!=WIK_NULL) 
+//		bAroseAction=true;
+//
+//	//结果处理
+//	if (bAroseAction==true) 
+//	{
+//
+//		//设置变量
+//		m_wProvideUser=wCenterUser;
+//		m_cbProvideCard=cbCenterCard;
+//		m_wResumeUser=m_wCurrentUser;
+//		//发送提示
+//		SendOperateNotify();
+//
+//	}
+//
+//	return true;
+//
+//}
+
+
+//响应判断 
 bool CTableFrameSink::EstimateUserRespond(WORD wCenterUser, BYTE cbCenterCard, enEstimatKind EstimatKind)
 {
 	//变量定义
@@ -1987,89 +1956,165 @@ bool CTableFrameSink::EstimateUserRespond(WORD wCenterUser, BYTE cbCenterCard, e
 	ZeroMemory(m_bResponse,sizeof(m_bResponse));
 	ZeroMemory(m_cbUserAction,sizeof(m_cbUserAction));
 	ZeroMemory(m_cbPerformAction,sizeof(m_cbPerformAction));
+	//////////////////////////////////////////////////////////////////////////
 
-	// 提牌，杠牌，只估计当前操作用户
-	if(EstimatKind_TIECard == EstimatKind || EstimatKind_PENGCard == EstimatKind)
+	//OMA 重构后的代码
+
+	switch (EstimatKind)
 	{
-		//提牌判断	// 估计自己手上牌是否可以提
-		tagTICardResult TICardResult;
-		m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseTIPaiCard(m_cbCardIndex[wCenterUser],m_WeaveItemArray[wCenterUser],
-			m_cbWeaveItemCount[wCenterUser],TICardResult);
-
-		//杠牌判断
-		if (m_cbLeftCardCount>0) 
+		
+		case EstimatKind_SendCard:
 		{
-			// 估计自己手上牌是否可以杠
-			tagGangCardResult GangCardResult;
-			m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseGangCard(m_cbCardIndex[wCenterUser],m_WeaveItemArray[wCenterUser],
-			m_cbWeaveItemCount[wCenterUser],GangCardResult);
-		}
-
-		// 碰，贴，不需要估计手上牌是否可以胡牌
-
-		m_cbProvideCard = 0;
-		if (m_cbUserAction[wCenterUser]!=WIK_NULL) 
-			bAroseAction=true;
-
-	}else
-	
-	//动作判断
-	for (WORD i=0;i<m_wPlayerCount;i++)
-	{
-		//出牌类型
-		if (EstimatKind==EstimatKind_OutCard)
-		{
-
-			//用户过滤  // 出牌判断，跳过自己
-			if (wCenterUser==i||!m_bPlayStatus[i]) continue;
-			//用户过滤  // 出牌判断，跳过打出听用牌用户
-			if (m_bOutMagicCard[i] == true) continue;
-
-			//吃碰判断
-			if (m_bEnjoinChiPeng[i]==false)
+			// 发牌后，估计胡牌，提牌，杠牌
+			//胡牌判断
+			if (m_bEnjoinChiHu[wCenterUser]==false &&m_bPlayStatus[wCenterUser] && !m_GameLogic.IsMagicCard(cbCenterCard))// 如果打出的是钻牌不能吃胡
 			{
-				//碰牌判断
-				m_cbUserAction[i]|=m_GameLogic.EstimatePengCard(m_cbCardIndex[i],cbCenterCard);
-				//贴牌判断
-				m_cbUserAction[i]|=m_GameLogic.EstimateTiePaiCard(m_cbCardIndex[i],cbCenterCard);
-				//杠牌判断
-				if (m_cbLeftCardCount>0) 
-				{
-					// EstimateGangCard 只估计其他用户出牌是，是否可以杠牌
-					m_cbUserAction[i]|=m_GameLogic.EstimateGangCard(m_cbCardIndex[i],cbCenterCard);
-				}
+ 				CChiHuRight chr;
+				BYTE cbWeaveCount=m_cbWeaveItemCount[wCenterUser];
+				m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseChiHuCard(m_cbCardIndex[wCenterUser],m_WeaveItemArray[wCenterUser],cbWeaveCount,cbCenterCard,chr);
 			}
-		}else if (EstimatKind==EstimatKind_TICard) // 提牌动作完成之后 当前用户动作估计
-		{
 
-		}
+			//杠牌判断
+			if (m_cbLeftCardCount>0) 
+			{
+				// 估计自己手上牌是否可以杠
+				tagGangCardResult GangCardResult;
+				ZeroMemory(&GangCardResult,sizeof(GangCardResult));
+				m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseGangCard(m_cbCardIndex[wCenterUser],m_WeaveItemArray[wCenterUser],
+					m_cbWeaveItemCount[wCenterUser],GangCardResult);
+			}
+			 
+			// 提牌分析
+			tagTICardResult TICardResult; 
+			ZeroMemory(&TICardResult,sizeof(TICardResult));
+			m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseTIPaiCard(m_cbCardIndex[wCenterUser],
+				m_WeaveItemArray[wCenterUser],m_cbWeaveItemCount[wCenterUser],
+				TICardResult);
 
-		//胡牌判断
-		if (m_bEnjoinChiHu[i]==false && !m_GameLogic.IsMagicCard(cbCenterCard)&&m_bPlayStatus[i])// 如果打出的是钻牌，取消胡牌响应
-		{
-			//吃胡判断
-			CChiHuRight chr;
-			BYTE cbWeaveCount=m_cbWeaveItemCount[i];
-			m_cbUserAction[i]|=m_GameLogic.AnalyseChiHuCard(m_cbCardIndex[i],m_WeaveItemArray[i],cbWeaveCount,cbCenterCard,chr);
+			break;
 		}
-	
-		//结果判断
-		if (m_cbUserAction[i]!=WIK_NULL) 
-			bAroseAction=true;
+		case EstimatKind_OutCard:
+		{
+			//动作判断
+			for (WORD i=0;i<m_wPlayerCount;i++)
+			{
+				//用户过滤,跳过自己,跳过不在游戏中的用户,跳过打出听用的用户
+				if (wCenterUser==i||!m_bPlayStatus[i] || m_bOutMagicCard[i]) continue;
+
+				//碰贴杠判断
+				if (m_bEnjoinChiPeng[i]==false)
+				{
+					//碰牌判断
+					m_cbUserAction[i]|=m_GameLogic.EstimatePengCard(m_cbCardIndex[i],cbCenterCard);
+					//贴牌判断
+					m_cbUserAction[i]|=m_GameLogic.EstimateTiePaiCard(m_cbCardIndex[i],cbCenterCard);
+					//杠牌判断
+					if (m_cbLeftCardCount>0) 
+					{
+						m_cbUserAction[i]|=m_GameLogic.EstimateGangCard(m_cbCardIndex[i],cbCenterCard);
+					}
+				}
+
+				//胡牌判断
+				if (m_bEnjoinChiHu[i]==false &&m_bPlayStatus[i] && !m_GameLogic.IsMagicCard(cbCenterCard))// 如果打出的是钻牌不能吃胡
+				{
+					//吃胡判断
+					CChiHuRight chr;
+					BYTE cbWeaveCount=m_cbWeaveItemCount[i];
+					m_cbUserAction[i]|=m_GameLogic.AnalyseChiHuCard(m_cbCardIndex[i],m_WeaveItemArray[i],cbWeaveCount,cbCenterCard,chr);
+				}
+
+				//结果汇总
+				if (m_cbUserAction[i]!=WIK_NULL) 
+					bAroseAction=true;
+			}
+			
+			break;
+		}
+		case EstimatKind_TICard:
+		{
+			//杠牌判断
+			if (m_cbLeftCardCount>0) 
+			{
+				// 估计自己手上牌是否可以杠
+				tagGangCardResult GangCardResult;
+				m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseGangCard(m_cbCardIndex[wCenterUser],m_WeaveItemArray[wCenterUser],
+					m_cbWeaveItemCount[wCenterUser],GangCardResult);
+			}
+
+			//胡牌判断
+			if (m_bEnjoinChiHu[wCenterUser]==false &&m_bPlayStatus[wCenterUser] && !m_GameLogic.IsMagicCard(cbCenterCard))// 如果打出的是钻牌不能吃胡
+			{
+				//吃胡判断
+				CChiHuRight chr;
+				BYTE cbWeaveCount=m_cbWeaveItemCount[wCenterUser];
+				m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseChiHuCard(m_cbCardIndex[wCenterUser],m_WeaveItemArray[wCenterUser],cbWeaveCount,cbCenterCard,chr);
+			}
+
+			break;
+		}
+		case EstimatKind_TIECard:
+		case EstimatKind_PENGCard:
+		{
+			// 贴牌或者碰牌后，估计是否可以提牌、杠牌
+
+			//提牌判断
+			tagTICardResult TICardResult;
+			m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseTIPaiCard(m_cbCardIndex[wCenterUser],
+														m_WeaveItemArray[wCenterUser],m_cbWeaveItemCount[wCenterUser],
+														TICardResult);
+			//杠牌判断
+			if (m_cbLeftCardCount>0) 
+			{
+				// 估计自己手上牌是否可以杠
+				tagGangCardResult GangCardResult;
+				m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseGangCard(m_cbCardIndex[wCenterUser],m_WeaveItemArray[wCenterUser],
+					m_cbWeaveItemCount[wCenterUser],GangCardResult);
+			}
+
+			//结果汇总
+ 			if (m_cbUserAction[wCenterUser]!=WIK_NULL) 
+				bAroseAction=true;
+
+			break;
+		}
+		case EstimatKind_PengGangCard:
+		{
+			// 杠牌后判断
+
+			//提牌判断
+			tagTICardResult TICardResult;
+			m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseTIPaiCard(m_cbCardIndex[wCenterUser],
+				m_WeaveItemArray[wCenterUser],m_cbWeaveItemCount[wCenterUser],
+				TICardResult);
+
+			//胡牌判断
+			if (m_bEnjoinChiHu[wCenterUser]==false &&m_bPlayStatus[wCenterUser] && !m_GameLogic.IsMagicCard(cbCenterCard))// 如果打出的是钻牌不能吃胡
+			{
+				//吃胡判断
+				CChiHuRight chr;
+				BYTE cbWeaveCount=m_cbWeaveItemCount[wCenterUser];
+				m_cbUserAction[wCenterUser]|=m_GameLogic.AnalyseChiHuCard(m_cbCardIndex[wCenterUser],m_WeaveItemArray[wCenterUser],cbWeaveCount,cbCenterCard,chr);
+			}
+
+			//结果汇总
+ 			if (m_cbUserAction[wCenterUser]!=WIK_NULL) 
+				bAroseAction=true;
+
+
+			break;
+		}
 
 	}
-
-
 	//结果处理
 	if (bAroseAction==true) 
 	{
-
-		//设置变量
+ 		//设置变量
 		m_wProvideUser=wCenterUser;
 		m_cbProvideCard=cbCenterCard;
 		m_wResumeUser=m_wCurrentUser;
 		m_wCurrentUser=INVALID_CHAIR;
-	
+
 		//发送提示
 		SendOperateNotify();
 
@@ -2077,6 +2122,9 @@ bool CTableFrameSink::EstimateUserRespond(WORD wCenterUser, BYTE cbCenterCard, e
 	}
 
 	return false;
+
+	//OMA 重构结束
+	//////////////////////////////////////////////////////////////////////////
 }
 
 //
@@ -2167,7 +2215,7 @@ void CTableFrameSink::FiltrateRight( WORD wChairId,CChiHuRight &chr )
 		chr |= CHR_QIANG_GANG;
 	}
 	//天胡
-	if( m_cbSendCardCount == 2 && m_cbOutCardCount == 0 ) // 多算翻精一张
+	if( m_cbSendCardCount == 2 && m_cbOutCardCount == 0 ) // 多发了一张作为牌精
 	{
 		chr.SetEmpty();
 		chr |= CHR_TIAN_HU;
@@ -2200,11 +2248,9 @@ void CTableFrameSink::FiltrateRight( WORD wChairId,CChiHuRight &chr )
 	case 2:
 		chr |= CHR_GENG_COUNT_TWO;
 		break;
-
 	case 3:
 		chr |= CHR_GENG_COUNT_THREE;
 		break;
-
 	case 4:
 		chr |= CHR_GENG_COUNT_FOUR;
 		break;

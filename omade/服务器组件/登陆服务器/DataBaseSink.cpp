@@ -46,7 +46,6 @@ bool __cdecl CDataBaseSink::OnDataBaseEngineStart(IUnknownEx * pIUnknownEx)
 		//连接用户数据库
 		m_AccountsDBModule->SetConnectionInfo(m_pInitParamter->m_szUserDataBaseAddr,m_pInitParamter->m_wUserDataBasePort,
 			m_pInitParamter->m_szUserDataBaseName,m_pInitParamter->m_szUserDataBaseUser,m_pInitParamter->m_szUserDataBasePass);
-		m_AccountsDBModule->OpenConnection();
 
 		//发起连接
 		m_AccountsDBModule->OpenConnection();

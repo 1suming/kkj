@@ -109,7 +109,9 @@ void CDrawSiceWnd::OnTimer(UINT nIDEvent)
 				if( m_pSinkWnd )
 				{
 					if(m_bKaiJu==true)
+					{
 						m_pSinkWnd->PostMessage(IDM_SICE_TWO,NULL,NULL);
+					}
 					else
 					{
 						KillTimer(IDI_SICE_POS);

@@ -669,7 +669,7 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 	ZeroMemory(m_cbWeaveCount,sizeof(m_cbWeaveCount));
 	ZeroMemory(m_WeaveItemArray,sizeof(m_WeaveItemArray));
 
-	//设置扑克
+	//设置扑克,庄家14张，非庄家13张
 	BYTE cbCardCount=(GetMeChairID()==m_wBankerUser)?MAX_COUNT:(MAX_COUNT-1);
 	m_GameLogic.SwitchToCardIndex(pGameStart->cbCardData,cbCardCount,m_cbCardIndex);
 
@@ -2075,8 +2075,8 @@ LRESULT CGameClientDlg::OnSiceFinish(WPARAM wParam, LPARAM lParam)
 
 	//环境处理
 	PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_START"));
- 	//OMA 摇sice 结束后，设置视图牌精
-	m_GameClientView.m_cbPaiJin = m_GameLogic.GetPaiJing() ;// 设置视图牌精数据
+ 	//OMA 摇sice结束后，设置视图牌精
+	m_GameClientView.m_cbPaiJin = m_GameLogic.GetPaiJing() ;
   	return 0;
 }
 

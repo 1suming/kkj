@@ -12,12 +12,13 @@
 //效验类型
 enum enEstimatKind
 {
+	EstimatKind_SendCard,           //发牌校验
 	EstimatKind_OutCard,			//出牌效验
 	EstimatKind_PengGangCard,		//杠牌效验
- 
 	EstimatKind_TICard,             //提牌校验
 	EstimatKind_TIECard,            //贴牌校验
 	EstimatKind_PENGCard,           //碰牌校验
+
 };
 
 //杠牌得分
@@ -82,9 +83,9 @@ protected:
 	//状态变量
 protected:
 	bool							m_bSendStatus;							//发牌状态
-	bool							m_bGangStatus;							//抢杆状态
+	bool							m_bGangStatus;							//杠牌状态，杠牌后设置该状态
 	bool							m_bTIStatus;							//抢提状态
-	bool							m_bGangOutStatus;						//杠上炮状态
+	bool							m_bGangOutStatus;						//打出杠牌（可能点炮，用于判断杠上炮）
 	bool							m_bEnjoinChiHu[GAME_PLAYER];			//禁止吃胡
 	bool							m_bEnjoinChiPeng[GAME_PLAYER];			//禁止吃碰
 
@@ -198,10 +199,10 @@ protected:
 	bool DispatchCardData(WORD wCurrentUser,bool bTail=false);
 	//响应判断
 	bool EstimateUserRespond(WORD wCenterUser, BYTE cbCenterCard, enEstimatKind EstimatKind);
-	//提牌校验
-	bool EstimateTICardRespond(WORD wCenterUser,BYTE cbCenterCard);//// cbCenterCard 提回的听用为当前牌
-	//贴牌校验
-	bool EstimatePengTieCardRespond(WORD wCenterUser);
+	////提牌校验
+	//bool EstimateTICardRespond(WORD wCenterUser,BYTE cbCenterCard);//// cbCenterCard 提回的听用为当前牌
+	////贴牌校验
+	//bool EstimatePengTieCardRespond(WORD wCenterUser);
 
 	// 处理吃胡用户
 	void ProcessChiHuUser( WORD wChairId, bool bGiveUp );

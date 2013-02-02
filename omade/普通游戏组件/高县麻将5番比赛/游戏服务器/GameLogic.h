@@ -31,6 +31,15 @@
 #define WIK_TIE_PAI					0x02								//贴牌 占用中吃类型
 
 
+#define OPE_RANK_CHI_HU				7								//吃胡等级
+#define OPE_RANK_GANG				6								//杠牌类型
+#define OPE_RANK_PENG				5								//碰牌类型
+#define OPE_RANK_TIE				4								//贴牌类型
+// 靠近出牌用户等级排列，只有三个用户
+#define OPE_RANK2_LEVEL1				4								//离出牌用户第一近用户
+#define OPE_RANK2_LEVEL2				3								//离出牌用户第二近用户
+#define OPE_RANK2_LEVEL3				2								//离出牌用户第三近用户
+
 //////////////////////////////////////////////////////////////////////////
 //胡牌定义
 

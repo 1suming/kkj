@@ -5,7 +5,7 @@
 
 ----------------------------------------------------------------------------------------------------
 
-USE QPGameScoreDB
+USE QPSparrowGXDB
 GO
 
 IF EXISTS (SELECT * FROM DBO.SYSOBJECTS WHERE ID = OBJECT_ID(N'[dbo].[GSP_GR_LeaveGameServer]') and OBJECTPROPERTY(ID, N'IsProcedure') = 1)
@@ -32,6 +32,7 @@ CREATE PROC GSP_GR_LeaveGameServer
 	@lLostCount INT,							-- 失败盘数
 	@lDrawCount INT,							-- 和局盘数
 	@lFleeCount INT,							-- 断线数目
+	@lGrantCount INT,							-- 送分次数
 	@lExperience INT,							-- 用户经验
 	@dwPlayTimeCount INT,						-- 游戏时间
 	@dwOnLineTimeCount INT,						-- 在线时间
@@ -49,12 +50,12 @@ BEGIN
 	-- 用户积分
 	UPDATE GameScoreInfo SET Score=Score+@lScore, WinCount=WinCount+@lWinCount, LostCount=LostCount+@lLostCount, 
 		DrawCount=DrawCount+@lDrawCount, FleeCount=FleeCount+@lFleeCount, PlayTimeCount=PlayTimeCount+@dwPlayTimeCount,
-		OnLineTimeCount=OnLineTimeCount+@dwOnLineTimeCount
+		OnLineTimeCount=OnLineTimeCount+@dwOnLineTimeCount, GrantCount = @lGrantCount, Revenue =Revenue+ @lRevenue
 	WHERE UserID=@dwUserID
 
 	-- 离开房间
-	INSERT RecordUserLeave (UserID, Score, KindID, ServerID, PlayTimeCount, OnLineTimeCount) 
-	VALUES (@dwUserID, @lScore, @wKindID, @wServerID, @dwPlayTimeCount, @dwOnLineTimeCount)
+	INSERT RecordUserLeave (UserID, Score,Revenue, KindID, ServerID, PlayTimeCount, OnLineTimeCount,LeaveTime) 
+	VALUES (@dwUserID, @lScore,@lRevenue, @wKindID, @wServerID, @dwPlayTimeCount, @dwOnLineTimeCount,GETDATE())
 
 	-- 金币操作 ------------------------------------------------------------------------------------
 	-- 锁定解除

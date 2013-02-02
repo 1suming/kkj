@@ -477,13 +477,13 @@ BYTE CGameLogic::GetWeaveCard(BYTE cbWeaveKind, BYTE cbCenterCard, BYTE cbCardBu
 BYTE CGameLogic::GetUserActionRank(BYTE cbUserAction)
 {
 	//胡牌等级
-	if (cbUserAction&WIK_CHI_HU) { return 4+3; }
+	if (cbUserAction&WIK_CHI_HU) { return OPE_RANK_CHI_HU; }
 	//杠牌等级
-	if (cbUserAction&WIK_GANG) { return 4+2; }
+	if (cbUserAction&WIK_GANG) { return OPE_RANK_GANG; }
 	//碰牌等级
-	if (cbUserAction&WIK_PENG) { return 4+1; }
+	if (cbUserAction&WIK_PENG) { return OPE_RANK_PENG; }
 	//贴牌等级
-	if (cbUserAction&WIK_TIE_PAI){	return 4; }
+	if (cbUserAction&WIK_TIE_PAI){	return OPE_RANK_TIE; }
 	
 	return 0;
 }
@@ -688,20 +688,13 @@ BYTE CGameLogic::EstimateGangCard(const BYTE cbCardIndex[MAX_INDEX], BYTE cbCurr
 {
 	//参数效验
 	ASSERT(IsValidCard(cbCurrentCard));
-#if 1
-
-	//杠牌判断
-	return (cbCardIndex[SwitchToCardIndex(cbCurrentCard)]==3)?WIK_GANG:WIK_NULL;
-
-#else
-	//过滤判断
-	if ( IsMagicCard(cbCurrentCard) ) // 当前牌是魔术牌
+ 	//过滤判断
+	if (IsMagicCard(cbCurrentCard) ) // 当前是听用，不能杠
 		return WIK_NULL;
 
 	//杠牌判断
 	return (cbCardIndex[SwitchToCardIndex(cbCurrentCard)]==3)?WIK_GANG:WIK_NULL;
-#endif 
-}
+ }
 
 //杠牌分析
 BYTE CGameLogic::AnalyseGangCard(const BYTE cbCardIndex[MAX_INDEX], const tagWeaveItem WeaveItem[], BYTE cbWeaveCount, tagGangCardResult & GangCardResult)
@@ -901,9 +894,7 @@ BYTE CGameLogic::AnalyseChiHuCard(const BYTE cbCardIndex[MAX_INDEX], const tagWe
 		}
 	}
  }
-	
-
-
+ 
 	if(!(ChiHuRight&CHR_QI_XIAO_DUI).IsEmpty())
 	{
 		BYTE cbTingYongCardCount = cbCardIndexTemp[m_cbMagicIndex];

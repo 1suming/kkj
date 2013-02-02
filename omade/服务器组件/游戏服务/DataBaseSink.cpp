@@ -230,7 +230,7 @@ bool CDataBaseSink::OnRequestLogon(DWORD dwContextID, VOID * pData, WORD wDataSi
 
 		// OMA START
 		LogonSuccess.lGrantCount = m_GameScoreDBAide.GetValue_LONG(TEXT("GrantCount"));// 送分次数
-		m_GameScoreDBAide.GetValue_DATE(TEXT("LastLogonDate"),LogonSuccess.CastLogonDate);// 上次登录日期
+		m_GameScoreDBAide.GetValue_DATE(TEXT("LastLogonDate"),LogonSuccess.LastLogonDate);// 上次登录日期
 		// OMA END
 
 		TCHAR logStr[512] = TEXT("");
@@ -831,6 +831,7 @@ LONG CDataBaseSink::SPLeaveGameServer(DWORD dwUserID, DWORD dwPlayTimeCount, DWO
 	m_GameScoreDBAide.AddParameter(TEXT("@lLostCount"),UserScore.lLostCount);
 	m_GameScoreDBAide.AddParameter(TEXT("@lDrawCount"),UserScore.lDrawCount);
 	m_GameScoreDBAide.AddParameter(TEXT("@lFleeCount"),UserScore.lFleeCount);
+	m_GameScoreDBAide.AddParameter(TEXT("@lGrantCount"),UserScore.lGrantCount);
 	m_GameScoreDBAide.AddParameter(TEXT("@lExperience"),UserScore.lExperience);
 	m_GameScoreDBAide.AddParameter(TEXT("@dwPlayTimeCount"),dwPlayTimeCount);
 	m_GameScoreDBAide.AddParameter(TEXT("@dwOnLineTimeCount"),dwOnLineTimeCount);
@@ -842,9 +843,6 @@ LONG CDataBaseSink::SPLeaveGameServer(DWORD dwUserID, DWORD dwPlayTimeCount, DWO
 	TCHAR leaveMsg[512] = TEXT("");
 	_snprintf_s(leaveMsg,sizeof(leaveMsg),TEXT("离开存储过程 送分次数：%d "),UserScore.lGrantCount);
 	CTraceService::TraceString(leaveMsg,TraceLevel_Debug);
-
-	m_GameScoreDBAide.AddParameter(TEXT("@lGrantCount"),UserScore.lGrantCount);
-
 
 	return m_GameScoreDBAide.ExecuteProcess(TEXT("GSP_GR_LeaveGameServer"),false);
 }

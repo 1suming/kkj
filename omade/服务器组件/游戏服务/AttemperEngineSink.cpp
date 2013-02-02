@@ -1076,7 +1076,7 @@ bool CAttemperEngineSink::OnDBLogonSuccess(DWORD dwContextID, VOID * pData, WORD
 		COleDateTime currentdate = COleDateTime::GetCurrentTime();
 		//计算日期差
 		COleDateTimeSpan timeSpan;    //计算时间差
-		timeSpan = pLogonSuccess->CastLogonDate - currentdate;
+		timeSpan = pLogonSuccess->LastLogonDate - currentdate;
 
 		long expi_date = timeSpan.GetDays();
 		if (expi_date>0) // 上次登录日期与本次登录日期比较
