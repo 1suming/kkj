@@ -2,7 +2,7 @@
 	<Change Fail="False">
 		<Version>4.0.1.449</Version>
 		<Message>This file was created with a newer version of Axure RP.
-Please visit www.axure.com to upgrade to latest version of Axure RP.</Message>
+Please visit www.axure.com to upgrade to latest version of Axure RP. This is a test</Message>
         </Change>
 	<Change Fail="True">
 		<Version>6.0.0.2849</Version>
